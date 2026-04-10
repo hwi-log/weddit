@@ -1,0 +1,1820 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
+<meta name="theme-color" content="#E8416C"/>
+<title>Weddit — 스마트 결혼 준비</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Noto+Sans+KR:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --rose:#E8416C;--rose-light:#FBEAF0;--rose-dark:#C4304F;--rose-muted:#F4C0D1;
+  --ink:#1a1a2e;--ink-2:#4a4a5e;--ink-3:#8a8a9e;
+  --surface:#fff;--surface-2:#fafafa;--surface-3:#f4f4f7;
+  --border:rgba(0,0,0,.07);--border-2:rgba(0,0,0,.12);
+  --success:#2d9e6b;--success-bg:#e8f7f1;
+  --warning:#b87a10;--warning-bg:#fef3dc;
+  --danger:#d44040;--danger-bg:#fdeaea;
+  --radius-sm:8px;--radius-md:12px;--radius-lg:16px;
+  --font-display:'Gowun Dodum',serif;--font-body:'Noto Sans KR',sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-body);background:var(--surface-3);color:var(--ink);min-height:100vh;-webkit-font-smoothing:antialiased}
+.app-shell{max-width:480px;margin:0 auto;height:100vh;display:flex;flex-direction:column;background:var(--surface-3)}
+.app-header{background:var(--surface);border-bottom:1px solid var(--border);padding:6px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.app-logo{font-family:var(--font-display);font-size:22px;color:var(--rose);letter-spacing:1px}
+.header-dday{font-size:12px;font-weight:600;color:var(--rose);background:var(--rose-light);padding:3px 10px;border-radius:20px}
+.app-content{flex:1;overflow-y:auto;padding:0 0 80px;scrollbar-width:none;-ms-overflow-style:none}
+.app-content::-webkit-scrollbar{display:none}
+.app-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:var(--surface);border-top:1px solid var(--border);display:flex;padding:8px 0;z-index:100}
+.nav-btn{flex:1;background:none;border:none;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 4px;cursor:pointer;color:var(--ink-3);transition:color .15s}
+.nav-btn.active{color:var(--rose)}
+.nav-icon{font-size:18px;line-height:1}
+.nav-label{font-size:10px;font-weight:500}
+.screen-pad{padding:16px;display:flex;flex-direction:column;gap:12px;min-height:calc(100vh - 120px)}
+.card{background:var(--surface);border-radius:var(--radius-lg);border:1px solid var(--border);overflow:hidden}
+.card-body{padding:16px}
+.card-header{padding:14px 16px 10px;border-bottom:1px solid var(--border)}
+.section-label{font-size:11px;font-weight:600;color:var(--ink-3);letter-spacing:.8px;text-transform:uppercase;margin-bottom:10px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;font-family:var(--font-body);font-size:14px;font-weight:500;border-radius:var(--radius-md);border:1.5px solid transparent;cursor:pointer;transition:all .15s;padding:10px 18px;white-space:nowrap}
+.btn-primary{background:var(--rose);color:#fff;border-color:var(--rose)}
+.btn-primary:hover{background:var(--rose-dark)}
+.btn-outline{background:transparent;color:var(--rose);border-color:var(--rose-muted)}
+.btn-outline:hover{background:var(--rose-light)}
+.btn-ghost{background:transparent;color:var(--ink-2);border-color:var(--border-2)}
+.btn-ghost:hover{background:var(--surface-3)}
+.btn-sm{font-size:12px;padding:6px 12px;border-radius:var(--radius-sm)}
+.btn-full{width:100%}
+.badge{display:inline-flex;align-items:center;font-size:11px;font-weight:500;padding:3px 8px;border-radius:20px;white-space:nowrap}
+.badge-rose{background:var(--rose-light);color:var(--rose-dark)}
+.badge-green{background:var(--success-bg);color:var(--success)}
+.badge-amber{background:var(--warning-bg);color:var(--warning)}
+.badge-gray{background:var(--surface-3);color:var(--ink-3)}
+.input-field{width:100%;font-family:var(--font-body);font-size:14px;color:var(--ink);background:var(--surface-2);border:1.5px solid var(--border-2);border-radius:var(--radius-sm);padding:10px 12px;outline:none;transition:border-color .15s}
+.input-field:focus{border-color:var(--rose);background:var(--surface)}
+.input-field::placeholder{color:var(--ink-3)}
+.progress-track{height:8px;background:var(--surface-3);border-radius:4px;overflow:hidden}
+.progress-fill{height:100%;background:var(--rose);border-radius:4px;transition:width .5s ease}
+.check-circle{width:24px;height:24px;border-radius:50%;border:2px solid var(--border-2);display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer;transition:all .15s;font-size:12px;color:transparent}
+.check-circle.checked{background:var(--rose);border-color:var(--rose);color:#fff}
+.check-circle.skip{background:var(--surface-3);border-color:var(--border);color:var(--ink-3);font-size:10px}
+.toggle-switch{position:relative;width:40px;height:22px;flex-shrink:0}
+.toggle-switch input{opacity:0;width:0;height:0;position:absolute}
+.toggle-track{position:absolute;inset:0;border-radius:11px;background:var(--border-2);cursor:pointer;transition:background .2s}
+.toggle-thumb{position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:#fff;transition:transform .2s;pointer-events:none;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.toggle-switch input:checked+.toggle-track{background:var(--rose)}
+.toggle-switch input:checked~.toggle-thumb{transform:translateX(18px)}
+.tip-box{background:var(--rose-light);border-radius:var(--radius-sm);padding:10px 12px;font-size:12px;color:#993556;line-height:1.6;margin-top:8px}
+.divider{height:1px;background:var(--border);margin:4px 0}
+.dday-card{border-radius:var(--radius-lg);background:var(--rose);padding:24px 20px;color:white}
+.dday-inner{display:flex;flex-direction:column;align-items:flex-start;gap:4px}
+.dday-label{font-size:13px;opacity:.85}
+.dday-number{font-family:var(--font-display);font-size:36px;font-weight:700;line-height:1.1}
+.dday-date{font-size:13px;opacity:.75}
+/* 캘린더 바 */
+.cal-bar{height:14px;border-radius:4px;background:var(--rose);opacity:.75;position:relative;cursor:pointer;transition:opacity .15s}
+.cal-bar:hover{opacity:1}
+.cal-bar.done{background:var(--success);opacity:.6}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script type="text/babel" data-presets="react">
+// ═══════════════════════════════════════════════════
+//  DATA
+//  monthsBefore: 소요기간이 끝나는 날 기준 (결혼 D-N개월)
+//  durationDays: 준비 소요일수 → 시작일 = 마감일 - durationDays
+//  budgetRatio: null=예산 외, 0=소액/사례금, 숫자=비율
+//  weight: 진행률 가중치 = durationDays 기반 (자동 계산)
+// ═══════════════════════════════════════════════════
+const CATEGORIES = {
+  CEREMONY:'예식 준비', PHOTO:'촬영', FASHION:'의상 & 뷰티',
+  HONEYMOON:'신혼여행 & 신혼집', RECEPTION:'피로연 & 행사', ADMIN:'행정 & 기타',
+};
+
+// sortOrder: 체크리스트 원본 순서 (같은 monthsBefore일 때 정렬 기준)
+const CHECKLIST_ITEMS = [
+  {id:'sangyunrye',  label:'상견례',                    category:'행정 & 기타',         monthsBefore:13, durationDays:7,  budgetRatio:0.01,  tip:'양가 첫 만남이므로 중간 지점의 고급 한식당이나 개인실 있는 레스토랑 추천. 식사비는 신랑측 부담이 일반적.',        defaultSelected:true,  sortOrder:1},
+  {id:'budget_plan', label:'예산 정하기',                category:'행정 & 기타',         monthsBefore:12, durationDays:3,  budgetRatio:null,  tip:'양가 지원 금액과 자체 예산 합산 후 항목별 배분 먼저 진행. 전체의 10~15%는 예비비로 남겨둘 것.',                   defaultSelected:true,  sortOrder:2},
+  {id:'house',       label:'신혼집',                    category:'신혼여행 & 신혼집',    monthsBefore:12, durationDays:60, budgetRatio:null,  tip:'전/월세 계약 후 인테리어까지 고려하면 최소 6~8개월 소요. 입주일은 결혼식 1~2개월 전이 이상적.',                    defaultSelected:true,  sortOrder:3},
+  {id:'hall',        label:'웨딩홀',                    category:'예식 준비',            monthsBefore:12, durationDays:20, budgetRatio:0.30,  tip:'인기 날짜(토요일 오전)는 1년 전에도 마감되는 경우 있음. 최소 3~4곳 투어 후 결정. 식대·홀 사용료·꽃 장식 포함 여부 꼭 확인.', defaultSelected:true,  sortOrder:4},
+  {id:'sdm',         label:'스드메 (스튜디오·드레스·메이크업)', category:'촬영',          monthsBefore:11, durationDays:10, budgetRatio:0.10,  tip:'패키지로 묶으면 할인이 있지만 개별 선택이 품질 면에서 더 유리한 경우 많음. 웨딩박람회 가격과 실제 추가금 비교 필수.', defaultSelected:true,  sortOrder:5},
+  {id:'hair_transform', label:'헤어변형',               category:'의상 & 뷰티',         monthsBefore:11, durationDays:2,  budgetRatio:0.01,  tip:'신부 헤어 컨디션에 따라 매직·펌 등 시술 결정. 웨딩 촬영 전 1~2개월 전에 시술하는 게 적절.',                        defaultSelected:true,  sortOrder:6},
+  {id:'snap',        label:'본식 스냅',                 category:'촬영',                monthsBefore:11, durationDays:3,  budgetRatio:0.03,  tip:'포트폴리오와 실제 결과물 꼭 비교. 2인 1팀 운영이 일반적. 계약 시 원본 파일 제공 여부 확인.',                        defaultSelected:true,  sortOrder:7},
+  {id:'dvd',         label:'본식 DVD',                  category:'촬영',                monthsBefore:11, durationDays:3,  budgetRatio:0.03,  tip:'요즘은 DVD보다 MOV/MP4 파일 제공 업체 선호. 하이라이트 영상 포함 여부 확인.',                                      defaultSelected:false, sortOrder:8},
+  {id:'iphone_snap', label:'본식 아이폰 스냅',           category:'촬영',                monthsBefore:11, durationDays:3,  budgetRatio:0.02,  tip:'본식 스냅의 보완재로 활용. 자연스러운 무보정 사진 원하는 커플에게 인기.',                                          defaultSelected:false, sortOrder:9},
+  {id:'ring',        label:'웨딩밴드',                  category:'의상 & 뷰티',         monthsBefore:10, durationDays:14, budgetRatio:0.10,  tip:'세공·각인 포함 시 최소 4~6주 소요. 예비 부부 함께 선택. 평균 1쌍 100~200만원대. 촬영 3개월 전 기준.',              defaultSelected:true,  sortOrder:10},
+  {id:'photo_dress', label:'촬영 드레스 투어',           category:'의상 & 뷰티',         monthsBefore:9,  durationDays:3,  budgetRatio:null,  tip:'웨딩 촬영용과 본식용 드레스를 분리하는 추세. 촬영용은 임대비 추가. 최소 3~4곳 투어 권장. 촬영 2개월 전 기준.',    defaultSelected:true,  sortOrder:11},
+  {id:'groom_suit_photo', label:'웨딩 촬영용 신랑 예복', category:'의상 & 뷰티',         monthsBefore:9,  durationDays:7,  budgetRatio:null,  tip:'촬영용은 대여도 가능. 신부 드레스 색상과 매칭 중요. 스드메 패키지에 포함된 경우 많음. 촬영 2개월 전 기준.',        defaultSelected:true,  sortOrder:12},
+  {id:'honeymoon',   label:'신혼여행',                  category:'신혼여행 & 신혼집',    monthsBefore:7,  durationDays:14, budgetRatio:0.30,  tip:'항공권은 6개월 전 예약 시 최대 30~40% 절약 가능. 성수기(5월, 10월)는 더 일찍 예약 필수.',                          defaultSelected:true,  sortOrder:13},
+  {id:'wedding_photo', label:'웨딩 촬영',               category:'촬영',                monthsBefore:7,  durationDays:2,  budgetRatio:null,  tip:'스튜디오 촬영 날짜는 스드메 계약 시 함께 조율. 야외 촬영 원하면 별도 스냅 추가 고려.',                             defaultSelected:true,  sortOrder:14},
+  {id:'appliances',  label:'가전 투어',                 category:'신혼여행 & 신혼집',    monthsBefore:5,  durationDays:14, budgetRatio:null,  tip:'신혼집 평수·레이아웃 확정 후 구매. 결혼 시즌(봄·가을) 가전 박람회 활용하면 10~30% 할인. 입주 3개월 전 기준.',     defaultSelected:true,  sortOrder:15},
+  {id:'furniture',   label:'가구 투어',                 category:'신혼여행 & 신혼집',    monthsBefore:5,  durationDays:14, budgetRatio:null,  tip:'소파·침대·식탁 등 대형 가구는 배송 리드타임 4~8주 감안해서 일찍 주문. 입주 3개월 전 기준.',                       defaultSelected:true,  sortOrder:16},
+  {id:'photo_select', label:'촬영 셀렉',                category:'촬영',                monthsBefore:6,  durationDays:1,  budgetRatio:0.01,  tip:'원본 컷 수 대비 선택 가능 컷 수 계약서 확인 필수. 추가 컷 비용이 생각보다 높을 수 있음.',                          defaultSelected:true,  sortOrder:17},
+  {id:'paper_invite', label:'종이 청첩장',              category:'행정 & 기타',         monthsBefore:4,  durationDays:7,  budgetRatio:0.005, tip:'100장 기준 10~20만원. 주소 수집·발송까지 2~3주 소요. 어르신 하객 비중이 높다면 필수.',                             defaultSelected:true,  sortOrder:18},
+  {id:'main_dress',  label:'본식 드레스 투어',           category:'의상 & 뷰티',         monthsBefore:3,  durationDays:3,  budgetRatio:null,  tip:'본식 드레스는 체형·피부 톤에 맞게 선택. 가봉은 최소 2~3회 필요하므로 여유 일정 확보.',                             defaultSelected:true,  sortOrder:19},
+  {id:'mobile_invite', label:'모바일 청첩장',           category:'행정 & 기타',         monthsBefore:3,  durationDays:3,  budgetRatio:0,     tip:'청첩장 앱/서비스 이용 시 무료~5만원. 카카오·문자 발송과 연동. 방문객 수 파악에도 활용.',                             defaultSelected:true,  sortOrder:20},
+  {id:'invite_gathering', label:'청첩장 모임',          category:'행정 & 기타',         monthsBefore:3,  durationDays:60, budgetRatio:0.03,  tip:'친한 친구들에게 직접 청첩장 전달하는 자리. 식사 자리로 겸하면 자연스럽게 소식 전달 가능. 발송부터 모임 완료까지 60일.', defaultSelected:false, sortOrder:21},
+  {id:'hanbok',      label:'혼주 한복/예복 대여',        category:'의상 & 뷰티',         monthsBefore:2,  durationDays:5,  budgetRatio:0.03,  tip:'혼주 4명 기준 한복 대여 40~80만원. 치수 측정부터 픽업까지 일정 여유 확보.',                                         defaultSelected:true,  sortOrder:22},
+  {id:'parent_makeup', label:'혼주 메이크업',           category:'의상 & 뷰티',         monthsBefore:2,  durationDays:2,  budgetRatio:0.005, tip:'본식 당일 전문 메이크업샵 예약 필수. 신부 메이크업 시간과 겹치지 않도록 조율.',                                    defaultSelected:true,  sortOrder:23},
+  {id:'groom_suit_main', label:'본식용 신랑 예복',      category:'의상 & 뷰티',         monthsBefore:2,  durationDays:7,  budgetRatio:null,  tip:'맞춤 제작 시 최소 6~8주 소요. 대여도 가능하지만 소유가 활용도 높음. 조끼·넥타이 세트 함께 준비.',                 defaultSelected:true,  sortOrder:24},
+  {id:'mc_singer',   label:'사회·축가·축사·주례 섭외',  category:'예식 준비',            monthsBefore:2,  durationDays:3,  budgetRatio:0.01,  tip:'지인에게 부탁할 경우 충분한 사전 협의 필요. 전문 MC는 30~50만원, 유명 가수 축가는 100만원 이상.',                 defaultSelected:true,  sortOrder:25},
+  {id:'intro_video', label:'식전영상',                  category:'예식 준비',            monthsBefore:2,  durationDays:3,  budgetRatio:0,     tip:'커플 사진·영상으로 제작하는 2~5분짜리 영상. 직접 제작하면 무료, 업체 의뢰 시 20~50만원.',                           defaultSelected:true,  sortOrder:26},
+  {id:'music',       label:'입장곡 및 행진곡 선정',     category:'예식 준비',            monthsBefore:1,  durationDays:2,  budgetRatio:null,  tip:'웨딩홀 음향 시스템 확인 후 파일 형식 전달. 클래식·팝·K-POP 다양하게 시도해볼 것.',                                 defaultSelected:true,  sortOrder:27},
+  {id:'food_tasting', label:'연회장 음식 시식',         category:'예식 준비',            monthsBefore:1,  durationDays:1,  budgetRatio:null,  tip:'웨딩홀 계약 후 식단 확정 전 시식 요청 가능. 양가 부모님과 함께하면 의사결정이 빠름.',                               defaultSelected:true,  sortOrder:28},
+  {id:'bus',         label:'대절 버스',                 category:'예식 준비',            monthsBefore:1,  durationDays:2,  budgetRatio:0.005, tip:'지방 하객이 많거나 웨딩홀 접근성이 낮을 때 필요. 45인승 기준 30~50만원.',                                          defaultSelected:false, sortOrder:29},
+  {id:'bouquet',     label:'부케',                     category:'예식 준비',            monthsBefore:1,  durationDays:3,  budgetRatio:0.005, tip:'웨딩홀 플라워 패키지에 포함되는 경우 있음. 별도 주문 시 20~30만원. 드레스 색상과 매칭.',                            defaultSelected:true,  sortOrder:30},
+  {id:'bouquet_helper', label:'부케순이',              category:'예식 준비',            monthsBefore:1,  durationDays:1,  budgetRatio:0,     tip:'부케 전달 역할. 친한 여자 친구 또는 신부 측 어린 가족 구성원에게 부탁.',                                           defaultSelected:false, sortOrder:31},
+  {id:'bag_helper',  label:'가방순이',                  category:'예식 준비',            monthsBefore:1,  durationDays:1,  budgetRatio:0,     tip:'신부 소지품 관리 역할. 예식 전부터 이동이 많으므로 믿을 수 있는 친구에게 부탁.',                                    defaultSelected:false, sortOrder:32},
+  {id:'paebak',      label:'폐백',                     category:'피로연 & 행사',        monthsBefore:1,  durationDays:1,  budgetRatio:0.005, tip:'폐백 의상 대여 및 예물 음식 준비 필요. 웨딩홀 폐백실 이용 가능 여부 확인.',                                        defaultSelected:false, sortOrder:33},
+  {id:'ibaji',       label:'이바지',                   category:'피로연 & 행사',        monthsBefore:1,  durationDays:1,  budgetRatio:0.005, tip:'신랑집에 보내는 음식. 지역·집안 전통에 따라 규모 결정. 요즘은 간소화하는 추세.',                                   defaultSelected:false, sortOrder:34},
+  {id:'dress_fitting', label:'드레스 가봉',            category:'의상 & 뷰티',         monthsBefore:1,  durationDays:1,  budgetRatio:null,  tip:'계약 드레스 체형 맞춤 작업. 보통 2~3회 진행. 체중 변화가 있다면 최종 가봉은 1개월 전 이후 권장.',                 defaultSelected:true,  sortOrder:35},
+  {id:'favor',       label:'답례품',                   category:'피로연 & 행사',        monthsBefore:1,  durationDays:3,  budgetRatio:0.005, tip:'하객 1인당 5,000~15,000원 수준. 식품류(전통차, 오일 등)나 소형 생활용품 인기.',                                   defaultSelected:true,  sortOrder:36},
+  {id:'gift_desk',   label:'축의대',                   category:'예식 준비',            monthsBefore:1,  durationDays:1,  budgetRatio:0,     tip:'축의금 수납·관리 역할. 믿을 수 있는 친척 또는 친구에게 부탁. 영수증 장부 준비.',                                  defaultSelected:true,  sortOrder:37},
+  {id:'ticket_stamp', label:'식권 도장',               category:'예식 준비',            monthsBefore:1,  durationDays:2,  budgetRatio:0.005, tip:'하객 식사 식권에 도장 또는 스티커 작업. 도장 제작 비용 미리 확인.',                                              defaultSelected:true,  sortOrder:38},
+  {id:'vow',         label:'혼인서약서',               category:'예식 준비',            monthsBefore:0.5, durationDays:1, budgetRatio:null,  tip:'직접 작성하거나 주례에게 전달. 직접 낭독하는 트렌드 증가. 감동적인 문구로 개성 표현 가능.',                         defaultSelected:true,  sortOrder:39},
+  {id:'photo_table', label:'포토테이블',               category:'예식 준비',            monthsBefore:0.5, durationDays:1, budgetRatio:null,  tip:'커플 사진·소품으로 꾸미는 포토존. 포토북·액자·웰컴보드 활용. DIY 가능.',                                         defaultSelected:true,  sortOrder:40},
+  {id:'rehearsal',   label:'웨딩홀 리허설',            category:'예식 준비',            monthsBefore:0.25, durationDays:1, budgetRatio:null, tip:'식 2~4주 전 진행. 동선·조명·음향 최종 점검. 사회자와 함께 진행하는 것 권장.',                                     defaultSelected:true,  sortOrder:41},
+];
+
+// 카테고리 고정 순서
+const CATEGORY_ORDER=['행정 & 기타','예식 준비','촬영','의상 & 뷰티','피로연 & 행사','신혼여행 & 신혼집'];
+const sortByCategory=(items)=>[...items].sort((a,b)=>{
+  const ai=CATEGORY_ORDER.indexOf(a.category);
+  const bi=CATEGORY_ORDER.indexOf(b.category);
+  if(ai!==bi) return (ai<0?99:ai)-(bi<0?99:bi);
+  return (a.sortOrder||0)-(b.sortOrder||0);
+});
+const sortByTime=(items,getMonths)=>[...items].sort((a,b)=>{
+  const ma=getMonths(a),mb=getMonths(b);
+  if(mb!==ma) return mb-ma;
+  return (a.sortOrder||0)-(b.sortOrder||0);
+});
+
+// ═══════════════════════════════════════════
+//  HOOKS
+// ═══════════════════════════════════════════
+const {useState,useCallback,useEffect,useMemo,useRef} = React;
+
+function load(k,fb){try{const r=localStorage.getItem(k);return r?JSON.parse(r):fb;}catch{return fb;}}
+function save(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch{}}
+
+// ── useChecklist ──────────────────────────
+function useChecklist(){
+  const [selectedIds,setSelectedIds]=useState(()=>new Set(load('w_sel',CHECKLIST_ITEMS.filter(i=>i.defaultSelected).map(i=>i.id))));
+  const [completedIds,setCompletedIds]=useState(()=>new Set(load('w_done',[])));
+  const [customMonths,setCustomMonthsMap]=useState(()=>load('w_custom_months',{}));
+  const [customItems,setCustomItemsRaw]=useState(()=>load('w_custom_items',[]));
+  // 2. 예산화면→체크리스트 확인 대기
+  const [pendingChecklistConfirm,setPendingChecklistConfirm]=useState(null);
+  // 3. 커스텀 항목의 예산 포함 여부 (budgetRatio를 0.01로 세팅하면 예산에 포함됨)
+  const [customBudgetIncludeMap,setCustomBudgetIncludeMap]=useState(()=>load('w_custom_budget_include',{}));
+
+  useEffect(()=>{save('w_sel',[...selectedIds]);},[selectedIds]);
+  useEffect(()=>{save('w_done',[...completedIds]);},[completedIds]);
+  useEffect(()=>{save('w_custom_months',customMonths);},[customMonths]);
+  useEffect(()=>{save('w_custom_items',customItems);},[customItems]);
+  useEffect(()=>{save('w_custom_budget_include',customBudgetIncludeMap);},[customBudgetIncludeMap]);
+
+  const allItems=useMemo(()=>[...CHECKLIST_ITEMS,...customItems.map(i=>({
+    ...i,
+    // 3. budgetRatio 동적 반영: 포함으로 설정된 항목은 0.01 부여
+    budgetRatio: customBudgetIncludeMap[i.id] ? 0.01 : null,
+  }))]
+  ,[customItems,customBudgetIncludeMap]);
+
+  // 1. monthsBefore 파라미터 추가
+  const addCustomItem=useCallback((label,category,monthsBefore=1)=>{
+    const id='custom_'+Date.now();
+    const newItem={id,label,category:category||'행정 & 기타',durationDays:1,budgetRatio:null,monthsBefore:monthsBefore||1,sortOrder:9000+Date.now()%1000,defaultSelected:true,isCustom:true,tip:''};
+    setCustomItemsRaw(prev=>[...prev,newItem]);
+    setSelectedIds(prev=>{const n=new Set(prev);n.add(id);return n;});
+    return id;
+  },[]);
+
+  const removeCustomItem=useCallback(id=>{
+    setCustomItemsRaw(prev=>prev.filter(i=>i.id!==id));
+    setSelectedIds(prev=>{const n=new Set(prev);n.delete(id);return n;});
+    setCompletedIds(prev=>{const n=new Set(prev);n.delete(id);return n;});
+    setCustomBudgetIncludeMap(prev=>{const n={...prev};delete n[id];return n;});
+  },[]);
+
+  // 2. 예산화면에서 추가 → 체크리스트 확인 요청
+  const addFromBudget=useCallback((label)=>{
+    const id='custom_'+Date.now();
+    const newItem={id,label,category:'행정 & 기타',durationDays:1,budgetRatio:0.01,monthsBefore:1,sortOrder:9000+Date.now()%1000,defaultSelected:true,isCustom:true,tip:''};
+    setCustomItemsRaw(prev=>[...prev,newItem]);
+    setSelectedIds(prev=>{const n=new Set(prev);n.add(id);return n;});
+    setCustomBudgetIncludeMap(prev=>({...prev,[id]:true}));
+    setPendingChecklistConfirm({id,label});
+    return id;
+  },[]);
+
+  // 2. 체크리스트 추가 확인 응답
+  const confirmChecklistAdd=useCallback((yes)=>{
+    if(!yes&&pendingChecklistConfirm){
+      // 체크리스트에서 숨김 (선택 해제)
+      setSelectedIds(prev=>{const n=new Set(prev);n.delete(pendingChecklistConfirm.id);return n;});
+    }
+    setPendingChecklistConfirm(null);
+  },[pendingChecklistConfirm]);
+
+  // 2. 체크리스트에서 추가 후 예산 포함 설정
+  const setCustomBudgetInclude=useCallback((id,include)=>{
+    setCustomBudgetIncludeMap(prev=>({...prev,[id]:include}));
+    // 포함 시 selectedIds에도 추가 (이미 있지만 안전하게)
+  },[]);
+
+  const toggleSelected=useCallback(id=>{
+    setSelectedIds(prev=>{
+      const n=new Set(prev);
+      n.has(id)?n.delete(id):n.add(id);
+      if(!n.has(id)) setCompletedIds(p=>{const c=new Set(p);c.delete(id);return c;});
+      return n;
+    });
+  },[]);
+  const toggleCompleted=useCallback(id=>{
+    setCompletedIds(prev=>{const n=new Set(prev);n.has(id)?n.delete(id):n.add(id);return n;});
+  },[]);
+  const setCustomMonths=useCallback((id,val)=>{
+    setCustomMonthsMap(prev=>({...prev,[id]:Number(val)}));
+  },[]);
+  const resetCustomMonths=useCallback(id=>{
+    setCustomMonthsMap(prev=>{const n={...prev};delete n[id];return n;});
+  },[]);
+
+  const getItemMonths=useCallback((item)=>customMonths[item.id]??item.monthsBefore,[customMonths]);
+
+  const selectedItems=allItems.filter(i=>selectedIds.has(i.id));
+  const completedItems=selectedItems.filter(i=>completedIds.has(i.id));
+  const totalWeight=selectedItems.reduce((s,i)=>s+i.durationDays,0);
+  const completedWeight=completedItems.reduce((s,i)=>s+i.durationDays,0);
+  const progressPercent=totalWeight>0?Math.round(completedWeight/totalWeight*100):0;
+
+  return {selectedIds,completedIds,selectedItems,completedItems,totalWeight,completedWeight,progressPercent,
+          toggleSelected,toggleCompleted,customMonths,setCustomMonths,resetCustomMonths,getItemMonths,
+          customItems,addCustomItem,removeCustomItem,addFromBudget,confirmChecklistAdd,
+          setCustomBudgetInclude,pendingChecklistConfirm,allItems};
+}
+
+// ── useBudget ─────────────────────────────
+function useBudget(selectedIds, allItems){
+  const [totalBudget,setTotalBudgetRaw]=useState(()=>load('w_budget_total',''));
+  const [includedInBudget,setIncludedInBudget]=useState(()=>new Set(load('w_budget_inc',[])));
+  const [actualSpent,setActualSpentMap]=useState(()=>load('w_budget_spent',{}));
+  // 사용자 정의 예산 금액 오버라이드 (만원)
+  const [customBudget,setCustomBudgetMap]=useState(()=>load('w_custom_budget',{}));
+
+  const budgetableItems=useMemo(()=>
+    allItems.filter(i=>selectedIds.has(i.id)&&i.budgetRatio!==null),
+  [allItems,selectedIds]);
+
+  useEffect(()=>{
+    setIncludedInBudget(prev=>{
+      const n=new Set(prev);
+      for(const id of n) if(!selectedIds.has(id)) n.delete(id);
+      for(const item of budgetableItems) if(!n.has(item.id)) n.add(item.id);
+      return n;
+    });
+  },[selectedIds,budgetableItems]);
+
+  useEffect(()=>{save('w_budget_total',totalBudget);},[totalBudget]);
+  useEffect(()=>{save('w_budget_inc',[...includedInBudget]);},[includedInBudget]);
+  useEffect(()=>{save('w_budget_spent',actualSpent);},[actualSpent]);
+  useEffect(()=>{save('w_custom_budget',customBudget);},[customBudget]);
+
+  const setTotalBudget=useCallback(v=>setTotalBudgetRaw(Math.max(0,Number(v))),[]);
+  const toggleBudgetItem=useCallback(id=>{
+    setIncludedInBudget(prev=>{const n=new Set(prev);n.has(id)?n.delete(id):n.add(id);return n;});
+  },[]);
+  const setActualSpent=useCallback((id,amt)=>setActualSpentMap(prev=>({...prev,[id]:Number(amt)})),[]);
+  const setCustomBudget=useCallback((id,amt)=>setCustomBudgetMap(prev=>({...prev,[id]:Number(amt)})),[]);
+  const resetCustomBudget=useCallback(id=>setCustomBudgetMap(prev=>{const n={...prev};delete n[id];return n;}),[]);
+
+  const budgetBreakdown=useMemo(()=>{
+    const included=budgetableItems.filter(i=>includedInBudget.has(i.id));
+    const totalRatio=included.reduce((s,i)=>s+i.budgetRatio,0);
+    return included.map(item=>{
+      const norm=totalRatio>0?item.budgetRatio/totalRatio:0;
+      const guideBudget=Math.round(totalBudget*norm);
+      // 사용자 정의 예산이 있으면 그것 사용, 없으면 가이드 금액
+      const assignedBudget=customBudget[item.id]!==undefined?customBudget[item.id]:guideBudget;
+      const spent=actualSpent[item.id]??0;
+      return {...item,normalizedRatio:norm,guideBudget,assignedBudget,spent,diff:spent-assignedBudget,hasCustomBudget:customBudget[item.id]!==undefined};
+    });
+  },[budgetableItems,includedInBudget,totalBudget,actualSpent,customBudget]);
+
+  const totalSpent=budgetBreakdown.reduce((s,i)=>s+i.spent,0);
+  const totalAssigned=budgetBreakdown.reduce((s,i)=>s+i.assignedBudget,0);
+  const totalDiff=totalSpent-totalBudget;
+  const spentPercent=totalBudget>0?Math.round(totalSpent/totalBudget*100):0;
+
+  return {totalBudget,setTotalBudget,includedInBudget,toggleBudgetItem,budgetableItems,budgetBreakdown,
+          actualSpent,setActualSpent,customBudget,setCustomBudget,resetCustomBudget,
+          totalSpent,totalAssigned,totalDiff,spentPercent};
+}
+
+// ── useWeddingDate ────────────────────────
+// 입주일 기준 마감이 필요한 항목 ID 목록
+const MOVE_IN_RELATIVE_IDS = new Set(['appliances','furniture']);
+
+function useWeddingDate(){
+  const [weddingDate,setWeddingDateRaw]=useState(()=>{try{return localStorage.getItem('w_date')??'';}catch{return '';}});
+  const [moveInDate,setMoveInDateRaw]=useState(()=>{try{return localStorage.getItem('w_movein')??'';}catch{return '';}});
+
+  useEffect(()=>{try{if(weddingDate)localStorage.setItem('w_date',weddingDate);}catch{}},[weddingDate]);
+  useEffect(()=>{try{if(moveInDate)localStorage.setItem('w_movein',moveInDate);}catch{}},[moveInDate]);
+
+  const setWeddingDate=useCallback(d=>setWeddingDateRaw(d),[]);
+  const setMoveInDate=useCallback(d=>setMoveInDateRaw(d),[]);
+
+  const dDay=useMemo(()=>{
+    if(!weddingDate) return null;
+    const today=new Date();
+    today.setHours(0,0,0,0);
+    const parts=weddingDate.split('-').map(Number);
+    const target=new Date(parts[0],parts[1]-1,parts[2]);
+    return Math.round((target-today)/86400000);
+  },[weddingDate]);
+  const monthsUntil=dDay!==null?dDay/30:null;
+
+  // 결혼일 기준 N개월 전 날짜 계산
+  const dateFromMonths=useCallback((months,baseDate)=>{
+    const base=baseDate||(weddingDate?new Date(weddingDate):null);
+    if(!base) return null;
+    const d=new Date(base);
+    d.setDate(d.getDate()-Math.round(months*30));
+    return d;
+  },[weddingDate]);
+
+  // 항목의 마감일(=기간 가이드 날) 계산
+  // 가전/가구 투어는 입주일 기준 3개월 전, 나머지는 결혼일 기준
+  const getDeadline=useCallback((item,getItemMonths)=>{
+    if(MOVE_IN_RELATIVE_IDS.has(item.id)){
+      // 입주일 설정된 경우: 입주일 기준 3개월 전
+      if(moveInDate){
+        return dateFromMonths(3,new Date(moveInDate));
+      }
+      // 입주일 미설정: 결혼일 기준 fallback (5개월 전)
+      return dateFromMonths(5);
+    }
+    return dateFromMonths(getItemMonths(item));
+  },[dateFromMonths,moveInDate]);
+
+  // 항목의 시작일 = 마감일 - durationDays + 1
+  const getStartDate=useCallback((item,getItemMonths)=>{
+    const deadline=getDeadline(item,getItemMonths);
+    if(!deadline) return null;
+    const start=new Date(deadline);
+    start.setDate(start.getDate()-item.durationDays+1);
+    return start;
+  },[getDeadline]);
+
+  const getUrgentItems=useCallback(items=>{
+    if(monthsUntil===null) return [];
+    return items.filter(i=>i.monthsBefore&&Math.abs(i.monthsBefore-monthsUntil)<=1)
+      .sort((a,b)=>b.monthsBefore-a.monthsBefore);
+  },[monthsUntil]);
+
+  return {weddingDate,setWeddingDate,moveInDate,setMoveInDate,dDay,monthsUntil,dateFromMonths,getDeadline,getStartDate,getUrgentItems};
+}
+
+// ═══════════════════════════════════════════
+//  UI HELPERS
+// ═══════════════════════════════════════════
+const fmtDate=(d,opt={month:'short',day:'numeric'})=>d?new Date(d).toLocaleDateString('ko-KR',opt):'';
+const fmtDateStr=(d)=>{if(!d)return '';const dt=new Date(d);return `${dt.getFullYear()}-${String(dt.getMonth()+1).padStart(2,'0')}-${String(dt.getDate()).padStart(2,'0')}`;};
+const CAT_COLORS={'예식 준비':'#E8416C','촬영':'#4466cc','의상 & 뷰티':'#cc44aa','신혼여행 & 신혼집':'#2d9e6b','피로연 & 행사':'#b87a10','행정 & 기타':'#e07c20'};
+const DONE_BAR_COLOR='#8a8a9e'; // 8. 완료 항목 바 색상 (기존 행정&기타 회색)
+
+// ═══════════════════════════════════════════
+//  HOME SCREEN
+// ═══════════════════════════════════════════
+function HomeScreen({checklist,budget,dateHook,calEvents,onNavigate}){
+  const [editingDate,setEditingDate]=useState(!dateHook.weddingDate);
+  const [editingMoveIn,setEditingMoveIn]=useState(false);
+  // 날짜 선택 상태 (년/월/일 순차 선택)
+  const [pickerYear,setPickerYear]=useState('');
+  const [pickerMonth,setPickerMonth]=useState('');
+  const [pickerDay,setPickerDay]=useState('');
+  const [moveInPickerYear,setMoveInPickerYear]=useState('');
+  const [moveInPickerMonth,setMoveInPickerMonth]=useState('');
+  const [moveInPickerDay,setMoveInPickerDay]=useState('');
+
+  const urgent=dateHook.getUrgentItems(checklist.selectedItems);
+
+  const thisYear=new Date().getFullYear();
+  const years=Array.from({length:5},(_,i)=>thisYear+i);
+  const months=Array.from({length:12},(_,i)=>i+1);
+  const getDaysInMonth=(y,m)=>y&&m?new Date(y,m,0).getDate():31;
+  const wDays=getDaysInMonth(pickerYear,pickerMonth);
+  const miDays=getDaysInMonth(moveInPickerYear,moveInPickerMonth);
+
+  const commitWeddingDate=useCallback((y,mo,d)=>{
+    if(!y||!mo||!d) return;
+    const str=`${y}-${String(mo).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    dateHook.setWeddingDate(str);
+    setEditingDate(false);
+  },[dateHook]);
+
+  const commitMoveInDate=useCallback((y,mo,d)=>{
+    if(!y||!mo||!d) return;
+    const str=`${y}-${String(mo).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    dateHook.setMoveInDate(str);
+    setEditingMoveIn(false);
+  },[dateHook]);
+
+  const selStyle={fontFamily:'var(--font-body)',fontSize:14,color:'var(--ink)',background:'rgba(255,255,255,.9)',border:'none',borderRadius:6,padding:'6px 8px',cursor:'pointer',outline:'none'};
+  const selStyleCard={fontFamily:'var(--font-body)',fontSize:14,color:'var(--ink)',background:'var(--surface-2)',border:'1.5px solid var(--border-2)',borderRadius:6,padding:'8px 10px',cursor:'pointer',outline:'none',flex:1};
+
+  const catProgresses=Object.values(CATEGORIES).map(cat=>{
+    const items=checklist.selectedItems.filter(i=>i.category===cat);
+    if(!items.length) return null;
+    const w=items.reduce((s,i)=>s+i.durationDays,0);
+    const dw=items.filter(i=>checklist.completedIds.has(i.id)).reduce((s,i)=>s+i.durationDays,0);
+    return{cat,total:items.length,done:items.filter(i=>checklist.completedIds.has(i.id)).length,percent:w>0?Math.round(dw/w*100):0};
+  }).filter(Boolean);
+
+  return(
+    <div className="screen-pad">
+      {/* 슬로건 */}
+      <div style={{
+        textAlign:'center',
+        padding:'5px 4px',
+        background:'var(--surface)',
+        borderBottom:'1px solid var(--border)',
+        margin:'-16px -16px 0',
+      }}>
+        <div style={{fontSize:13,color:'var(--rose)',fontWeight:600,lineHeight:1.6}}>
+          일정부터 예산까지, Weddit과 함께 준비하세요 💍
+        </div>
+      </div>
+
+      {/* 1. 결혼식 + 입주일 나란히 배치 */}
+      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10}}>
+
+        {/* 결혼식 D-day 카드 */}
+        <div className="dday-card" style={{padding:'18px 14px'}}>
+          {dateHook.weddingDate&&!editingDate?(
+            <div className="dday-inner">
+              <div className="dday-label" style={{fontSize:11}}>결혼식까지</div>
+              <div className="dday-number" style={{fontSize:26}}>{dateHook.dDay>0?`D-${dateHook.dDay}`:dateHook.dDay===0?'D-day ♥':`D+${Math.abs(dateHook.dDay)}`}</div>
+              <div className="dday-date" style={{fontSize:11}}>{new Date(dateHook.weddingDate).toLocaleDateString('ko-KR',{month:'long',day:'numeric',weekday:'short'})}</div>
+              <button style={{marginTop:8,borderColor:'rgba(255,255,255,.4)',color:'#fff',background:'rgba(255,255,255,.15)',border:'1.5px solid rgba(255,255,255,.4)',borderRadius:6,padding:'4px 8px',fontSize:11,cursor:'pointer',fontFamily:'var(--font-body)'}} onClick={()=>{setEditingDate(true);const p=dateHook.weddingDate.split('-');setPickerYear(p[0]);setPickerMonth(String(Number(p[1])));setPickerDay(String(Number(p[2])));}}>날짜 변경</button>
+            </div>
+          ):(
+            <div className="dday-inner">
+              <div className="dday-label" style={{fontSize:11}}>결혼식 날짜 설정</div>
+              <div style={{display:'flex',flexDirection:'column',gap:4,marginTop:8}}>
+                <select style={selStyle} value={pickerYear} onChange={e=>{setPickerYear(e.target.value);setPickerDay('');}}>
+                  <option value=''>년도</option>
+                  {years.map(y=><option key={y} value={y}>{y}년</option>)}
+                </select>
+                <select style={selStyle} value={pickerMonth} onChange={e=>{setPickerMonth(e.target.value);setPickerDay('');}} disabled={!pickerYear}>
+                  <option value=''>월</option>
+                  {months.map(m=><option key={m} value={m}>{m}월</option>)}
+                </select>
+                <select style={selStyle} value={pickerDay} onChange={e=>{const d=e.target.value;setPickerDay(d);commitWeddingDate(pickerYear,pickerMonth,d);}} disabled={!pickerMonth}>
+                  <option value=''>일</option>
+                  {Array.from({length:wDays},(_,i)=>i+1).map(d=><option key={d} value={d}>{d}일</option>)}
+                </select>
+                {dateHook.weddingDate&&<button style={{background:'rgba(255,255,255,.15)',border:'1.5px solid rgba(255,255,255,.4)',borderRadius:6,padding:'4px 8px',fontSize:11,cursor:'pointer',color:'#fff',fontFamily:'var(--font-body)'}} onClick={()=>setEditingDate(false)}>취소</button>}
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* 2. 입주일 카드 — 결혼식과 동일한 D-day 스타일, 색상은 success 계열 */}
+        <div style={{borderRadius:'var(--radius-lg)',background:'var(--success)',padding:'18px 14px',color:'white'}}>
+          {dateHook.moveInDate&&!editingMoveIn?(
+            <div className="dday-inner">
+              <div className="dday-label" style={{fontSize:11}}>입주까지</div>
+              <div className="dday-number" style={{fontSize:26}}>
+                {(()=>{const d=Math.ceil((new Date(dateHook.moveInDate)-new Date())/86400000);return d>0?`D-${d}`:d===0?'D-day ♥':`D+${Math.abs(d)}`;})()}
+              </div>
+              <div className="dday-date" style={{fontSize:11}}>{new Date(dateHook.moveInDate).toLocaleDateString('ko-KR',{month:'long',day:'numeric',weekday:'short'})}</div>
+              <button style={{marginTop:8,borderColor:'rgba(255,255,255,.4)',color:'#fff',background:'rgba(255,255,255,.15)',border:'1.5px solid rgba(255,255,255,.4)',borderRadius:6,padding:'4px 8px',fontSize:11,cursor:'pointer',fontFamily:'var(--font-body)'}} onClick={()=>{setEditingMoveIn(true);const p=dateHook.moveInDate.split('-');setMoveInPickerYear(p[0]);setMoveInPickerMonth(String(Number(p[1])));setMoveInPickerDay(String(Number(p[2])));}}>날짜 변경</button>
+            </div>
+          ):(
+            <div className="dday-inner">
+              <div className="dday-label" style={{fontSize:11}}>입주일 설정</div>
+              <div style={{display:'flex',flexDirection:'column',gap:4,marginTop:8}}>
+                <select style={selStyle} value={moveInPickerYear} onChange={e=>{setMoveInPickerYear(e.target.value);setMoveInPickerDay('');}}>
+                  <option value=''>년도</option>
+                  {years.map(y=><option key={y} value={y}>{y}년</option>)}
+                </select>
+                <select style={selStyle} value={moveInPickerMonth} onChange={e=>{setMoveInPickerMonth(e.target.value);setMoveInPickerDay('');}} disabled={!moveInPickerYear}>
+                  <option value=''>월</option>
+                  {months.map(m=><option key={m} value={m}>{m}월</option>)}
+                </select>
+                <select style={selStyle} value={moveInPickerDay} onChange={e=>{const d=e.target.value;setMoveInPickerDay(d);commitMoveInDate(moveInPickerYear,moveInPickerMonth,d);}} disabled={!moveInPickerMonth}>
+                  <option value=''>일</option>
+                  {Array.from({length:miDays},(_,i)=>i+1).map(d=><option key={d} value={d}>{d}일</option>)}
+                </select>
+                {dateHook.moveInDate&&<button style={{background:'rgba(255,255,255,.15)',border:'1.5px solid rgba(255,255,255,.4)',borderRadius:6,padding:'4px 8px',fontSize:11,cursor:'pointer',color:'#fff',fontFamily:'var(--font-body)'}} onClick={()=>setEditingMoveIn(false)}>취소</button>}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* 전체 진행률 + 카테고리별 파이 차트 통합 */}
+      <div className="card"><div className="card-body">
+        <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:10}}>
+          <div className="section-label" style={{marginBottom:0}}>전체 진행률</div>
+          <button className="btn btn-ghost btn-sm" style={{fontSize:11,padding:'4px 10px'}} onClick={()=>onNavigate('checklist')}>상세 보기 →</button>
+        </div>
+        {/* 전체 바 */}
+        <div style={{display:'flex',alignItems:'baseline',gap:8,marginBottom:6}}>
+          <span style={{fontSize:26,fontWeight:600,color:'var(--rose)'}}>{checklist.progressPercent}%</span>
+          <span style={{fontSize:12,color:'var(--ink-3)'}}>{checklist.completedItems.length} / {checklist.selectedItems.length}개 완료</span>
+        </div>
+        <div className="progress-track" style={{marginBottom:14}}><div className="progress-fill" style={{width:`${checklist.progressPercent}%`}}/></div>
+        {/* 카테고리별 6개 미니 파이 차트 */}
+        <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:10}}>
+          {catProgresses.map(({cat,percent,done,total})=>{
+            const r=22,sw=5,circ=2*Math.PI*r;
+            const color=CAT_COLORS[cat]||'var(--rose)';
+            return(
+              <div key={cat} style={{display:'flex',flexDirection:'column',alignItems:'center',gap:4}}>
+                {/* 미니 파이 */}
+                <div style={{position:'relative',width:54,height:54}}>
+                  <svg viewBox="0 0 54 54" style={{transform:'rotate(-90deg)',width:'100%',height:'100%'}}>
+                    <circle cx="27" cy="27" r={r} fill="none" stroke="var(--surface-3)" strokeWidth={sw}/>
+                    <circle cx="27" cy="27" r={r} fill="none" stroke={color} strokeWidth={sw}
+                      strokeLinecap="round"
+                      strokeDasharray={String(circ)}
+                      strokeDashoffset={String(circ*(1-percent/100))}
+                      style={{transition:'stroke-dashoffset .6s ease'}}
+                    />
+                  </svg>
+                  <div style={{position:'absolute',inset:0,display:'flex',alignItems:'center',justifyContent:'center'}}>
+                    <span style={{fontSize:11,fontWeight:600,color}}>{percent}%</span>
+                  </div>
+                </div>
+                <div style={{fontSize:10,color:'var(--ink-2)',textAlign:'center',lineHeight:1.3,fontWeight:500}}>{cat}</div>
+                <div style={{fontSize:10,color:'var(--ink-3)'}}>{done}/{total}</div>
+              </div>
+            );
+          })}
+        </div>
+      </div></div>
+
+      {/* 5+6. 예산 현황 — 버튼 오른쪽 위 + 바 형태 표시 */}
+      <div className="card"><div className="card-body">
+        <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:10}}>
+          <div className="section-label" style={{marginBottom:0}}>예산 현황</div>
+          <button className="btn btn-ghost btn-sm" style={{fontSize:11,padding:'4px 10px'}} onClick={()=>onNavigate('budget')}>관리하기 →</button>
+        </div>
+        {/* 숫자 요약 3개 */}
+        <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:8,marginBottom:10}}>
+          <div style={{textAlign:'center'}}>
+            <div style={{fontSize:11,color:'var(--ink-3)',marginBottom:3}}>총 예산</div>
+            <div style={{fontSize:15,fontWeight:600,color:'var(--ink)'}}>{budget.totalBudget.toLocaleString()}만</div>
+          </div>
+          <div style={{textAlign:'center'}}>
+            <div style={{fontSize:11,color:'var(--ink-3)',marginBottom:3}}>지출</div>
+            <div style={{fontSize:15,fontWeight:600,color:budget.totalSpent>budget.totalBudget?'var(--danger)':'var(--rose)'}}>{budget.totalSpent.toLocaleString()}만</div>
+          </div>
+          <div style={{textAlign:'center'}}>
+            <div style={{fontSize:11,color:'var(--ink-3)',marginBottom:3}}>남은 예산</div>
+            <div style={{fontSize:15,fontWeight:600,color:'var(--success)'}}>
+              {(budget.totalBudget-budget.totalSpent).toLocaleString()}만
+            </div>
+          </div>
+        </div>
+        {/* 진행 바 */}
+        <div className="progress-track">
+          <div className="progress-fill" style={{
+            width:`${Math.min(budget.spentPercent,100)}%`,
+            background:budget.spentPercent>100?'var(--danger)':'var(--rose)'
+          }}/>
+        </div>
+        <div style={{display:'flex',justifyContent:'space-between',fontSize:11,color:'var(--ink-3)',marginTop:4}}>
+          <span>{budget.spentPercent}% 사용</span>
+          <span>{Math.max(0,budget.totalBudget-budget.totalSpent).toLocaleString()}만원 남음</span>
+        </div>
+      </div></div>
+
+      {/* 이번 달 캘린더 미니뷰 */}
+      {(()=>{
+        const now=new Date();
+        const yr=now.getFullYear();
+        const mo=now.getMonth();
+        const MONTH_KO2=['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'];
+        const DOW2=['일','월','화','수','목','금','토'];
+        const daysInMo=new Date(yr,mo+1,0).getDate();
+        const firstDow=new Date(yr,mo,1).getDay();
+        const calDays2=[];
+        for(let i=0;i<firstDow;i++) calDays2.push(null);
+        for(let d=1;d<=daysInMo;d++) calDays2.push(d);
+        while(calDays2.length%7!==0) calDays2.push(null);
+
+        const monthStart=new Date(yr,mo,1);
+        const monthEnd=new Date(yr,mo,daysInMo);
+        const calItems=checklist.selectedItems.map(item=>{
+          const end=dateHook.getDeadline(item,checklist.getItemMonths);
+          if(!end) return null;
+          const start=new Date(end);
+          start.setDate(start.getDate()-item.durationDays+1);
+          if(end<monthStart||start>monthEnd) return null;
+          return{item,startDay:Math.max(1,start.getDate()),endDay:Math.min(daysInMo,end.getDate())};
+        }).filter(Boolean);
+
+        const myEvents=(calEvents?.events||[]).filter(e=>{
+          const sd=new Date(e.startDate||e.date);
+          const ed=new Date(e.endDate||e.date);
+          return sd<=monthEnd&&ed>=monthStart;
+        }).map(e=>({
+          label:e.label,color:'#7c3aed',
+          startDay:Math.max(1,new Date(e.startDate||e.date).getDate()),
+          endDay:Math.min(daysInMo,new Date(e.endDate||e.date).getDate()),
+        }));
+
+        const allBars=[...calItems.map(c=>({label:c.item.label,color:CAT_COLORS[c.item.category]||'var(--rose)',startDay:c.startDay,endDay:c.endDay})),...myEvents];
+
+        // 날짜별 바 맵
+        const dayBars={};
+        allBars.forEach(bar=>{
+          for(let d=bar.startDay;d<=bar.endDay;d++){
+            if(!dayBars[d]) dayBars[d]=[];
+            dayBars[d].push(bar);
+          }
+        });
+
+        return(
+          <div className="card">
+            <div className="card-header" style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+              <span style={{fontSize:14,fontWeight:600,color:'var(--ink-2)'}}>{yr}년 {MONTH_KO2[mo]}</span>
+              <button className="btn btn-ghost btn-sm" onClick={()=>onNavigate('calendar')}>전체 보기 →</button>
+            </div>
+            <div style={{padding:'10px 12px'}}>
+              <div style={{display:'grid',gridTemplateColumns:'repeat(7,1fr)',gap:1,marginBottom:4}}>
+                {DOW2.map((d,i)=><div key={d} style={{textAlign:'center',fontSize:10,fontWeight:600,color:i===0?'var(--danger)':i===6?'#4466cc':'var(--ink-3)',padding:'2px 0'}}>{d}</div>)}
+              </div>
+              <div style={{display:'grid',gridTemplateColumns:'repeat(7,1fr)',gap:1}}>
+                {calDays2.map((day,idx)=>{
+                  const tod=day&&now.getDate()===day;
+                  const bars=day?dayBars[day]||[]:[];
+                  return(
+                    <div key={idx} style={{minHeight:38,padding:'1px'}}>
+                      {day&&(
+                        <>
+                          <div style={{textAlign:'center',marginBottom:1}}>
+                            <span style={{display:'inline-flex',alignItems:'center',justifyContent:'center',width:18,height:18,borderRadius:'50%',fontSize:11,background:tod?'var(--rose)':'transparent',color:tod?'#fff':idx%7===0?'var(--danger)':idx%7===6?'#4466cc':'var(--ink)',fontWeight:tod?700:400}}>{day}</span>
+                          </div>
+                          {bars.slice(0,2).map((bar,bi)=>(
+                            <div key={bi} style={{height:4,borderRadius:2,background:bar.color,opacity:.75,marginBottom:1}}/>
+                          ))}
+                          {bars.length>2&&<div style={{fontSize:8,color:'var(--ink-3)',textAlign:'center',lineHeight:1}}>+{bars.length-2}</div>}
+                        </>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        );
+      })()}
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════
+//  CHECKLIST SCREEN
+// ═══════════════════════════════════════════
+function ChecklistScreen({checklist,budget,dateHook}){
+  const [expandedItem,setExpandedItem]=useState(null);
+  const [editingMonths,setEditingMonths]=useState(null);
+  const [monthsInput,setMonthsInput]=useState('');
+  const [filter,setFilter]=useState('all');
+  const [sort,setSort]=useState('time'); // #6 기본값 시간순
+  // #3 항목 추가
+  const [addingItem,setAddingItem]=useState(false);
+  const [newLabel,setNewLabel]=useState('');
+  const [newCategory,setNewCategory]=useState('행정 & 기타');
+  const [newMonths,setNewMonths]=useState('1');
+  const [budgetConfirmItem,setBudgetConfirmItem]=useState(null);
+  // byCategory는 allItems 기반으로 직접 계산
+  const allByCategory=useMemo(()=>checklist.allItems.reduce((acc,i)=>{
+    if(!acc[i.category]) acc[i.category]=[];
+    acc[i.category].push(i);
+    return acc;
+  },{}),[checklist.allItems]);
+
+  const getStatus=item=>{
+    if(!checklist.selectedIds.has(item.id)) return 'skip';
+    if(checklist.completedIds.has(item.id)) return 'done';
+    return 'todo';
+  };
+
+  const sortedByTime=sortByTime(checklist.allItems,checklist.getItemMonths);
+
+  const filteredCats=sort==='category'
+    ?CATEGORY_ORDER.map(cat=>({cat,items:(allByCategory[cat]||[]).filter(item=>filter==='all'||getStatus(item)===filter)})).filter(c=>c.items.length>0)
+    :null;
+
+  const filteredTimeItems=sort==='time'
+    ?sortedByTime.filter(item=>filter==='all'||getStatus(item)===filter)
+    :null;
+
+  const renderItem=(item,idx,showCategory=false,showDivider=true)=>{
+    const status=getStatus(item);
+    const expanded=expandedItem===item.id;
+    const isEditingM=editingMonths===item.id;
+    const curMonths=checklist.getItemMonths(item);
+    const hasCustom=checklist.customMonths[item.id]!==undefined;
+    return(
+      <div key={item.id}>
+        {showDivider&&idx>0&&<div className="divider"/>}
+        <div style={{padding:'12px 16px'}}>
+          <div style={{display:'flex',alignItems:'center',gap:10}}>
+            {status!=='skip'?(
+              <div className={`check-circle ${status==='done'?'checked':''}`} onClick={()=>checklist.toggleCompleted(item.id)}>
+                {status==='done'&&'✓'}
+              </div>
+            ):(
+              <div className="check-circle skip">—</div>
+            )}
+            <div style={{flex:1,minWidth:0}}>
+              <div style={{fontSize:14,fontWeight:500,color:status==='skip'?'var(--ink-3)':status==='done'?'var(--ink-3)':'var(--ink)',textDecoration:status==='done'?'line-through':'none'}}>
+                {item.label}
+                {hasCustom&&<span style={{fontSize:10,color:'var(--rose)',marginLeft:6,textDecoration:'none',display:'inline-block'}}>수정됨</span>}
+              </div>
+              {showCategory&&<div style={{fontSize:11,color:'var(--ink-3)',marginTop:1}}>{item.category}</div>}
+              {status!=='skip'&&(
+                <div style={{display:'flex',alignItems:'center',gap:6,marginTop:2,flexWrap:'wrap'}}>
+                  {isEditingM?(
+                    <div style={{display:'flex',gap:4,alignItems:'center'}}>
+                      <input type="number" step="0.5" min="0" max="24" style={{width:60,padding:'2px 6px',fontSize:12,border:'1.5px solid var(--rose)',borderRadius:6,outline:'none',fontFamily:'var(--font-body)'}} value={monthsInput} onChange={e=>setMonthsInput(e.target.value)} onKeyDown={e=>{if(e.key==='Enter'){checklist.setCustomMonths(item.id,monthsInput);setEditingMonths(null);}}} autoFocus/>
+                      <span style={{fontSize:11,color:'var(--ink-3)'}}>개월 전</span>
+                      <button className="btn btn-primary btn-sm" style={{padding:'2px 8px',fontSize:11}} onClick={()=>{checklist.setCustomMonths(item.id,monthsInput);setEditingMonths(null);}}>확인</button>
+                      {hasCustom&&<button className="btn btn-ghost btn-sm" style={{padding:'2px 6px',fontSize:11}} onClick={()=>{checklist.resetCustomMonths(item.id);setEditingMonths(null);}}>초기화</button>}
+                      <button className="btn btn-ghost btn-sm" style={{padding:'2px 6px',fontSize:11}} onClick={()=>setEditingMonths(null)}>✕</button>
+                    </div>
+                  ):(
+                    <button style={{fontSize:11,color:hasCustom?'var(--rose)':'var(--ink-3)',background:'transparent',border:'none',cursor:'pointer',padding:0,fontFamily:'var(--font-body)'}} onClick={()=>{setEditingMonths(item.id);setMonthsInput(String(curMonths));}}>
+                      {MOVE_IN_RELATIVE_IDS.has(item.id)?'입주':'결혼'} {curMonths}개월 전 ✎
+                    </button>
+                  )}
+                </div>
+              )}
+            </div>
+            <div style={{display:'flex',alignItems:'center',gap:6}}>
+              {status!=='skip'&&(
+                <button className="btn btn-ghost btn-sm" style={{padding:'4px 8px',fontSize:11}} onClick={()=>setExpandedItem(expanded?null:item.id)}>
+                  {expanded?'접기':'팁'}
+                </button>
+              )}
+              {item.isCustom&&(
+                <button style={{background:'transparent',border:'none',cursor:'pointer',color:'var(--ink-3)',fontSize:14,padding:'2px 4px',lineHeight:1}} onClick={()=>checklist.removeCustomItem(item.id)} title="삭제">✕</button>
+              )}
+              <label className="toggle-switch">
+                <input type="checkbox" checked={status!=='skip'} onChange={()=>checklist.toggleSelected(item.id)}/>
+                <div className="toggle-track"/><div className="toggle-thumb"/>
+              </label>
+            </div>
+          </div>
+          {expanded&&(
+            <div style={{paddingLeft:34}}>
+              <div className="tip-box">
+                {item.tip}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  };
+
+  const handleAddItem=()=>{
+    if(!newLabel.trim()) return;
+    const savedLabel=newLabel.trim();
+    const id=checklist.addCustomItem(savedLabel,newCategory,Number(newMonths)||1);
+    setNewLabel('');
+    setNewMonths('1');
+    setAddingItem(false);
+    setBudgetConfirmItem({id,label:savedLabel});
+  };
+
+  return(
+    <div className="screen-pad">
+      {/* 진행률 파이 차트 + 선택/완료/생략 통합 카드 */}
+      <div className="card"><div className="card-body">
+        <div style={{display:'flex',alignItems:'center',gap:16}}>
+          {/* 파이 차트 */}
+          <div style={{position:'relative',width:72,height:72,flexShrink:0}}>
+            <svg viewBox="0 0 120 120" style={{transform:'rotate(-90deg)',width:'100%',height:'100%'}}>
+              <circle cx="60" cy="60" r="50" fill="none" stroke="var(--surface-3)" strokeWidth="12"/>
+              <circle cx="60" cy="60" r="50" fill="none" stroke="var(--rose)" strokeWidth="12" strokeLinecap="round"
+                strokeDasharray={`${2*Math.PI*50}`}
+                strokeDashoffset={`${2*Math.PI*50*(1-checklist.progressPercent/100)}`}
+                style={{transition:'stroke-dashoffset .8s ease'}}
+              />
+            </svg>
+            <div style={{position:'absolute',inset:0,display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center'}}>
+              <span style={{fontSize:16,fontWeight:700,color:'var(--rose)'}}>{checklist.progressPercent}%</span>
+            </div>
+          </div>
+          {/* 선택 / 완료 / 생략 */}
+          <div style={{flex:1,display:'flex',gap:0}}>
+            {[
+              {label:'선택',val:checklist.selectedItems.length,color:'var(--rose)'},
+              {label:'완료',val:checklist.completedItems.length,color:'var(--success)'},
+              {label:'생략',val:checklist.allItems.length-checklist.selectedItems.length,color:'var(--ink-3)'},
+            ].map(({label,val,color},i)=>(
+              <React.Fragment key={label}>
+                {i>0&&<div style={{width:1,background:'var(--border)'}}/>}
+                <div style={{flex:1,textAlign:'center'}}>
+                  <div style={{fontSize:20,fontWeight:600,color}}>{val}</div>
+                  <div style={{fontSize:11,color:'var(--ink-3)',marginTop:2}}>{label}</div>
+                </div>
+              </React.Fragment>
+            ))}
+          </div>
+        </div>
+        {/* D-day 힌트 */}
+        {dateHook&&dateHook.dDay!==null&&dateHook.dDay>0&&(
+          <div style={{marginTop:10,fontSize:12,color:'var(--ink-3)',textAlign:'center',lineHeight:1.5}}>
+            {dateHook.monthsUntil>=6?'나만의 웨딩 타임라인을 확인하고, 오늘 할 일을 체크해 보세요.':dateHook.monthsUntil>=3?'나만의 웨딩 타임라인을 확인하고, 오늘 할 일을 체크해 보세요.':'나만의 웨딩 타임라인을 확인하고, 오늘 할 일을 체크해 보세요.'}
+          </div>
+        )}
+      </div></div>
+
+      <div style={{display:'flex',flexDirection:'column',gap:8}}>
+        <div style={{display:'flex',gap:6,overflowX:'auto',paddingBottom:2}}>
+          {[{id:'all',label:'전체'},{id:'todo',label:'할 것'},{id:'done',label:'완료'},{id:'skip',label:'생략'}].map(f=>(
+            <button key={f.id} className={`btn btn-sm ${filter===f.id?'btn-primary':'btn-ghost'}`} onClick={()=>setFilter(f.id)}>{f.label}</button>
+          ))}
+        </div>
+        <div style={{display:'flex',gap:6,alignItems:'center'}}>
+          <span style={{fontSize:11,color:'var(--ink-3)',whiteSpace:'nowrap'}}>정렬</span>
+          {/* #6 시간순 먼저 */}
+          {[{id:'time',label:'시간순'},{id:'category',label:'카테고리'}].map(s=>(
+            <button key={s.id} className={`btn btn-sm ${sort===s.id?'btn-outline':'btn-ghost'}`} onClick={()=>setSort(s.id)} style={{flex:1}}>{s.label}</button>
+          ))}
+        </div>
+      </div>
+
+      {/* 1. 예산 포함 여부 확인 (2단계: 포함 여부 → 금액 입력) */}
+      {budgetConfirmItem&&(
+        <div className="card" style={{border:'2px solid var(--rose)'}}>
+          <div className="card-body">
+            {budgetConfirmItem.step===2?(
+              <>
+                <div style={{fontSize:14,fontWeight:600,marginBottom:8}}>예산 금액을 설정할까요?</div>
+                <p style={{fontSize:13,color:'var(--ink-2)',marginBottom:10}}>
+                  <span style={{color:'var(--rose)',fontWeight:500}}>'{budgetConfirmItem.label}'</span>에 배정할 예산을 입력해주세요.
+                </p>
+                <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:12}}>
+                  <input type="number" className="input-field" style={{flex:1}} placeholder="금액 (만원, 비워두면 자동 배분)"
+                    value={budgetConfirmItem.amount||''} onChange={e=>setBudgetConfirmItem(prev=>({...prev,amount:e.target.value}))}
+                    onKeyDown={e=>e.key==='Enter'&&(()=>{
+                      if(budgetConfirmItem.amount&&Number(budgetConfirmItem.amount)>0) budget.setCustomBudget(budgetConfirmItem.id,Number(budgetConfirmItem.amount));
+                      setBudgetConfirmItem(null);
+                    })()}
+                    autoFocus/>
+                  <span style={{fontSize:13,color:'var(--ink-3)',whiteSpace:'nowrap'}}>만원</span>
+                </div>
+                <div style={{display:'flex',gap:8}}>
+                  <button className="btn btn-primary" style={{flex:1}} onClick={()=>{
+                    if(budgetConfirmItem.amount&&Number(budgetConfirmItem.amount)>0){
+                      budget.setCustomBudget(budgetConfirmItem.id,Number(budgetConfirmItem.amount));
+                    }
+                    setBudgetConfirmItem(null);
+                  }}>확인</button>
+                  <button className="btn btn-ghost" style={{flex:1}} onClick={()=>setBudgetConfirmItem(null)}>건너뛰기</button>
+                </div>
+              </>
+            ):(
+              <>
+                <div style={{fontSize:14,fontWeight:600,marginBottom:8}}>예산에 포함할까요?</div>
+                <p style={{fontSize:13,color:'var(--ink-2)',marginBottom:12}}>
+                  <span style={{color:'var(--rose)',fontWeight:500}}>'{budgetConfirmItem.label}'</span> 항목을 예산 배분에 포함하시겠어요?
+                </p>
+                <div style={{display:'flex',gap:8}}>
+                  <button className="btn btn-primary" style={{flex:1}} onClick={()=>{
+                    checklist.setCustomBudgetInclude(budgetConfirmItem.id,true);
+                    setBudgetConfirmItem(prev=>({...prev,step:2}));
+                  }}>포함</button>
+                  <button className="btn btn-ghost" style={{flex:1}} onClick={()=>setBudgetConfirmItem(null)}>포함 안 함</button>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* 2. 예산화면에서 추가된 항목 체크리스트 추가 확인 */}
+      {checklist.pendingChecklistConfirm&&(
+        <div className="card" style={{border:'2px solid var(--rose)'}}>
+          <div className="card-body">
+            <div style={{fontSize:14,fontWeight:600,marginBottom:8}}>체크리스트에도 추가할까요?</div>
+            <p style={{fontSize:13,color:'var(--ink-2)',marginBottom:12}}>
+              예산에서 추가한 <span style={{color:'var(--rose)',fontWeight:500}}>'{checklist.pendingChecklistConfirm.label}'</span>을 체크리스트에도 표시할까요?
+            </p>
+            <div style={{display:'flex',gap:8}}>
+              <button className="btn btn-primary" style={{flex:1}} onClick={()=>checklist.confirmChecklistAdd(true)}>추가</button>
+              <button className="btn btn-ghost" style={{flex:1}} onClick={()=>checklist.confirmChecklistAdd(false)}>건너뛰기</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* #3 항목 추가 패널 */}
+      {addingItem?(
+        <div className="card"><div className="card-body">
+          <div className="section-label">새 항목 추가</div>
+          <div style={{display:'flex',flexDirection:'column',gap:8}}>
+            <input className="input-field" placeholder="항목 이름" value={newLabel} onChange={e=>setNewLabel(e.target.value)} onKeyDown={e=>e.key==='Enter'&&handleAddItem()} autoFocus/>
+            <select className="input-field" value={newCategory} onChange={e=>setNewCategory(e.target.value)}>
+              {Object.values(CATEGORIES).map(c=><option key={c} value={c}>{c}</option>)}
+            </select>
+            <div style={{display:'flex',alignItems:'center',gap:8}}>
+              <span style={{fontSize:13,color:'var(--ink-2)',whiteSpace:'nowrap'}}>준비 기간</span>
+              <select className="input-field" style={{flex:1}} value={newMonths} onChange={e=>setNewMonths(e.target.value)}>
+                {[0.25,0.5,1,2,3,4,5,6,7,8,9,10,11,12,13].map(m=>(
+                  <option key={m} value={m}>{m<1?`${Math.round(m*4)}주`:m+'개월'} 전</option>
+                ))}
+              </select>
+            </div>
+            <div style={{display:'flex',gap:8}}>
+              <button className="btn btn-primary" style={{flex:1}} onClick={handleAddItem}>추가</button>
+              <button className="btn btn-ghost" style={{flex:1}} onClick={()=>{setAddingItem(false);setNewLabel('');}}>취소</button>
+            </div>
+          </div>
+        </div></div>
+      ):(
+        <button className="btn btn-outline btn-full" style={{borderStyle:'dashed'}} onClick={()=>setAddingItem(true)}>+ 항목 직접 추가</button>
+      )}
+
+      {sort==='category'&&filteredCats&&filteredCats.map(({cat,items})=>(
+        <div key={cat} className="card">
+          <div className="card-header"><span style={{fontSize:14,fontWeight:600,color:'var(--ink-2)'}}>{cat}</span></div>
+          {items.map((item,idx)=>renderItem(item,idx))}
+        </div>
+      ))}
+
+      {sort==='time'&&filteredTimeItems&&(
+        <div className="card">
+          {filteredTimeItems.length===0&&<div className="card-body" style={{textAlign:'center',color:'var(--ink-3)',fontSize:14,padding:32}}>해당하는 항목이 없어요</div>}
+          {filteredTimeItems.map((item,idx)=>{
+            const prevItem=filteredTimeItems[idx-1];
+            const showHeader=idx===0||prevItem?.monthsBefore!==item.monthsBefore;
+            return(
+              <React.Fragment key={item.id}>
+                {showHeader&&(
+                  <div style={{padding:'10px 16px 4px',background:'var(--surface-2)',borderBottom:'1px solid var(--border)'}}>
+                    <span style={{fontSize:11,fontWeight:600,color:'var(--rose)',letterSpacing:.5}}>
+                      {item.monthsBefore<1?`결혼 ${Math.round(item.monthsBefore*4)}주 전`:`결혼 ${checklist.getItemMonths(item)}개월 전`}
+                    </span>
+                  </div>
+                )}
+                {renderItem(item,idx,true,!showHeader)}
+              </React.Fragment>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════
+//  BUDGET SCREEN
+// ═══════════════════════════════════════════
+function BudgetScreen({budget,checklist}){
+  const [editingSpent,setEditingSpent]=useState(null);
+  const [spentInput,setSpentInput]=useState('');
+  const [editingBudget,setEditingBudget]=useState(null);
+  const [budgetInput,setBudgetInput]=useState('');
+  const [includeOpen,setIncludeOpen]=useState(false);
+  const [externalOpen,setExternalOpen]=useState(false); // 3. 기본값 닫힘
+  const [sort,setSort]=useState('time'); // 4. 정렬
+  const [budgetAddingItem,setBudgetAddingItem]=useState(false);
+  const [budgetNewLabel,setBudgetNewLabel]=useState('');
+  const [budgetNewAmount,setBudgetNewAmount]=useState(''); // 5. 금액 입력
+  const handleBudgetAddItem=()=>{
+    if(!budgetNewLabel.trim()) return;
+    const id=checklist.addFromBudget(budgetNewLabel.trim());
+    // 5. 금액이 입력된 경우 커스텀 예산으로 저장
+    if(budgetNewAmount&&Number(budgetNewAmount)>0){
+      budget.setCustomBudget(id,Number(budgetNewAmount));
+    }
+    setBudgetNewLabel('');
+    setBudgetNewAmount('');
+    setBudgetAddingItem(false);
+  };
+
+  const handleSpentSave=id=>{budget.setActualSpent(id,spentInput===''?0:Number(spentInput));setEditingSpent(null);};
+  const handleBudgetSave=id=>{budget.setCustomBudget(id,budgetInput===''?0:Number(budgetInput));setEditingBudget(null);};
+
+  // 4. 정렬된 budgetBreakdown
+  const sortedBreakdown=sort==='category'
+    ?sortByCategory(budget.budgetBreakdown)
+    :sortByTime(budget.budgetBreakdown,item=>item.monthsBefore||1);
+
+  return(
+    <div className="screen-pad">
+      <div className="card"><div className="card-body">
+        <div className="section-label">총 예산</div>
+        <div style={{display:'flex',alignItems:'center',gap:8}}>
+          <input type="number" className="input-field" style={{flex:1}} value={budget.totalBudget} onChange={e=>budget.setTotalBudget(e.target.value)} placeholder="예산 (만원)"/>
+          <span style={{fontSize:14,color:'var(--ink-2)',whiteSpace:'nowrap'}}>만원</span>
+        </div>
+        <div style={{fontSize:12,color:'var(--ink-3)',marginTop:6}}>= {(budget.totalBudget*10000).toLocaleString()}원</div>
+      </div></div>
+
+      {/* 4. 정렬 버튼 */}
+      <div style={{display:'flex',gap:6,alignItems:'center'}}>
+        <span style={{fontSize:11,color:'var(--ink-3)',whiteSpace:'nowrap'}}>정렬</span>
+        {[{id:'time',label:'시간순'},{id:'category',label:'카테고리'}].map(s=>(
+          <button key={s.id} className={`btn btn-sm ${sort===s.id?'btn-outline':'btn-ghost'}`} onClick={()=>setSort(s.id)} style={{flex:1}}>{s.label}</button>
+        ))}
+      </div>
+
+      <div className="card"><div className="card-body">
+        {/* 예산에 포함할 항목 — 접기/펼치기 */}
+        <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',cursor:'pointer'}} onClick={()=>setIncludeOpen(o=>!o)}>
+          <div className="section-label" style={{marginBottom:0}}>예산에 포함할 항목</div>
+          <span style={{fontSize:16,color:'var(--ink-3)',lineHeight:1,transform:includeOpen?'rotate(180deg)':'none',transition:'transform .2s'}}>▾</span>
+        </div>
+        {includeOpen&&(
+          <div style={{marginTop:12}}>
+            <p style={{fontSize:12,color:'var(--ink-3)',marginBottom:10,lineHeight:1.5}}>포함한 항목들의 비율에 따라 예산이 배분됩니다.</p>
+            <div style={{display:'flex',flexDirection:'column',gap:8}}>
+              {budget.budgetableItems.map(item=>{
+                const inc=budget.includedInBudget.has(item.id);
+                return(
+                  <div key={item.id} style={{display:'flex',alignItems:'center',gap:10}}>
+                    <label className="toggle-switch">
+                      <input type="checkbox" checked={inc} onChange={()=>budget.toggleBudgetItem(item.id)}/>
+                      <div className="toggle-track"/><div className="toggle-thumb"/>
+                    </label>
+                    <span style={{flex:1,fontSize:14,color:inc?'var(--ink)':'var(--ink-3)'}}>{item.label}</span>
+                    {item.isCustom&&(
+                      <button style={{background:'transparent',border:'none',cursor:'pointer',color:'var(--ink-3)',fontSize:16,lineHeight:1,padding:'2px 4px'}}
+                        onClick={()=>checklist.removeCustomItem(item.id)} title="삭제">✕</button>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+            {/* #3 예산 화면에서도 항목 추가 */}
+            {budgetAddingItem?(
+              <div style={{marginTop:12,display:'flex',flexDirection:'column',gap:8}}>
+                <input className="input-field" placeholder="항목 이름" value={budgetNewLabel} onChange={e=>setBudgetNewLabel(e.target.value)}
+                  onKeyDown={e=>e.key==='Enter'&&handleBudgetAddItem()} autoFocus/>
+                <div style={{display:'flex',alignItems:'center',gap:8}}>
+                  <input type="number" className="input-field" style={{flex:1}} placeholder="예산 금액 (선택)" value={budgetNewAmount} onChange={e=>setBudgetNewAmount(e.target.value)}/>
+                  <span style={{fontSize:13,color:'var(--ink-3)',whiteSpace:'nowrap'}}>만원</span>
+                </div>
+                <div style={{display:'flex',gap:8}}>
+                  <button className="btn btn-primary btn-sm" style={{flex:1}} onClick={handleBudgetAddItem}>추가</button>
+                  <button className="btn btn-ghost btn-sm" style={{flex:1}} onClick={()=>{setBudgetAddingItem(false);setBudgetNewLabel('');setBudgetNewAmount('');}}>취소</button>
+                </div>
+              </div>
+            ):(
+              <button className="btn btn-ghost btn-sm btn-full" style={{marginTop:10,borderStyle:'dashed',borderColor:'var(--border-2)'}} onClick={()=>setBudgetAddingItem(true)}>+ 항목 추가</button>
+            )}
+          </div>
+        )}
+      </div></div>
+
+      {budget.budgetBreakdown.length>0&&(
+        <div className="card">
+          <div className="card-header">
+            <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+              <span style={{fontSize:14,fontWeight:600,color:'var(--ink-2)'}}>항목별 예산 배분</span>
+              <span className={`badge ${budget.totalDiff>0?'badge-rose':budget.totalDiff<0?'badge-green':'badge-gray'}`}>
+                {budget.totalDiff>0?`+${budget.totalDiff.toLocaleString()}만 초과`:budget.totalDiff<0?`남은 예산 ${Math.abs(budget.totalDiff).toLocaleString()}만`:'딱 맞음'}
+              </span>
+            </div>
+          </div>
+          <div style={{padding:'12px 16px'}}>
+            {/* 실 지출 vs 총 예산 */}
+            <div style={{display:'flex',justifyContent:'space-between',fontSize:12,color:'var(--ink-3)',marginBottom:4}}>
+              <span>지출 {budget.totalSpent.toLocaleString()}만원</span>
+              <span>총 예산 {budget.totalBudget.toLocaleString()}만원</span>
+            </div>
+            <div className="progress-track" style={{marginBottom:10}}>
+              <div className="progress-fill" style={{width:`${Math.min(budget.spentPercent,100)}%`,background:budget.spentPercent>100?'var(--danger)':'var(--rose)'}}/>
+            </div>
+            {/* 2. 배분 합계 vs 총 예산 */}
+            {(()=>{
+              const totalAssigned=sortedBreakdown.reduce((s,i)=>s+i.assignedBudget,0);
+              const assignedDiff=totalAssigned-budget.totalBudget;
+              const assignedPct=budget.totalBudget>0?Math.round(totalAssigned/budget.totalBudget*100):0;
+              return(
+                <>
+                  <div style={{display:'flex',justifyContent:'space-between',fontSize:12,color:'var(--ink-3)',marginBottom:4}}>
+                    <span>배분 합계 {totalAssigned.toLocaleString()}만원</span>
+                    <span style={{color:assignedDiff>0?'var(--danger)':assignedDiff<0?'var(--success)':'var(--ink-3)',fontWeight:500}}>
+                      {assignedDiff>0?`+${assignedDiff.toLocaleString()}만 초과`:assignedDiff<0?`${Math.abs(assignedDiff).toLocaleString()}만 미배분`:'딱 맞음'}
+                    </span>
+                  </div>
+                  <div className="progress-track">
+                    <div className="progress-fill" style={{width:`${Math.min(assignedPct,100)}%`,background:assignedDiff>0?'var(--danger)':'var(--ink-3)',opacity:.5}}/>
+                  </div>
+                </>
+              );
+            })()}
+          </div>
+          {sortedBreakdown.map((item,idx)=>{
+            const isEditingS=editingSpent===item.id;
+            const isEditingB=editingBudget===item.id;
+            const over=item.spent>0&&item.spent>item.assignedBudget;
+            return(
+              <div key={item.id}>
+                {idx>0&&<div className="divider"/>}
+                <div style={{padding:'12px 16px'}}>
+                  <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:8}}>
+                    <div>
+                      <div style={{fontSize:14,fontWeight:500}}>{item.label}</div>
+                    </div>
+                    <div style={{textAlign:'right'}}>
+                      {isEditingB?(
+                        <div style={{display:'flex',gap:4,alignItems:'center'}}>
+                          <input type="number" style={{width:80,padding:'4px 6px',fontSize:12,border:'1.5px solid var(--rose)',borderRadius:6,outline:'none',fontFamily:'var(--font-body)'}} value={budgetInput} onChange={e=>setBudgetInput(e.target.value)} onKeyDown={e=>e.key==='Enter'&&handleBudgetSave(item.id)} autoFocus/>
+                          <span style={{fontSize:11,color:'var(--ink-3)'}}>만원</span>
+                          <button className="btn btn-primary btn-sm" style={{padding:'3px 8px',fontSize:11}} onClick={()=>handleBudgetSave(item.id)}>확인</button>
+                          {item.hasCustomBudget&&<button className="btn btn-ghost btn-sm" style={{padding:'3px 6px',fontSize:11}} onClick={()=>{budget.resetCustomBudget(item.id);setEditingBudget(null);}}>초기화</button>}
+                          <button className="btn btn-ghost btn-sm" style={{padding:'3px 6px',fontSize:11}} onClick={()=>setEditingBudget(null)}>✕</button>
+                        </div>
+                      ):(
+                        <div style={{display:'flex',alignItems:'baseline',gap:6}}>
+                          <div style={{fontSize:15,fontWeight:600,color:item.hasCustomBudget?'var(--rose)':'var(--ink)'}}>{item.assignedBudget.toLocaleString()}만원</div>
+                          <button style={{fontSize:10,color:'var(--ink-3)',background:'transparent',border:'none',cursor:'pointer',fontFamily:'var(--font-body)'}} onClick={()=>{setEditingBudget(item.id);setBudgetInput(String(item.assignedBudget));}}>수정 ✎</button>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  <div style={{display:'flex',alignItems:'center',gap:8,marginTop:4}}>
+                    <span style={{fontSize:12,color:'var(--ink-3)',whiteSpace:'nowrap'}}>실 지출:</span>
+                    {isEditingS?(
+                      <>
+                        <input type="number" className="input-field" style={{flex:1,padding:'6px 10px',fontSize:13}} value={spentInput} onChange={e=>setSpentInput(e.target.value)} placeholder="만원" autoFocus onKeyDown={e=>e.key==='Enter'&&handleSpentSave(item.id)}/>
+                        <button className="btn btn-primary btn-sm" onClick={()=>handleSpentSave(item.id)}>저장</button>
+                        <button className="btn btn-ghost btn-sm" onClick={()=>setEditingSpent(null)}>취소</button>
+                      </>
+                    ):(
+                      <>
+                        <span style={{flex:1,fontSize:13,fontWeight:500,color:item.spent>0?(over?'var(--danger)':'var(--success)'):'var(--ink-3)'}}>
+                          {item.spent>0?`${item.spent.toLocaleString()}만원 (${item.diff>=0?'+':''}${item.diff.toLocaleString()}만)`:'미입력'}
+                        </span>
+                        <button className="btn btn-ghost btn-sm" onClick={()=>{setEditingSpent(item.id);setSpentInput(item.spent||'');}}>
+                          {item.spent>0?'수정':'입력'}
+                        </button>
+                      </>
+                    )}
+                  </div>
+                  {item.spent>0&&(
+                    <div className="progress-track" style={{marginTop:8,height:4}}>
+                      <div className="progress-fill" style={{width:`${Math.min(item.spent/item.assignedBudget*100,100)}%`,background:over?'var(--danger)':'var(--success)'}}/>
+                    </div>
+                  )}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      {/* 예산 외 항목 — 토글 (기본 닫힘), 예산/실지출 입력 가능 */}
+      {(()=>{
+        const externalItems=checklist.selectedItems.filter(i=>
+          i.budgetRatio===null &&
+          i.id!=='budget_plan' &&
+          i.id!=='rehearsal'
+        );
+        if(externalItems.length===0) return null;
+        return(
+          <div className="card"><div className="card-body">
+            <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',cursor:'pointer'}} onClick={()=>setExternalOpen(o=>!o)}>
+              <div className="section-label" style={{marginBottom:0}}>예산 외 항목</div>
+              <span style={{fontSize:16,color:'var(--ink-3)',lineHeight:1,transform:externalOpen?'rotate(180deg)':'none',transition:'transform .2s'}}>▾</span>
+            </div>
+            {externalOpen&&(
+              <div style={{marginTop:12}}>
+                <p style={{fontSize:12,color:'var(--ink-3)',marginBottom:10,lineHeight:1.5}}>신혼집·혼수가전 등 금액 편차가 큰 항목입니다. 예산과 실지출을 직접 입력할 수 있어요.</p>
+                {externalItems.map((item,idx)=>{
+                  const isEditingS=editingSpent===item.id;
+                  const isEditingB=editingBudget===item.id;
+                  const extBudget=budget.actualSpent[item.id+'_budget']||0;
+                  const extSpent=budget.actualSpent[item.id]||0;
+                  return(
+                    <div key={item.id}>
+                      {idx>0&&<div className="divider"/>}
+                      <div style={{padding:'10px 0'}}>
+                        <div style={{fontSize:14,fontWeight:500,marginBottom:8}}>{item.label}</div>
+                        <div style={{display:'flex',gap:8}}>
+                          {/* 예산 입력 */}
+                          <div style={{flex:1}}>
+                            <div style={{fontSize:11,color:'var(--ink-3)',marginBottom:4}}>예산</div>
+                            {isEditingB?(
+                              <div style={{display:'flex',gap:4,alignItems:'center'}}>
+                                <input type="number" style={{flex:1,padding:'4px 6px',fontSize:12,border:'1.5px solid var(--rose)',borderRadius:6,outline:'none',fontFamily:'var(--font-body)',minWidth:0}} value={budgetInput} onChange={e=>setBudgetInput(e.target.value)} onKeyDown={e=>e.key==='Enter'&&(budget.setActualSpent(item.id+'_budget',Number(budgetInput)),setEditingBudget(null))} autoFocus/>
+                                <span style={{fontSize:11,color:'var(--ink-3)',whiteSpace:'nowrap'}}>만</span>
+                                <button className="btn btn-primary btn-sm" style={{padding:'3px 6px',fontSize:11}} onClick={()=>{budget.setActualSpent(item.id+'_budget',Number(budgetInput));setEditingBudget(null);}}>확인</button>
+                                <button className="btn btn-ghost btn-sm" style={{padding:'3px 6px',fontSize:11}} onClick={()=>setEditingBudget(null)}>✕</button>
+                              </div>
+                            ):(
+                              <div style={{display:'flex',alignItems:'center',gap:4,cursor:'pointer'}} onClick={()=>{setEditingBudget(item.id);setBudgetInput(String(extBudget||''));}}>
+                                <span style={{fontSize:13,color:extBudget?'var(--ink)':'var(--ink-3)'}}>{extBudget?`${extBudget.toLocaleString()}만원`:'미설정'}</span>
+                                <span style={{fontSize:10,color:'var(--ink-3)'}}>✎</span>
+                              </div>
+                            )}
+                          </div>
+                          {/* 실지출 입력 */}
+                          <div style={{flex:1}}>
+                            <div style={{fontSize:11,color:'var(--ink-3)',marginBottom:4}}>실 지출</div>
+                            {isEditingS?(
+                              <div style={{display:'flex',gap:4,alignItems:'center'}}>
+                                <input type="number" style={{flex:1,padding:'4px 6px',fontSize:12,border:'1.5px solid var(--rose)',borderRadius:6,outline:'none',fontFamily:'var(--font-body)',minWidth:0}} value={spentInput} onChange={e=>setSpentInput(e.target.value)} onKeyDown={e=>e.key==='Enter'&&(budget.setActualSpent(item.id,Number(spentInput)),setEditingSpent(null))} autoFocus/>
+                                <span style={{fontSize:11,color:'var(--ink-3)',whiteSpace:'nowrap'}}>만</span>
+                                <button className="btn btn-primary btn-sm" style={{padding:'3px 6px',fontSize:11}} onClick={()=>{budget.setActualSpent(item.id,Number(spentInput));setEditingSpent(null);}}>확인</button>
+                                <button className="btn btn-ghost btn-sm" style={{padding:'3px 6px',fontSize:11}} onClick={()=>setEditingSpent(null)}>✕</button>
+                              </div>
+                            ):(
+                              <div style={{display:'flex',alignItems:'center',gap:4,cursor:'pointer'}} onClick={()=>{setEditingSpent(item.id);setSpentInput(String(extSpent||''));}}>
+                                <span style={{fontSize:13,color:extSpent?'var(--success)':'var(--ink-3)'}}>{extSpent?`${extSpent.toLocaleString()}만원`:'미입력'}</span>
+                                <span style={{fontSize:10,color:'var(--ink-3)'}}>✎</span>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </div></div>
+        );
+      })()}
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════
+//  CALENDAR SCREEN  (바 형태 일정 표시)
+// ═══════════════════════════════════════════
+function CalendarScreen({checklist,dateHook,calEvents}){
+  const thisYear=new Date().getFullYear();
+  const calYears=Array.from({length:6},(_,i)=>thisYear-1+i);
+  const calMonths=Array.from({length:12},(_,i)=>i);
+  const [expandedWeeks,setExpandedWeeks]=useState(new Set()); // 3. 확장된 주 인덱스
+
+  const [viewYear,setViewYear]=useState(()=>new Date().getFullYear());
+  const [viewMonth,setViewMonth]=useState(()=>new Date().getMonth());
+  const [selectedItem,setSelectedItem]=useState(null);
+  const [editDate,setEditDate]=useState('');
+  const [editEndDate,setEditEndDate]=useState('');
+  // 4. 내 일정 수정
+  const [editingEvent,setEditingEvent]=useState(null);
+  const [editingEventLabel,setEditingEventLabel]=useState('');
+  const [editingEventStart,setEditingEventStart]=useState('');
+  const [editingEventEnd,setEditingEventEnd]=useState('');
+  const [addingCalEvent,setAddingCalEvent]=useState(false);
+  const [newCalEventLabel,setNewCalEventLabel]=useState('');
+  const [newCalEventStart,setNewCalEventStart]=useState('');
+  const [newCalEventEnd,setNewCalEventEnd]=useState('');
+  // 날짜 오버라이드 저장: {[id]: {start: 'YYYY-MM-DD', end: 'YYYY-MM-DD'}}
+  const [overrides,setOverrides]=useState(()=>load('w_cal_overrides',{}));
+  useEffect(()=>{save('w_cal_overrides',overrides);},[overrides]);
+
+  // 항목의 실제 날짜 계산
+  const getItemDates=useCallback((item)=>{
+    if(overrides[item.id]) return {start:new Date(overrides[item.id].start),end:new Date(overrides[item.id].end)};
+    const end=dateHook.getDeadline(item,checklist.getItemMonths);
+    if(!end) return null;
+    const start=new Date(end);
+    start.setDate(start.getDate()-item.durationDays+1);
+    return {start,end};
+  },[overrides,dateHook,checklist.getItemMonths]);
+
+  const prevMonth=()=>{setExpandedWeeks(new Set());if(viewMonth===0){setViewYear(y=>y-1);setViewMonth(11);}else setViewMonth(m=>m-1);};
+  const nextMonth=()=>{setExpandedWeeks(new Set());if(viewMonth===11){setViewYear(y=>y+1);setViewMonth(0);}else setViewMonth(m=>m+1);};
+
+  const MONTH_KO=['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'];
+  const DOW=['일','월','화','수','목','금','토'];
+
+  const daysInMonth=new Date(viewYear,viewMonth+1,0).getDate();
+  const firstDow=new Date(viewYear,viewMonth,1).getDay();
+
+  const today=new Date();
+  const isToday=(d)=>d&&today.getFullYear()===viewYear&&today.getMonth()===viewMonth&&today.getDate()===d;
+  const isWedding=(d)=>{
+    if(!dateHook.weddingDate) return false;
+    const w=new Date(dateHook.weddingDate);
+    return w.getFullYear()===viewYear&&w.getMonth()===viewMonth&&w.getDate()===d;
+  };
+
+  // 이번 달에 걸치는 항목들 (선택된 것만)
+  const itemsInView=checklist.selectedItems.map(item=>{
+    const dates=getItemDates(item);
+    if(!dates) return null;
+    const {start,end}=dates;
+    const monthStart=new Date(viewYear,viewMonth,1);
+    const monthEnd=new Date(viewYear,viewMonth,daysInMonth);
+    if(end<monthStart||start>monthEnd) return null;
+    const dispStart=start<monthStart?1:start.getDate();
+    const dispEnd=end>monthEnd?daysInMonth:end.getDate();
+    return {item,start,end,dispStart,dispEnd,isCalEvent:false};
+  }).filter(Boolean).sort((a,b)=>a.dispStart-b.dispStart||(a.item.sortOrder-b.item.sortOrder));
+
+  // 10. calEvents 바도 itemsInView 형태로 합산
+  const calEventBarsInView=calEvents.events.map(ev=>{
+    const sd=new Date(ev.startDate||ev.date);
+    const ed=new Date(ev.endDate||ev.date);
+    const monthStart=new Date(viewYear,viewMonth,1);
+    const monthEnd=new Date(viewYear,viewMonth,daysInMonth);
+    if(ed<monthStart||sd>monthEnd) return null;
+    const dispStart=sd<monthStart?1:sd.getDate();
+    const dispEnd=ed>monthEnd?daysInMonth:ed.getDate();
+    // 가짜 item 구조 — 바 렌더링에 필요한 필드만
+    return {item:{id:ev.id,label:ev.label,category:'__cal__',sortOrder:99999},start:sd,end:ed,dispStart,dispEnd,isCalEvent:true,evColor:'#7c3aed'};
+  }).filter(Boolean).sort((a,b)=>a.dispStart-b.dispStart);
+
+  const allBarsInView=[...itemsInView,...calEventBarsInView];
+
+  const calDays=[];
+  for(let i=0;i<firstDow;i++) calDays.push(null);
+  for(let d=1;d<=daysInMonth;d++) calDays.push(d);
+
+  const weeks=[];
+  let week=[];
+  calDays.forEach((d,i)=>{week.push(d);if((i+1)%7===0){weeks.push(week);week=[];}});
+  if(week.length>0){while(week.length<7)week.push(null);weeks.push(week);}
+
+  // 10. 바 배치 — allBarsInView 기준
+  const getBarsForWeek=(weekDays)=>{
+    const weekStart=weekDays.find(d=>d!==null);
+    const weekEnd=weekDays.filter(d=>d!==null).slice(-1)[0];
+    if(!weekStart||!weekEnd) return [];
+    const barsRaw=allBarsInView.filter(({dispStart,dispEnd})=>dispEnd>=weekStart&&dispStart<=weekEnd);
+    return barsRaw.map(({item,dispStart,dispEnd,isCalEvent,evColor})=>{
+      const barStart=Math.max(dispStart,weekStart);
+      const barEnd=Math.min(dispEnd,weekEnd);
+      const colStart=weekDays.indexOf(barStart);
+      const colEnd=weekDays.indexOf(barEnd);
+      return {item,colStart:colStart<0?0:colStart,colEnd:colEnd<0?6:colEnd,isCalEvent,evColor};
+    });
+  };
+
+  const handleBarClick=(item)=>{
+    const dates=getItemDates(item);
+    if(!dates) return;
+    setSelectedItem(item);
+    setEditDate(fmtDateStr(dates.start));
+    setEditEndDate(fmtDateStr(dates.end));
+  };
+
+  const saveOverride=()=>{
+    if(!selectedItem||!editDate||!editEndDate) return;
+    setOverrides(prev=>({...prev,[selectedItem.id]:{start:editDate,end:editEndDate}}));
+    setSelectedItem(null);
+  };
+  const resetOverride=()=>{
+    if(!selectedItem) return;
+    setOverrides(prev=>{const n={...prev};delete n[selectedItem.id];return n;});
+    setSelectedItem(null);
+  };
+
+  // 바 색상 (카테고리별)
+  const barColor=(item)=>CAT_COLORS[item.category]||'var(--rose)';
+  const isDone=id=>checklist.completedIds.has(id);
+
+  return(
+    <div className="screen-pad">
+      {!dateHook.weddingDate&&(
+        <div className="card"><div className="card-body" style={{textAlign:'center',padding:32,color:'var(--ink-3)'}}>
+          <div style={{fontSize:28,marginBottom:12}}>📅</div>
+          <p style={{fontSize:14}}>홈 화면에서 결혼 날짜를 먼저 설정해주세요.</p>
+        </div></div>
+      )}
+
+      {dateHook.weddingDate&&(
+        <>
+          {/* 카테고리 색상 범례 + 입주일 안내 */}
+          <div className="card"><div className="card-body" style={{padding:'10px 16px'}}>
+            <div style={{display:'flex',flexWrap:'wrap',gap:6,marginBottom: dateHook.moveInDate||!checklist.selectedItems.some(i=>MOVE_IN_RELATIVE_IDS.has(i.id))?0:8}}>
+              {Object.entries(CAT_COLORS).map(([cat,color])=>(
+                <span key={cat} style={{fontSize:11,padding:'2px 8px',borderRadius:20,background:color+'22',color,fontWeight:500}}>{cat}</span>
+              ))}
+            </div>
+            {!dateHook.moveInDate&&checklist.selectedItems.some(i=>MOVE_IN_RELATIVE_IDS.has(i.id))&&(
+              <div style={{marginTop:8,fontSize:12,color:'var(--warning)',background:'var(--warning-bg)',borderRadius:6,padding:'6px 10px',lineHeight:1.5}}>
+                가전·가구 투어는 입주일 기준으로 계산됩니다. 홈 화면에서 입주일을 설정해주세요.
+              </div>
+            )}
+          </div></div>
+
+          {/* 달력 */}
+          <div className="card">
+            <div style={{padding:'12px 16px'}}>
+              {/* #8 년/월 드롭다운 */}
+              <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:12}}>
+                <button className="btn btn-ghost btn-sm" style={{padding:'6px 10px'}} onClick={prevMonth}>‹</button>
+                <div style={{display:'flex',gap:6,alignItems:'center'}}>
+                  <select style={{fontFamily:'var(--font-body)',fontSize:14,fontWeight:600,color:'var(--ink)',background:'transparent',border:'none',cursor:'pointer',outline:'none'}}
+                    value={viewYear} onChange={e=>setViewYear(Number(e.target.value))}>
+                    {calYears.map(y=><option key={y} value={y}>{y}년</option>)}
+                  </select>
+                  <select style={{fontFamily:'var(--font-body)',fontSize:14,fontWeight:600,color:'var(--ink)',background:'transparent',border:'none',cursor:'pointer',outline:'none'}}
+                    value={viewMonth} onChange={e=>setViewMonth(Number(e.target.value))}>
+                    {MONTH_KO.map((m,i)=><option key={i} value={i}>{m}</option>)}
+                  </select>
+                </div>
+                <button className="btn btn-ghost btn-sm" style={{padding:'6px 10px'}} onClick={nextMonth}>›</button>
+              </div>
+
+              {/* 요일 헤더 */}
+              <div style={{display:'grid',gridTemplateColumns:'repeat(7,1fr)',gap:1,marginBottom:4}}>
+                {DOW.map((d,i)=>(
+                  <div key={d} style={{textAlign:'center',fontSize:11,fontWeight:600,color:i===0?'var(--danger)':i===6?'#4466cc':'var(--ink-3)',padding:'3px 0'}}>{d}</div>
+                ))}
+              </div>
+
+              {/* 달력 주별 렌더링 */}
+              <div style={{minHeight: 6*(36+44)+4}}>
+              {weeks.map((weekDays,wi)=>{
+                const bars=getBarsForWeek(weekDays);
+                const isExpanded=expandedWeeks.has(wi);
+                const MAX_BARS=isExpanded?bars.length:3;
+                const barRowH=MAX_BARS*14+(Math.max(MAX_BARS-1,0))*4+4;
+                return(
+                  <div key={wi} style={{marginBottom:2}}>
+                    {/* 날짜 숫자 행 - 고정 높이 36px (이벤트 점 공간 포함) */}
+                    <div style={{display:'grid',gridTemplateColumns:'repeat(7,1fr)',gap:1,height:36}}>
+                      {weekDays.map((day,di)=>{
+                        const wed=isWedding(day);
+                        const tod=isToday(day);
+                        // 6. calEvents 바로 표시되므로 별도 점 불필요 — 날짜 숫자만 표시
+                        return(
+                          <div key={di} style={{display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'flex-start',paddingTop:2}}>
+                            {day&&(
+                              <span style={{
+                                display:'inline-flex',alignItems:'center',justifyContent:'center',
+                                width:22,height:22,borderRadius:'50%',fontSize:12,
+                                background:wed?'var(--rose)':'transparent',
+                                color:wed?'#fff':tod?'var(--rose)':di===0?'var(--danger)':di===6?'#4466cc':'var(--ink)',
+                                fontWeight:wed||tod?700:400,
+                                border:tod&&!wed?'1.5px solid var(--rose)':'none',
+                              }}>{day}</span>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                    {/* 바 행 - 동적 높이 (확장 시 모든 바 표시) */}
+                    <div style={{position:'relative',height:barRowH}}>
+                      {bars.slice(0,MAX_BARS).map(({item,colStart,colEnd,isCalEvent,evColor},bi)=>{
+                        const done=!isCalEvent&&isDone(item.id);
+                        const colW=100/7;
+                        const color=isCalEvent?evColor:(done?DONE_BAR_COLOR:barColor(item));
+                        return(
+                          <div
+                            key={item.id}
+                            className="cal-bar"
+                            style={{
+                              position:'absolute',
+                              top:bi*(14+4)+2,
+                              left:`calc(${colStart*colW}% + 2px)`,
+                              width:`calc(${(colEnd-colStart+1)*colW}% - 4px)`,
+                              height:14,
+                              background:color,
+                              opacity:done?0.5:0.8,
+                              borderRadius:4,
+                              display:'flex',alignItems:'center',
+                              padding:'0 4px',overflow:'hidden',
+                              cursor:'pointer',
+                            }}
+                            onClick={()=>!isCalEvent&&handleBarClick(item)}
+                            title={`${item.label}${isCalEvent?' (내 일정)':''}`}
+                          >
+                            <span style={{fontSize:9,color:'#fff',fontWeight:500,whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis'}}>{item.label}</span>
+                          </div>
+                        );
+                      })}
+                      {bars.length>3&&!isExpanded&&(
+                        <div
+                          style={{position:'absolute',bottom:2,right:4,fontSize:9,color:'var(--rose)',cursor:'pointer',fontWeight:600,background:'var(--rose-light)',borderRadius:3,padding:'1px 4px'}}
+                          onClick={()=>setExpandedWeeks(prev=>{const n=new Set(prev);n.add(wi);return n;})}
+                        >+{bars.length-3}개 더보기</div>
+                      )}
+                      {isExpanded&&(
+                        <div
+                          style={{position:'absolute',bottom:2,right:4,fontSize:9,color:'var(--ink-3)',cursor:'pointer',background:'var(--surface-3)',borderRadius:3,padding:'1px 4px'}}
+                          onClick={()=>setExpandedWeeks(prev=>{const n=new Set(prev);n.delete(wi);return n;})}
+                        >접기</div>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+              </div>
+            </div>
+          </div>
+
+          {/* 항목 편집 패널 */}
+          {selectedItem&&(
+            <div className="card"><div className="card-body">
+              <div className="section-label">일정 편집 — {selectedItem.label}</div>
+              <div style={{display:'flex',flexDirection:'column',gap:10}}>
+                <div>
+                  <div style={{fontSize:12,color:'var(--ink-3)',marginBottom:4}}>시작일</div>
+                  <input type="date" className="input-field" value={editDate} onChange={e=>{
+                    setEditDate(e.target.value);
+                    // 종료일 자동 계산
+                    if(e.target.value){
+                      const end=new Date(e.target.value);
+                      end.setDate(end.getDate()+selectedItem.durationDays-1);
+                      setEditEndDate(fmtDateStr(end));
+                    }
+                  }}/>
+                </div>
+                <div>
+                  <div style={{fontSize:12,color:'var(--ink-3)',marginBottom:4}}>종료일 (기간 가이드 날)</div>
+                  <input type="date" className="input-field" value={editEndDate} onChange={e=>setEditEndDate(e.target.value)}/>
+                </div>
+                <div style={{display:'flex',gap:8}}>
+                  <button className="btn btn-primary" style={{flex:1}} onClick={saveOverride}>저장</button>
+                  {overrides[selectedItem.id]&&<button className="btn btn-ghost btn-sm" onClick={resetOverride}>기본값으로 초기화</button>}
+                  <button className="btn btn-ghost btn-sm" onClick={()=>setSelectedItem(null)}>취소</button>
+                </div>
+                <div style={{fontSize:12,color:'var(--ink-3)',lineHeight:1.6}}>
+                  {selectedItem.tip}
+                </div>
+              </div>
+            </div></div>
+          )}
+
+          {/* 이번 달 목록 */}
+          {itemsInView.length>0&&(
+            <div className="card">
+              <div className="card-header"><span style={{fontSize:14,fontWeight:600,color:'var(--ink-2)'}}>{MONTH_KO[viewMonth]} 준비 항목 ({itemsInView.length}개)</span></div>
+              {itemsInView.map(({item,start,end},idx)=>{
+                const done=isDone(item.id);
+                const hasOverride=!!overrides[item.id];
+                return(
+                  <div key={item.id}>
+                    {idx>0&&<div className="divider"/>}
+                    <div style={{padding:'10px 16px',display:'flex',alignItems:'center',gap:10,cursor:'pointer'}} onClick={()=>handleBarClick(item)}>
+                      <div style={{width:10,height:10,borderRadius:2,background:done?'var(--success)':barColor(item),flexShrink:0}}/>
+                      <div style={{flex:1}}>
+                        <div style={{fontSize:13,fontWeight:500,color:done?'var(--ink-3)':'var(--ink)',textDecoration:done?'line-through':'none'}}>
+                          {item.label}{hasOverride&&<span style={{fontSize:10,color:'var(--rose)',marginLeft:6}}>수정됨</span>}
+                          {MOVE_IN_RELATIVE_IDS.has(item.id)&&<span style={{fontSize:10,color:'var(--success)',marginLeft:6}}>입주일 기준</span>}
+                        </div>
+                        <div style={{fontSize:11,color:'var(--ink-3)',marginTop:2}}>
+                          {fmtDate(start)} ~ {fmtDate(end)} · {item.durationDays}일
+                        </div>
+                      </div>
+                      <div className={`check-circle ${done?'checked':''}`} style={{width:20,height:20,fontSize:10}} onClick={e=>{e.stopPropagation();checklist.toggleCompleted(item.id);}}>
+                        {done&&'✓'}
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+          {/* #5 캘린더 전용 이벤트 */}
+          {(() => {
+            const monthStart=new Date(viewYear,viewMonth,1);
+            const monthEnd=new Date(viewYear,viewMonth,daysInMonth);
+            const eventsThisMonth = calEvents.events.filter(e => {
+              const sd=new Date(e.startDate||e.date);
+              const ed=new Date(e.endDate||e.date);
+              return sd<=monthEnd&&ed>=monthStart;
+            });
+            return (
+              <div className="card">
+                <div className="card-header" style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+                  <span style={{fontSize:14,fontWeight:600,color:'var(--ink-2)'}}>내 일정</span>
+                  <button className="btn btn-outline btn-sm" onClick={()=>setAddingCalEvent(true)}>+ 추가</button>
+                </div>
+                {addingCalEvent&&(
+                  <div style={{padding:'12px 16px',borderBottom:'1px solid var(--border)'}}>
+                    <div style={{display:'flex',flexDirection:'column',gap:8}}>
+                      <input className="input-field" placeholder="일정 이름" value={newCalEventLabel} onChange={e=>setNewCalEventLabel(e.target.value)} autoFocus/>
+                      <div style={{display:'flex',gap:8,alignItems:'center'}}>
+                        <div style={{flex:1}}>
+                          <div style={{fontSize:11,color:'var(--ink-3)',marginBottom:4}}>시작일</div>
+                          <input type="date" className="input-field" value={newCalEventStart} onChange={e=>{setNewCalEventStart(e.target.value);if(!newCalEventEnd||e.target.value>newCalEventEnd) setNewCalEventEnd(e.target.value);}}/>
+                        </div>
+                        <div style={{flex:1}}>
+                          <div style={{fontSize:11,color:'var(--ink-3)',marginBottom:4}}>종료일</div>
+                          <input type="date" className="input-field" value={newCalEventEnd} min={newCalEventStart} onChange={e=>setNewCalEventEnd(e.target.value)}/>
+                        </div>
+                      </div>
+                      <div style={{display:'flex',gap:8}}>
+                        <button className="btn btn-primary btn-sm" style={{flex:1}} onClick={()=>{
+                          if(!newCalEventLabel.trim()||!newCalEventStart) return;
+                          calEvents.addEvent(newCalEventLabel.trim(),newCalEventStart,newCalEventEnd||newCalEventStart);
+                          setNewCalEventLabel('');setNewCalEventStart('');setNewCalEventEnd('');setAddingCalEvent(false);
+                        }}>저장</button>
+                        <button className="btn btn-ghost btn-sm" style={{flex:1}} onClick={()=>{setAddingCalEvent(false);setNewCalEventLabel('');setNewCalEventStart('');setNewCalEventEnd('');}}>취소</button>
+                      </div>
+                    </div>
+                  </div>
+                )}
+                {eventsThisMonth.length === 0 && !addingCalEvent && (
+                  <div style={{padding:'16px',textAlign:'center',fontSize:13,color:'var(--ink-3)'}}>이번 달 내 일정이 없어요</div>
+                )}
+                {eventsThisMonth.sort((a,b)=>(a.startDate||a.date)<(b.startDate||b.date)?-1:1).map((ev,idx)=>(
+                  <div key={ev.id}>
+                    {idx>0&&<div className="divider"/>}
+                    {editingEvent===ev.id?(
+                      <div style={{padding:'12px 16px',display:'flex',flexDirection:'column',gap:8}}>
+                        <input className="input-field" value={editingEventLabel} onChange={e=>setEditingEventLabel(e.target.value)} autoFocus/>
+                        <div style={{display:'flex',gap:8}}>
+                          <div style={{flex:1}}>
+                            <div style={{fontSize:11,color:'var(--ink-3)',marginBottom:4}}>시작일</div>
+                            <input type="date" className="input-field" value={editingEventStart} onChange={e=>{setEditingEventStart(e.target.value);if(!editingEventEnd||e.target.value>editingEventEnd) setEditingEventEnd(e.target.value);}}/>
+                          </div>
+                          <div style={{flex:1}}>
+                            <div style={{fontSize:11,color:'var(--ink-3)',marginBottom:4}}>종료일</div>
+                            <input type="date" className="input-field" value={editingEventEnd} min={editingEventStart} onChange={e=>setEditingEventEnd(e.target.value)}/>
+                          </div>
+                        </div>
+                        <div style={{display:'flex',gap:8}}>
+                          <button className="btn btn-primary btn-sm" style={{flex:1}} onClick={()=>{
+                            calEvents.updateEvent(ev.id,{label:editingEventLabel,startDate:editingEventStart,endDate:editingEventEnd||editingEventStart,date:editingEventStart});
+                            setEditingEvent(null);
+                          }}>저장</button>
+                          <button className="btn btn-ghost btn-sm" style={{flex:1}} onClick={()=>setEditingEvent(null)}>취소</button>
+                        </div>
+                      </div>
+                    ):(
+                      <div style={{padding:'10px 16px',display:'flex',alignItems:'center',gap:10}}>
+                        <div style={{width:8,height:8,borderRadius:2,background:'#7c3aed',flexShrink:0}}/>
+                        <div style={{flex:1}}>
+                          <div style={{fontSize:13,fontWeight:500,color:'var(--ink)'}}>{ev.label}</div>
+                          <div style={{fontSize:11,color:'var(--ink-3)',marginTop:2}}>
+                            {fmtDate(new Date(ev.startDate||ev.date),{month:'long',day:'numeric'})}
+                            {ev.endDate&&ev.endDate!==(ev.startDate||ev.date)&&` ~ ${fmtDate(new Date(ev.endDate),{month:'long',day:'numeric'})}`}
+                          </div>
+                        </div>
+                        <button style={{background:'transparent',border:'none',cursor:'pointer',color:'var(--ink-3)',fontSize:12,padding:'2px 6px',lineHeight:1,border:'1px solid var(--border-2)',borderRadius:6}} onClick={()=>{setEditingEvent(ev.id);setEditingEventLabel(ev.label);setEditingEventStart(ev.startDate||ev.date);setEditingEventEnd(ev.endDate||ev.startDate||ev.date);}}>수정</button>
+                        <button style={{background:'transparent',border:'none',cursor:'pointer',color:'var(--ink-3)',fontSize:16,padding:'2px 4px',lineHeight:1}} onClick={()=>calEvents.removeEvent(ev.id)}>✕</button>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            );
+          })()}
+        </>
+      )}
+    </div>
+  );
+}
+
+// ── useCalendarEvents (캘린더 전용, 체크리스트/예산과 무관) ──
+function useCalendarEvents(){
+  const [events,setEvents]=useState(()=>load('w_cal_events',[]));
+  useEffect(()=>{save('w_cal_events',events);},[events]);
+
+  const addEvent=useCallback((label,startDate,endDate)=>{
+    const id='cale_'+Date.now();
+    // 하위 호환: endDate 없으면 startDate와 동일
+    setEvents(prev=>[...prev,{id,label,startDate,endDate:endDate||startDate,date:startDate,color:'#7c3aed'}]);
+  },[]);
+  const removeEvent=useCallback(id=>{
+    setEvents(prev=>prev.filter(e=>e.id!==id));
+  },[]);
+  const updateEvent=useCallback((id,changes)=>{
+    setEvents(prev=>prev.map(e=>e.id===id?{...e,...changes}:e));
+  },[]);
+  return {events,addEvent,removeEvent,updateEvent};
+}
+
+// ═══════════════════════════════════════════
+//  APP ROOT
+// ═══════════════════════════════════════════
+const TABS=[
+  {id:'home',label:'홈',icon:'⌂'},
+  {id:'checklist',label:'체크리스트',icon:'☑'},
+  {id:'budget',label:'예산',icon:'₩'},
+  {id:'calendar',label:'캘린더',icon:'◫'},
+];
+
+function App(){
+  const [activeTab,setActiveTab]=useState('home');
+  const [showScrollTop,setShowScrollTop]=useState(false);
+  const contentRef=useRef(null);
+  const checklist=useChecklist();
+  const budget=useBudget(checklist.selectedIds, checklist.allItems);
+  const dateHook=useWeddingDate();
+  const calEvents=useCalendarEvents();
+  const dDayText=useMemo(()=>{
+    const d=dateHook.dDay;
+    if(d===null||d===undefined) return null;
+    if(d>0) return `D-${d}`;
+    if(d===0) return 'D-day';
+    return `D+${Math.abs(d)}`;
+  },[dateHook.dDay]);
+
+  // 탭 바뀔 때마다 스크롤 맨 위로 + 버튼 숨기기
+  useEffect(()=>{
+    const el=contentRef.current;
+    if(el){ el.scrollTop=0; }
+    setShowScrollTop(false);
+  },[activeTab]);
+
+  // scroll 이벤트 직접 등록
+  useEffect(()=>{
+    const el=contentRef.current;
+    if(!el) return;
+    const onScroll=()=>{ setShowScrollTop(el.scrollTop>200); };
+    el.addEventListener('scroll',onScroll,{passive:true});
+    return()=>el.removeEventListener('scroll',onScroll);
+  },[activeTab]);
+
+  const scrollToTop=()=>{
+    if(contentRef.current) contentRef.current.scrollTo({top:0,behavior:'smooth'});
+  };
+
+  const renderScreen=()=>{
+    switch(activeTab){
+      case 'home': return <HomeScreen checklist={checklist} budget={budget} dateHook={dateHook} calEvents={calEvents} onNavigate={setActiveTab}/>;
+      case 'checklist': return <ChecklistScreen checklist={checklist} budget={budget} dateHook={dateHook}/>;
+      case 'budget': return <BudgetScreen budget={budget} checklist={checklist}/>;
+      case 'calendar': return <CalendarScreen checklist={checklist} dateHook={dateHook} calEvents={calEvents}/>;
+    }
+  };
+
+  // 3. SVG 링 로고
+  const RingLogo=()=>(
+    <svg width="90" height="36" viewBox="0 0 180 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+      {/* 왼쪽 다이아몬드 */}
+      <polygon points="38,2 46,2 50,8 38,20 26,8 30,2" fill="#E8416C"/>
+      <polygon points="38,2 46,2 42,8 38,8 34,8 30,2" fill="#f07090" opacity="0.7"/>
+      <line x1="38" y1="20" x2="38" y2="26" stroke="#E8416C" strokeWidth="2.5"/>
+      {/* 오른쪽 다이아몬드 */}
+      <polygon points="102,2 110,2 114,8 102,20 90,8 94,2" fill="#E8416C"/>
+      <polygon points="102,2 110,2 106,8 102,8 98,8 94,2" fill="#f07090" opacity="0.7"/>
+      <line x1="102" y1="20" x2="102" y2="26" stroke="#E8416C" strokeWidth="2.5"/>
+      {/* 왼쪽 반지 */}
+      <circle cx="48" cy="48" r="20" stroke="#E8416C" strokeWidth="7" fill="none"/>
+      {/* 오른쪽 반지 */}
+      <circle cx="92" cy="48" r="20" stroke="#E8416C" strokeWidth="7" fill="none"/>
+      {/* Weddit 텍스트 */}
+      <text x="70" y="54" textAnchor="middle" fontFamily="Georgia, serif" fontSize="18" fontWeight="bold" fill="#E8416C">Weddit</text>
+    </svg>
+  );
+
+  return(
+    <div className="app-shell">
+      <header className="app-header">
+        <RingLogo/>
+        {dDayText&&<span className="header-dday">{dDayText}</span>}
+      </header>
+      <main className="app-content" ref={contentRef}>{renderScreen()}</main>
+      <nav className="app-nav">
+        {TABS.map(tab=>(
+          <button key={tab.id} className={`nav-btn ${activeTab===tab.id?'active':''}`} onClick={()=>setActiveTab(tab.id)}>
+            <span className="nav-icon">{tab.icon}</span>
+            <span className="nav-label">{tab.label}</span>
+          </button>
+        ))}
+      </nav>
+      {showScrollTop&&(
+        <button
+          onClick={scrollToTop}
+          style={{
+            position:'fixed',
+            bottom:80,
+            right:16,
+            width:42,height:42,
+            borderRadius:'50%',
+            background:'var(--surface)',
+            border:'1.5px solid var(--border-2)',
+            boxShadow:'0 2px 12px rgba(0,0,0,.2)',
+            cursor:'pointer',
+            display:'flex',alignItems:'center',justifyContent:'center',
+            zIndex:300,
+          }}
+          aria-label="맨 위로"
+        >
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M8 12V4M4 7l4-4 4 4" stroke="var(--rose)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </button>
+      )}
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('app')).render(<App/>);
+</script>
+</body>
+</html>
