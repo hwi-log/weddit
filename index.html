@@ -1921,10 +1921,11 @@ function App(){
   // 날짜와 예산이 이미 설정된 경우에도 온보딩 스킵
   const [onboardingDone,setOnboardingDone]=useState(()=>{
     try{
-      const done=!!localStorage.getItem('w_onboarding_done');
       const hasDate=!!localStorage.getItem('w_date');
-      const hasBudget=!!localStorage.getItem('w_budget_total');
-      // 날짜, 예산 둘 다 없으면 → 온보딩 표시 (done 여부 무관)
+      // w_budget_total은 JSON으로 저장되므로 파싱 후 실제 값 확인
+      const rawBudget=localStorage.getItem('w_budget_total');
+      const hasBudget=rawBudget!=null&&JSON.parse(rawBudget)>0;
+      // 날짜, 예산 둘 다 없으면 → 온보딩 표시
       if(!hasDate&&!hasBudget) return false;
       // 하나라도 있으면 → 온보딩 스킵, 배너로 유도
       return true;
