@@ -590,7 +590,7 @@ function HomeScreen({checklist,budget,dateHook,calEvents,onNavigate,onGoToBudget
 
       {/* 전체 진행률 */}
       <div className="card"
-        onClick={()=>onNavigate('checklist')}
+        onClick={e=>{if(e.pointerType!=='touch')onNavigate('checklist');}}
         onMouseEnter={()=>setHoverProgress(true)}
         onMouseLeave={()=>setHoverProgress(false)}
         onTouchStart={e=>{touchStartY.current=e.touches[0].clientY;touchStartX.current=e.touches[0].clientX;setHoverProgress(true);}}
@@ -638,7 +638,7 @@ function HomeScreen({checklist,budget,dateHook,calEvents,onNavigate,onGoToBudget
 
       {/* 예산 현황 */}
       <div className="card"
-        onClick={()=>onNavigate('budget')}
+        onClick={e=>{if(e.pointerType!=='touch')onNavigate('budget');}}
         onMouseEnter={()=>setHoverBudget(true)}
         onMouseLeave={()=>setHoverBudget(false)}
         onTouchStart={e=>{touchStartY.current=e.touches[0].clientY;touchStartX.current=e.touches[0].clientX;setHoverBudget(true);}}
@@ -726,7 +726,7 @@ function HomeScreen({checklist,budget,dateHook,calEvents,onNavigate,onGoToBudget
 
         return(
           <div className="card"
-            onClick={()=>onNavigate('calendar')}
+            onClick={e=>{if(e.pointerType!=='touch')onNavigate('calendar');}}
             onMouseEnter={()=>setHoverCalendar(true)}
             onMouseLeave={()=>setHoverCalendar(false)}
             onTouchStart={e=>{touchStartY.current=e.touches[0].clientY;touchStartX.current=e.touches[0].clientX;setHoverCalendar(true);}}
@@ -896,7 +896,7 @@ function ChecklistScreen({checklist,budget,dateHook}){
   };
 
   return(
-    <div className="screen-pad">
+    <div className="screen-pad" onClick={e=>{if(sortOpen)setSortOpen(false);}}>
       {/* 진행률 파이 차트 + 선택/완료/생략 통합 카드 */}
       <div className="card"><div className="card-body">
         <div style={{display:'flex',alignItems:'center',gap:16}}>
@@ -1040,7 +1040,7 @@ function ChecklistScreen({checklist,budget,dateHook}){
         </div>
         {/* 드롭다운 정렬 */}
         <div style={{position:'relative',flexShrink:0}}>
-          <button onClick={()=>setSortOpen(o=>!o)} style={{background:'transparent',border:'none',cursor:'pointer',fontSize:13,color:'var(--ink-2)',fontFamily:'var(--font-body)',fontWeight:500,padding:'4px 0',display:'flex',alignItems:'center',gap:2,whiteSpace:'nowrap'}}>
+          <button onClick={e=>{e.stopPropagation();setSortOpen(o=>!o);}} style={{background:'transparent',border:'none',cursor:'pointer',fontSize:13,color:'var(--ink-2)',fontFamily:'var(--font-body)',fontWeight:500,padding:'4px 0',display:'flex',alignItems:'center',gap:2,whiteSpace:'nowrap'}}>
             {sort==='time'?'시간순':'카테고리순'} <span style={{fontSize:30,lineHeight:1,display:'inline-block',transition:'transform .2s',transform:sortOpen?'rotate(90deg)':'rotate(-90deg)'}}>‹</span>
           </button>
           {sortOpen&&(
@@ -1125,7 +1125,7 @@ function BudgetScreen({budget,checklist,flashBudget}){
     :sortByTime(budget.budgetBreakdown,item=>item.monthsBefore||1);
 
   return(
-    <div className="screen-pad">
+    <div className="screen-pad" onClick={e=>{if(sortOpen)setSortOpen(false);}}>
       <div className="card" style={{transition:'box-shadow .2s',boxShadow:flashBudget?'0 0 0 1.5px var(--rose)':'none',border:flashBudget?'1px solid var(--rose)':'1px solid var(--border)'}}><div className="card-body">
         <div className="section-label">총 예산</div>
         {budget.totalBudget&&!editingTotal?(
@@ -1242,7 +1242,7 @@ function BudgetScreen({budget,checklist,flashBudget}){
               <span className="section-label" style={{marginBottom:0}}>항목별 예산 설정</span>
               {/* 드롭다운 정렬 */}
               <div style={{position:'relative'}}>
-                <button onClick={()=>setSortOpen(o=>!o)} style={{background:'transparent',border:'none',cursor:'pointer',fontSize:13,color:'var(--ink-2)',fontFamily:'var(--font-body)',fontWeight:500,padding:'4px 0',display:'flex',alignItems:'center',gap:2}}>
+                <button onClick={e=>{e.stopPropagation();setSortOpen(o=>!o);}} style={{background:'transparent',border:'none',cursor:'pointer',fontSize:13,color:'var(--ink-2)',fontFamily:'var(--font-body)',fontWeight:500,padding:'4px 0',display:'flex',alignItems:'center',gap:2}}>
                   {sort==='time'?'시간순':'카테고리순'} <span style={{fontSize:30,lineHeight:1,display:'inline-block',transition:'transform .2s',transform:sortOpen?'rotate(90deg)':'rotate(-90deg)'}}>‹</span>
                 </button>
                 {sortOpen&&(
