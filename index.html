@@ -1946,8 +1946,10 @@ function App(){
         dateHook.setWeddingDate(str);
       }
       if(obBudget&&Number(obBudget)>0) budget.setTotalBudget(obBudget);
+      // 확인 시에만 done 저장
+      try{localStorage.setItem('w_onboarding_done','1');}catch{}
     }
-    try{localStorage.setItem('w_onboarding_done','1');}catch{}
+    // 둘러보기(skip)는 done 저장 안 함 → 재접속 시 날짜/예산 없으면 다시 온보딩
     setOnboardingDone(true);
   };
 
