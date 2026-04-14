@@ -1924,11 +1924,10 @@ function App(){
       const done=!!localStorage.getItem('w_onboarding_done');
       const hasDate=!!localStorage.getItem('w_date');
       const hasBudget=!!localStorage.getItem('w_budget_total');
-      // 둘 다 없을 때만 온보딩 표시 (하나라도 있으면 배너로 유도)
-      if(done) return true;
-      if(hasDate&&hasBudget) return true;
-      if(hasDate||hasBudget) return true; // 하나만 있어도 온보딩 스킵 → 배너로
-      return false; // 둘 다 없으면 온보딩
+      // 날짜, 예산 둘 다 없으면 → 온보딩 표시 (done 여부 무관)
+      if(!hasDate&&!hasBudget) return false;
+      // 하나라도 있으면 → 온보딩 스킵, 배너로 유도
+      return true;
     }catch{return false;}
   });
   const [obYear,setObYear]=useState('');
