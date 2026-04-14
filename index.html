@@ -1119,7 +1119,7 @@ function BudgetScreen({budget,checklist,flashBudget}){
 
   return(
     <div className="screen-pad">
-      <div className="card" style={{transition:'box-shadow .2s',boxShadow:flashBudget?'0 0 0 3px var(--rose)':'none',border:flashBudget?'1.5px solid var(--rose)':'1px solid var(--border)'}}><div className="card-body">
+      <div className="card" style={{transition:'box-shadow .2s',boxShadow:flashBudget?'0 0 0 1.5px var(--rose)':'none',border:flashBudget?'1px solid var(--rose)':'1px solid var(--border)'}}><div className="card-body">
         <div className="section-label">총 예산</div>
         {budget.totalBudget&&!editingTotal?(
           <div style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
@@ -1971,7 +1971,7 @@ function App(){
 
   const renderScreen=()=>{
     switch(activeTab){
-      case 'home': return <HomeScreen checklist={checklist} budget={budget} dateHook={dateHook} calEvents={calEvents} onNavigate={setActiveTab} onGoToBudget={()=>{setActiveTab('budget');setFlashBudget(true);setTimeout(()=>setFlashBudget(false),1200);}}/>;
+      case 'home': return <HomeScreen checklist={checklist} budget={budget} dateHook={dateHook} calEvents={calEvents} onNavigate={setActiveTab} onGoToBudget={()=>{setActiveTab('budget');setFlashBudget(true);setTimeout(()=>setFlashBudget(false),600);}}/>;
       case 'checklist': return <ChecklistScreen checklist={checklist} budget={budget} dateHook={dateHook}/>;
       case 'budget': return <BudgetScreen budget={budget} checklist={checklist} flashBudget={flashBudget}/>;
       case 'calendar': return <CalendarScreen checklist={checklist} dateHook={dateHook} calEvents={calEvents}/>;
