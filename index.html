@@ -469,7 +469,7 @@ function HomeScreen({checklist,budget,dateHook,calEvents,onNavigate,onGoToBudget
     }
     // 핑크 테두리 반짝
     setFlashDate(true);
-    setTimeout(()=>setFlashDate(false),1200);
+    setTimeout(()=>setFlashDate(false),600);
   },[]);
 
   const urgent=dateHook.getUrgentItems(checklist.selectedItems);
@@ -546,7 +546,7 @@ function HomeScreen({checklist,budget,dateHook,calEvents,onNavigate,onGoToBudget
       )}
 
       {/* 결혼식 D-day 카드 — 흰색 배경 */}
-      <div ref={ddayCardRef} className="dday-card" style={{padding:'14px 20px',transition:'box-shadow .2s,border-color .2s',boxShadow:flashDate?'0 0 0 3px var(--rose)':'none',border:flashDate?'1.5px solid var(--rose)':'1px solid var(--border)'}}>
+      <div ref={ddayCardRef} className="dday-card" style={{padding:'14px 20px',transition:'box-shadow .2s,border-color .2s',boxShadow:flashDate?'0 0 0 1.5px var(--rose)':'none',border:flashDate?'1px solid var(--rose)':'1px solid var(--border)'}}>
         {dateHook.weddingDate&&!editingDate?(
           <>
             <div className="section-label" style={{marginBottom:6}}>우리의 결혼식까지</div>
