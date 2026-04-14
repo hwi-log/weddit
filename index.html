@@ -454,6 +454,13 @@ function HomeScreen({checklist,budget,dateHook,calEvents,onNavigate,onGoToBudget
   const [hoverBudget,setHoverBudget]=useState(false);
   const [hoverCalendar,setHoverCalendar]=useState(false);
   const [flashDate,setFlashDate]=useState(false);
+  const touchStartY=useRef(0);
+  const touchStartX=useRef(0);
+  const isTap=(e)=>{
+    const dy=Math.abs(e.changedTouches[0].clientY-touchStartY.current);
+    const dx=Math.abs(e.changedTouches[0].clientX-touchStartX.current);
+    return dy<8&&dx<8;
+  };
   const ddayCardRef=useRef(null);
   const contentRef2=useRef(null);
 
@@ -586,8 +593,8 @@ function HomeScreen({checklist,budget,dateHook,calEvents,onNavigate,onGoToBudget
         onClick={()=>onNavigate('checklist')}
         onMouseEnter={()=>setHoverProgress(true)}
         onMouseLeave={()=>setHoverProgress(false)}
-        onTouchStart={()=>setHoverProgress(true)}
-        onTouchEnd={()=>{onNavigate('checklist');setTimeout(()=>setHoverProgress(false),200);}}
+        onTouchStart={e=>{touchStartY.current=e.touches[0].clientY;touchStartX.current=e.touches[0].clientX;setHoverProgress(true);}}
+        onTouchEnd={e=>{if(isTap(e))onNavigate('checklist');setTimeout(()=>setHoverProgress(false),200);}}
         style={{cursor:'pointer',transition:'background .15s',background:hoverProgress?'var(--surface-2)':'var(--surface)'}}
       ><div className="card-body">
         <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:10}}>
@@ -634,8 +641,8 @@ function HomeScreen({checklist,budget,dateHook,calEvents,onNavigate,onGoToBudget
         onClick={()=>onNavigate('budget')}
         onMouseEnter={()=>setHoverBudget(true)}
         onMouseLeave={()=>setHoverBudget(false)}
-        onTouchStart={()=>setHoverBudget(true)}
-        onTouchEnd={()=>{onNavigate('budget');setTimeout(()=>setHoverBudget(false),200);}}
+        onTouchStart={e=>{touchStartY.current=e.touches[0].clientY;touchStartX.current=e.touches[0].clientX;setHoverBudget(true);}}
+        onTouchEnd={e=>{if(isTap(e))onNavigate('budget');setTimeout(()=>setHoverBudget(false),200);}}
         style={{cursor:'pointer',transition:'background .15s',background:hoverBudget?'var(--surface-2)':'var(--surface)'}}
       ><div className="card-body">
         <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:10}}>
@@ -722,8 +729,8 @@ function HomeScreen({checklist,budget,dateHook,calEvents,onNavigate,onGoToBudget
             onClick={()=>onNavigate('calendar')}
             onMouseEnter={()=>setHoverCalendar(true)}
             onMouseLeave={()=>setHoverCalendar(false)}
-            onTouchStart={()=>setHoverCalendar(true)}
-            onTouchEnd={()=>{onNavigate('calendar');setTimeout(()=>setHoverCalendar(false),200);}}
+            onTouchStart={e=>{touchStartY.current=e.touches[0].clientY;touchStartX.current=e.touches[0].clientX;setHoverCalendar(true);}}
+            onTouchEnd={e=>{if(isTap(e))onNavigate('calendar');setTimeout(()=>setHoverCalendar(false),200);}}
             style={{cursor:'pointer',transition:'background .15s',background:hoverCalendar?'var(--surface-2)':'var(--surface)'}}
           >
             <div className="card-body" style={{paddingBottom:0}}>
@@ -1917,7 +1924,11 @@ function App(){
       const done=!!localStorage.getItem('w_onboarding_done');
       const hasDate=!!localStorage.getItem('w_date');
       const hasBudget=!!localStorage.getItem('w_budget_total');
-      return done||hasDate||hasBudget;
+      // 둘 다 없을 때만 온보딩 표시 (하나라도 있으면 배너로 유도)
+      if(done) return true;
+      if(hasDate&&hasBudget) return true;
+      if(hasDate||hasBudget) return true; // 하나만 있어도 온보딩 스킵 → 배너로
+      return false; // 둘 다 없으면 온보딩
     }catch{return false;}
   });
   const [obYear,setObYear]=useState('');
