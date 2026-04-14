@@ -491,6 +491,18 @@ function HomeScreen({checklist,budget,dateHook,calEvents,onNavigate}){
 
   return(
     <div className="screen-pad">
+      <div style={{
+        textAlign:'center',
+        padding:'5px 4px',
+        background:'var(--surface)',
+        borderBottom:'1px solid var(--border)',
+        margin:'-16px -16px 0',
+      }}>
+        <div style={{fontSize:13,color:'#6b7280',fontWeight:600,lineHeight:1.6}}>
+          일정부터 예산까지, Weddit과 함께 준비하세요 💍
+        </div>
+      </div>
+
       {/* 미완성 설정 안내 배너 */}
       {(!dateHook.weddingDate||!budget.totalBudget)&&(
         <div style={{background:'var(--rose-light)',borderRadius:'var(--radius-lg)',padding:'12px 16px',border:'1px solid var(--rose-muted)'}}>
@@ -515,17 +527,6 @@ function HomeScreen({checklist,budget,dateHook,calEvents,onNavigate}){
           </div>
         </div>
       )}
-      <div style={{
-        textAlign:'center',
-        padding:'5px 4px',
-        background:'var(--surface)',
-        borderBottom:'1px solid var(--border)',
-        margin:'-16px -16px 0',
-      }}>
-        <div style={{fontSize:13,color:'#6b7280',fontWeight:600,lineHeight:1.6}}>
-          일정부터 예산까지, Weddit과 함께 준비하세요 💍
-        </div>
-      </div>
 
       {/* 결혼식 D-day 카드 — 흰색 배경 */}
       <div className="dday-card" style={{padding:'14px 20px'}}>
