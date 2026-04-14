@@ -2014,10 +2014,19 @@ function App(){
         <div className="onboarding-overlay">
           <div className="onboarding-card">
             {/* 상단 버튼 */}
-            <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:24}}>
-              <button onClick={()=>completeOnboarding(true)} style={{fontSize:13,color:'var(--ink-3)',background:'transparent',border:'none',cursor:'pointer',fontFamily:'var(--font-body)',padding:'4px 8px',borderRadius:6,background:'var(--surface-3)'}}>둘러보기</button>
-              <button onClick={()=>completeOnboarding(false)} style={{fontSize:13,color:'#fff',background:'var(--rose)',border:'none',cursor:'pointer',fontFamily:'var(--font-body)',padding:'4px 14px',borderRadius:6,fontWeight:600}}>확인</button>
-            </div>
+            {(()=>{
+              const obReady=obYear&&obMonth&&obDay&&obBudget&&Number(obBudget)>0;
+              return(
+                <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:24}}>
+                  <button onClick={()=>completeOnboarding(true)} style={{fontSize:13,color:'var(--ink-3)',background:'var(--surface-3)',border:'none',cursor:'pointer',fontFamily:'var(--font-body)',padding:'4px 8px',borderRadius:6}}>둘러보기</button>
+                  <button
+                    onClick={()=>obReady&&completeOnboarding(false)}
+                    disabled={!obReady}
+                    style={{fontSize:13,color:'#fff',background:obReady?'var(--rose)':'var(--border-2)',border:'none',cursor:obReady?'pointer':'not-allowed',fontFamily:'var(--font-body)',padding:'4px 14px',borderRadius:6,fontWeight:600,transition:'background .2s'}}
+                  >확인</button>
+                </div>
+              );
+            })()}
             <div style={{textAlign:'center',marginBottom:24}}>
               <div style={{fontSize:20,fontWeight:700,color:'var(--rose)',fontFamily:'var(--font-display)',marginBottom:6}}>Weddit에 오신 걸 환영해요 💍</div>
               <div style={{fontSize:13,color:'var(--ink-3)',lineHeight:1.6}}>결혼 준비의 시작,<br/>날짜와 예산을 먼저 설정해보세요.</div>
