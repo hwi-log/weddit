@@ -55,11 +55,14 @@ body{font-family:var(--font-body);background:var(--surface-3);color:var(--ink);m
 .section-label{font-size:11px;font-weight:600;color:var(--ink-3);letter-spacing:.8px;text-transform:uppercase;margin-bottom:10px}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;font-family:var(--font-body);font-size:14px;font-weight:500;border-radius:var(--radius-md);border:1.5px solid transparent;cursor:pointer;transition:all .15s;padding:10px 18px;white-space:nowrap}
 .btn-primary{background:var(--rose);color:#fff;border-color:var(--rose)}
-.btn-primary:hover{background:var(--rose-dark)}
+.btn-primary:hover{background:var(--rose-dark);transform:scale(0.97)}
+.btn-primary:active{background:var(--rose-dark);transform:scale(0.97)}
 .btn-outline{background:transparent;color:var(--rose);border-color:var(--rose-muted)}
-.btn-outline:hover{background:var(--rose-light)}
+.btn-outline:hover{background:var(--rose-light);transform:scale(0.97)}
+.btn-outline:active{background:var(--rose-light);transform:scale(0.97)}
 .btn-ghost{background:transparent;color:var(--ink-2);border-color:var(--border-2)}
-.btn-ghost:hover{background:var(--surface-3)}
+.btn-ghost:hover{background:var(--surface-3);transform:scale(0.97)}
+.btn-ghost:active{background:var(--surface-3);transform:scale(0.97)}
 .btn-sm{font-size:12px;padding:6px 12px;border-radius:var(--radius-sm)}
 .btn-full{width:100%}
 .badge{display:inline-flex;align-items:center;font-size:11px;font-weight:500;padding:3px 8px;border-radius:20px;white-space:nowrap}
@@ -83,15 +86,39 @@ body{font-family:var(--font-body);background:var(--surface-3);color:var(--ink);m
 .toggle-switch input:checked~.toggle-thumb{transform:translateX(18px)}
 .tip-box{background:var(--rose-light);border-radius:var(--radius-sm);padding:10px 12px;font-size:12px;color:#993556;line-height:1.6;margin-top:8px}
 .divider{height:1px;background:var(--border);margin:4px 0}
-.dday-card{border-radius:var(--radius-lg);background:var(--rose);padding:24px 20px;color:white}
+/* 1. D-day 카드 — 흰색 배경 */
+.dday-card{border-radius:var(--radius-lg);background:var(--surface);border:1px solid var(--border);padding:24px 20px}
 .dday-inner{display:flex;flex-direction:column;align-items:flex-start;gap:4px}
-.dday-label{font-size:13px;opacity:.85}
-.dday-number{font-family:var(--font-display);font-size:36px;font-weight:700;line-height:1.1}
-.dday-date{font-size:13px;opacity:.75}
+.dday-label{font-size:13px;color:var(--ink-3)}
+.dday-number{font-family:var(--font-display);font-size:36px;font-weight:700;line-height:1.1;color:#6b7280}
+.dday-date{font-size:13px;color:var(--ink-2)}
 /* 캘린더 바 */
 .cal-bar{height:14px;border-radius:4px;background:var(--rose);opacity:.75;position:relative;cursor:pointer;transition:opacity .15s}
 .cal-bar:hover{opacity:1}
 .cal-bar.done{background:var(--success);opacity:.6}
+/* 클릭 가능한 카드 */
+.card-clickable{cursor:pointer;transition:background .15s,transform .1s}
+.card-clickable:hover{background:var(--surface-2)}
+.card-clickable:active{background:var(--surface-3);transform:scale(0.99)}
+/* 2. btn scale already in base styles */
+/* 네비 버튼 — 핑크 테두리, 호버/액티브 시 핑크 채움 */
+.btn-nav{background:transparent;color:var(--rose);border:1.5px solid var(--rose);border-radius:var(--radius-sm);font-family:var(--font-body);font-size:11px;font-weight:600;padding:4px 10px;cursor:pointer;transition:all .15s;white-space:nowrap}
+.btn-nav:hover,.btn-nav:active{background:var(--rose);color:#fff;transform:scale(0.97)}
+/* 3. 필터 버튼 — 미선택:회색테두리 흰배경, 호버/액티브:회색채움+scale, 선택:핑크채움 */
+.btn-filter{background:var(--surface);color:var(--ink-2);border:1.5px solid var(--border-2);border-radius:var(--radius-sm);font-family:var(--font-body);font-size:12px;font-weight:500;padding:6px 12px;cursor:pointer;transition:all .15s}
+.btn-filter:hover,.btn-filter:active{background:var(--surface-3);transform:scale(0.97)}
+.btn-filter.active{background:var(--rose);color:#fff;border-color:var(--rose)}
+.btn-filter.active:hover,.btn-filter.active:active{background:var(--rose-dark);transform:scale(0.97)}
+/* 4. 정렬 버튼 — 선택:핑크테두리+호버시핑크연함, 미선택:호버시회색 */
+.btn-sort{background:var(--surface);color:var(--ink-2);border:1.5px solid var(--border-2);border-radius:var(--radius-sm);font-family:var(--font-body);font-size:12px;font-weight:500;padding:6px 12px;cursor:pointer;transition:all .15s;flex:1}
+.btn-sort:hover,.btn-sort:active{background:var(--surface-3);transform:scale(0.97)}
+.btn-sort.active{color:var(--rose);border-color:var(--rose);background:var(--surface)}
+.btn-sort.active:hover,.btn-sort.active:active{background:var(--rose-light);transform:scale(0.97)}
+/* 5. 토글 화살표 — 핑크, 2배 크기 */
+.toggle-arrow{font-size:28px;color:var(--rose);line-height:1;transition:transform .2s;cursor:pointer;font-weight:700}
+/* 온보딩 오버레이 */
+.onboarding-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;display:flex;align-items:center;justify-content:center;padding:24px}
+.onboarding-card{background:var(--surface);border-radius:var(--radius-lg);padding:28px 24px;width:100%;max-width:420px;position:relative}
 </style>
 </head>
 <body>
@@ -157,8 +184,12 @@ const CHECKLIST_ITEMS = [
   {id:'rehearsal',   label:'웨딩홀 리허설',            category:'예식 준비',            monthsBefore:0.25, durationDays:1, budgetRatio:null, tip:'식 2~4주 전 진행. 동선·조명·음향 최종 점검. 사회자와 함께 진행하는 것 권장.',                                     defaultSelected:true,  sortOrder:41},
 ];
 
-// 카테고리 고정 순서
-const CATEGORY_ORDER=['행정 & 기타','예식 준비','촬영','의상 & 뷰티','피로연 & 행사','신혼여행 & 신혼집'];
+// 숨길 항목 (신혼집/신혼여행 관련 — 코드는 유지, UI에서만 숨김)
+const HIDDEN_ITEM_IDS=new Set(['house','honeymoon','appliances','furniture']);
+const HIDDEN_CATEGORIES=new Set(['신혼여행 & 신혼집']);
+
+// 카테고리 고정 순서 (신혼여행&신혼집 제외)
+const CATEGORY_ORDER=['행정 & 기타','예식 준비','촬영','의상 & 뷰티','피로연 & 행사'];
 const sortByCategory=(items)=>[...items].sort((a,b)=>{
   const ai=CATEGORY_ORDER.indexOf(a.category);
   const bi=CATEGORY_ORDER.indexOf(b.category);
@@ -181,7 +212,7 @@ function save(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch{}}
 
 // ── useChecklist ──────────────────────────
 function useChecklist(){
-  const [selectedIds,setSelectedIds]=useState(()=>new Set(load('w_sel',CHECKLIST_ITEMS.filter(i=>i.defaultSelected).map(i=>i.id))));
+  const [selectedIds,setSelectedIds]=useState(()=>new Set(load('w_sel',CHECKLIST_ITEMS.filter(i=>i.defaultSelected&&!HIDDEN_ITEM_IDS.has(i.id)).map(i=>i.id))));
   const [completedIds,setCompletedIds]=useState(()=>new Set(load('w_done',[])));
   const [customMonths,setCustomMonthsMap]=useState(()=>load('w_custom_months',{}));
   const [customItems,setCustomItemsRaw]=useState(()=>load('w_custom_items',[]));
@@ -196,7 +227,7 @@ function useChecklist(){
   useEffect(()=>{save('w_custom_items',customItems);},[customItems]);
   useEffect(()=>{save('w_custom_budget_include',customBudgetIncludeMap);},[customBudgetIncludeMap]);
 
-  const allItems=useMemo(()=>[...CHECKLIST_ITEMS,...customItems.map(i=>({
+  const allItems=useMemo(()=>[...CHECKLIST_ITEMS.filter(i=>!HIDDEN_ITEM_IDS.has(i.id)),...customItems.map(i=>({
     ...i,
     // 3. budgetRatio 동적 반영: 포함으로 설정된 항목은 0.01 부여
     budgetRatio: customBudgetIncludeMap[i.id] ? 0.01 : null,
@@ -413,13 +444,16 @@ const DONE_BAR_COLOR='#8a8a9e'; // 8. 완료 항목 바 색상 (기존 행정&�
 function HomeScreen({checklist,budget,dateHook,calEvents,onNavigate}){
   const [editingDate,setEditingDate]=useState(!dateHook.weddingDate);
   const [editingMoveIn,setEditingMoveIn]=useState(false);
-  // 날짜 선택 상태 (년/월/일 순차 선택)
   const [pickerYear,setPickerYear]=useState('');
   const [pickerMonth,setPickerMonth]=useState('');
   const [pickerDay,setPickerDay]=useState('');
   const [moveInPickerYear,setMoveInPickerYear]=useState('');
   const [moveInPickerMonth,setMoveInPickerMonth]=useState('');
   const [moveInPickerDay,setMoveInPickerDay]=useState('');
+  // 카드 hover 상태
+  const [hoverProgress,setHoverProgress]=useState(false);
+  const [hoverBudget,setHoverBudget]=useState(false);
+  const [hoverCalendar,setHoverCalendar]=useState(false);
 
   const urgent=dateHook.getUrgentItems(checklist.selectedItems);
 
@@ -457,7 +491,30 @@ function HomeScreen({checklist,budget,dateHook,calEvents,onNavigate}){
 
   return(
     <div className="screen-pad">
-      {/* 슬로건 */}
+      {/* 미완성 설정 안내 배너 */}
+      {(!dateHook.weddingDate||!budget.totalBudget)&&(
+        <div style={{background:'var(--rose-light)',borderRadius:'var(--radius-lg)',padding:'12px 16px',border:'1px solid var(--rose-muted)'}}>
+          <div style={{fontSize:12,fontWeight:600,color:'var(--rose)',marginBottom:8}}>아직 설정하지 않은 항목이 있어요</div>
+          <div style={{display:'flex',flexDirection:'column',gap:6}}>
+            {!dateHook.weddingDate&&(
+              <div style={{display:'flex',alignItems:'center',gap:8}}>
+                <span style={{width:16,height:16,borderRadius:'50%',border:'1.5px solid var(--rose)',display:'inline-flex',alignItems:'center',justifyContent:'center',fontSize:10,color:'var(--rose)',flexShrink:0}}>!</span>
+                <span style={{fontSize:13,color:'var(--ink-2)',flex:1}}>결혼식 날짜를 설정해주세요</span>
+                <button className="btn btn-sm" style={{fontSize:11,padding:'3px 10px',background:'var(--rose)',color:'#fff',border:'none',borderRadius:6,cursor:'pointer'}}
+                  onClick={()=>{const el=document.querySelector('.dday-card button');if(el)el.click();}}>설정</button>
+              </div>
+            )}
+            {!budget.totalBudget&&(
+              <div style={{display:'flex',alignItems:'center',gap:8}}>
+                <span style={{width:16,height:16,borderRadius:'50%',border:'1.5px solid var(--rose)',display:'inline-flex',alignItems:'center',justifyContent:'center',fontSize:10,color:'var(--rose)',flexShrink:0}}>!</span>
+                <span style={{fontSize:13,color:'var(--ink-2)',flex:1}}>총 예산을 설정해주세요</span>
+                <button className="btn btn-sm" style={{fontSize:11,padding:'3px 10px',background:'var(--rose)',color:'#fff',border:'none',borderRadius:6,cursor:'pointer'}}
+                  onClick={()=>onNavigate('budget')}>설정</button>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
       <div style={{
         textAlign:'center',
         padding:'5px 4px',
@@ -465,128 +522,108 @@ function HomeScreen({checklist,budget,dateHook,calEvents,onNavigate}){
         borderBottom:'1px solid var(--border)',
         margin:'-16px -16px 0',
       }}>
-        <div style={{fontSize:13,color:'var(--rose)',fontWeight:600,lineHeight:1.6}}>
+        <div style={{fontSize:13,color:'#6b7280',fontWeight:600,lineHeight:1.6}}>
           일정부터 예산까지, Weddit과 함께 준비하세요 💍
         </div>
       </div>
 
-      {/* 1. 결혼식 + 입주일 나란히 배치 */}
-      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10}}>
-
-        {/* 결혼식 D-day 카드 */}
-        <div className="dday-card" style={{padding:'18px 14px'}}>
-          {dateHook.weddingDate&&!editingDate?(
-            <div className="dday-inner">
-              <div className="dday-label" style={{fontSize:11}}>결혼식까지</div>
-              <div className="dday-number" style={{fontSize:26}}>{dateHook.dDay>0?`D-${dateHook.dDay}`:dateHook.dDay===0?'D-day ♥':`D+${Math.abs(dateHook.dDay)}`}</div>
-              <div className="dday-date" style={{fontSize:11}}>{new Date(dateHook.weddingDate).toLocaleDateString('ko-KR',{month:'long',day:'numeric',weekday:'short'})}</div>
-              <button style={{marginTop:8,borderColor:'rgba(255,255,255,.4)',color:'#fff',background:'rgba(255,255,255,.15)',border:'1.5px solid rgba(255,255,255,.4)',borderRadius:6,padding:'4px 8px',fontSize:11,cursor:'pointer',fontFamily:'var(--font-body)'}} onClick={()=>{setEditingDate(true);const p=dateHook.weddingDate.split('-');setPickerYear(p[0]);setPickerMonth(String(Number(p[1])));setPickerDay(String(Number(p[2])));}}>날짜 변경</button>
-            </div>
-          ):(
-            <div className="dday-inner">
-              <div className="dday-label" style={{fontSize:11}}>결혼식 날짜 설정</div>
-              <div style={{display:'flex',flexDirection:'column',gap:4,marginTop:8}}>
-                <select style={selStyle} value={pickerYear} onChange={e=>{setPickerYear(e.target.value);setPickerDay('');}}>
-                  <option value=''>년도</option>
-                  {years.map(y=><option key={y} value={y}>{y}년</option>)}
-                </select>
-                <select style={selStyle} value={pickerMonth} onChange={e=>{setPickerMonth(e.target.value);setPickerDay('');}} disabled={!pickerYear}>
-                  <option value=''>월</option>
-                  {months.map(m=><option key={m} value={m}>{m}월</option>)}
-                </select>
-                <select style={selStyle} value={pickerDay} onChange={e=>{const d=e.target.value;setPickerDay(d);commitWeddingDate(pickerYear,pickerMonth,d);}} disabled={!pickerMonth}>
-                  <option value=''>일</option>
-                  {Array.from({length:wDays},(_,i)=>i+1).map(d=><option key={d} value={d}>{d}일</option>)}
-                </select>
-                {dateHook.weddingDate&&<button style={{background:'rgba(255,255,255,.15)',border:'1.5px solid rgba(255,255,255,.4)',borderRadius:6,padding:'4px 8px',fontSize:11,cursor:'pointer',color:'#fff',fontFamily:'var(--font-body)'}} onClick={()=>setEditingDate(false)}>취소</button>}
+      {/* 결혼식 D-day 카드 — 흰색 배경 */}
+      <div className="dday-card" style={{padding:'14px 20px'}}>
+        {dateHook.weddingDate&&!editingDate?(
+          <>
+            <div className="section-label" style={{marginBottom:6}}>우리의 결혼식까지</div>
+            <div style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+              <div className="dday-number" style={{fontSize:32}}>{dateHook.dDay>0?`D-${dateHook.dDay}`:dateHook.dDay===0?'D-day ♥':`D+${Math.abs(dateHook.dDay)}`}</div>
+              <div style={{textAlign:'right'}}>
+                <div className="dday-date" style={{fontSize:12,marginBottom:8}}>{new Date(dateHook.weddingDate).toLocaleDateString('ko-KR',{year:'numeric',month:'long',day:'numeric',weekday:'short'})}</div>
+                <button className="btn-nav" onClick={()=>{setEditingDate(true);const p=dateHook.weddingDate.split('-');setPickerYear(p[0]);setPickerMonth(String(Number(p[1])));setPickerDay(String(Number(p[2])));}}>날짜 변경</button>
               </div>
             </div>
-          )}
-        </div>
-
-        {/* 2. 입주일 카드 — 결혼식과 동일한 D-day 스타일, 색상은 success 계열 */}
-        <div style={{borderRadius:'var(--radius-lg)',background:'var(--success)',padding:'18px 14px',color:'white'}}>
-          {dateHook.moveInDate&&!editingMoveIn?(
-            <div className="dday-inner">
-              <div className="dday-label" style={{fontSize:11}}>입주까지</div>
-              <div className="dday-number" style={{fontSize:26}}>
-                {(()=>{const d=Math.ceil((new Date(dateHook.moveInDate)-new Date())/86400000);return d>0?`D-${d}`:d===0?'D-day ♥':`D+${Math.abs(d)}`;})()}
-              </div>
-              <div className="dday-date" style={{fontSize:11}}>{new Date(dateHook.moveInDate).toLocaleDateString('ko-KR',{month:'long',day:'numeric',weekday:'short'})}</div>
-              <button style={{marginTop:8,borderColor:'rgba(255,255,255,.4)',color:'#fff',background:'rgba(255,255,255,.15)',border:'1.5px solid rgba(255,255,255,.4)',borderRadius:6,padding:'4px 8px',fontSize:11,cursor:'pointer',fontFamily:'var(--font-body)'}} onClick={()=>{setEditingMoveIn(true);const p=dateHook.moveInDate.split('-');setMoveInPickerYear(p[0]);setMoveInPickerMonth(String(Number(p[1])));setMoveInPickerDay(String(Number(p[2])));}}>날짜 변경</button>
+          </>
+        ):(
+          <div className="dday-inner">
+            <div className="section-label" style={{marginBottom:6}}>결혼식 날짜를 설정해주세요</div>
+            <div style={{display:'flex',gap:6,marginTop:4,alignItems:'center',flexWrap:'wrap'}}>
+              <select style={selStyle} value={pickerYear} onChange={e=>{setPickerYear(e.target.value);setPickerDay('');}}>
+                <option value=''>년도</option>
+                {years.map(y=><option key={y} value={y}>{y}년</option>)}
+              </select>
+              <select style={selStyle} value={pickerMonth} onChange={e=>{setPickerMonth(e.target.value);setPickerDay('');}} disabled={!pickerYear}>
+                <option value=''>월</option>
+                {months.map(m=><option key={m} value={m}>{m}월</option>)}
+              </select>
+              <select style={selStyle} value={pickerDay} onChange={e=>{const d=e.target.value;setPickerDay(d);commitWeddingDate(pickerYear,pickerMonth,d);}} disabled={!pickerMonth}>
+                <option value=''>일</option>
+                {Array.from({length:wDays},(_,i)=>i+1).map(d=><option key={d} value={d}>{d}일</option>)}
+              </select>
+              {dateHook.weddingDate&&<button className="btn-nav" onClick={()=>setEditingDate(false)}>취소</button>}
             </div>
-          ):(
-            <div className="dday-inner">
-              <div className="dday-label" style={{fontSize:11}}>입주일 설정</div>
-              <div style={{display:'flex',flexDirection:'column',gap:4,marginTop:8}}>
-                <select style={selStyle} value={moveInPickerYear} onChange={e=>{setMoveInPickerYear(e.target.value);setMoveInPickerDay('');}}>
-                  <option value=''>년도</option>
-                  {years.map(y=><option key={y} value={y}>{y}년</option>)}
-                </select>
-                <select style={selStyle} value={moveInPickerMonth} onChange={e=>{setMoveInPickerMonth(e.target.value);setMoveInPickerDay('');}} disabled={!moveInPickerYear}>
-                  <option value=''>월</option>
-                  {months.map(m=><option key={m} value={m}>{m}월</option>)}
-                </select>
-                <select style={selStyle} value={moveInPickerDay} onChange={e=>{const d=e.target.value;setMoveInPickerDay(d);commitMoveInDate(moveInPickerYear,moveInPickerMonth,d);}} disabled={!moveInPickerMonth}>
-                  <option value=''>일</option>
-                  {Array.from({length:miDays},(_,i)=>i+1).map(d=><option key={d} value={d}>{d}일</option>)}
-                </select>
-                {dateHook.moveInDate&&<button style={{background:'rgba(255,255,255,.15)',border:'1.5px solid rgba(255,255,255,.4)',borderRadius:6,padding:'4px 8px',fontSize:11,cursor:'pointer',color:'#fff',fontFamily:'var(--font-body)'}} onClick={()=>setEditingMoveIn(false)}>취소</button>}
-              </div>
-            </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
+      {/* 입주일 카드 숨김 — 신혼집 관련 항목 비노출 정책 */}
 
-      {/* 전체 진행률 + 카테고리별 파이 차트 통합 */}
-      <div className="card"><div className="card-body">
+      {/* 전체 진행률 */}
+      <div className="card"
+        onClick={()=>onNavigate('checklist')}
+        onMouseEnter={()=>setHoverProgress(true)}
+        onMouseLeave={()=>setHoverProgress(false)}
+        onTouchStart={()=>setHoverProgress(true)}
+        onTouchEnd={()=>{onNavigate('checklist');setTimeout(()=>setHoverProgress(false),200);}}
+        style={{cursor:'pointer',transition:'background .15s',background:hoverProgress?'var(--surface-2)':'var(--surface)'}}
+      ><div className="card-body">
         <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:10}}>
           <div className="section-label" style={{marginBottom:0}}>전체 진행률</div>
-          <button className="btn btn-ghost btn-sm" style={{fontSize:11,padding:'4px 10px'}} onClick={()=>onNavigate('checklist')}>상세 보기 →</button>
+          <span style={{color:'var(--rose)',fontWeight:700,fontSize:16}}>→</span>
         </div>
-        {/* 전체 바 */}
         <div style={{display:'flex',alignItems:'baseline',gap:8,marginBottom:6}}>
-          <span style={{fontSize:26,fontWeight:600,color:'var(--rose)'}}>{checklist.progressPercent}%</span>
+          <span style={{fontSize:26,fontWeight:600,color:hoverProgress?'var(--rose)':'#6b7280'}}>{checklist.progressPercent}%</span>
           <span style={{fontSize:12,color:'var(--ink-3)'}}>{checklist.completedItems.length} / {checklist.selectedItems.length}개 완료</span>
         </div>
-        <div className="progress-track" style={{marginBottom:14}}><div className="progress-fill" style={{width:`${checklist.progressPercent}%`}}/></div>
-        {/* 카테고리별 6개 미니 파이 차트 */}
-        <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:10}}>
+        <div className="progress-track" style={{marginBottom:14}}>
+          <div className="progress-fill" style={{width:`${checklist.progressPercent}%`,background:hoverProgress?'var(--rose)':'#6b7280'}}/>
+        </div>
+        <div style={{display:'grid',gridTemplateColumns:'repeat(5,1fr)',gap:6}}>
           {catProgresses.map(({cat,percent,done,total})=>{
-            const r=22,sw=5,circ=2*Math.PI*r;
-            const color=CAT_COLORS[cat]||'var(--rose)';
+            const r=18,sw=4,circ=2*Math.PI*r;
+            const color=hoverProgress?(CAT_COLORS[cat]||'var(--rose)'):'#6b7280';
             return(
-              <div key={cat} style={{display:'flex',flexDirection:'column',alignItems:'center',gap:4}}>
-                {/* 미니 파이 */}
-                <div style={{position:'relative',width:54,height:54}}>
-                  <svg viewBox="0 0 54 54" style={{transform:'rotate(-90deg)',width:'100%',height:'100%'}}>
-                    <circle cx="27" cy="27" r={r} fill="none" stroke="var(--surface-3)" strokeWidth={sw}/>
-                    <circle cx="27" cy="27" r={r} fill="none" stroke={color} strokeWidth={sw}
+              <div key={cat} style={{display:'flex',flexDirection:'column',alignItems:'center',gap:3}}>
+                <div style={{position:'relative',width:44,height:44}}>
+                  <svg viewBox="0 0 44 44" style={{transform:'rotate(-90deg)',width:'100%',height:'100%'}}>
+                    <circle cx="22" cy="22" r={r} fill="none" stroke="var(--surface-3)" strokeWidth={sw}/>
+                    <circle cx="22" cy="22" r={r} fill="none" stroke={color} strokeWidth={sw}
                       strokeLinecap="round"
                       strokeDasharray={String(circ)}
                       strokeDashoffset={String(circ*(1-percent/100))}
-                      style={{transition:'stroke-dashoffset .6s ease'}}
+                      style={{transition:'stroke .3s ease'}}
                     />
                   </svg>
                   <div style={{position:'absolute',inset:0,display:'flex',alignItems:'center',justifyContent:'center'}}>
-                    <span style={{fontSize:11,fontWeight:600,color}}>{percent}%</span>
+                    <span style={{fontSize:9,fontWeight:600,color}}>{percent}%</span>
                   </div>
                 </div>
-                <div style={{fontSize:10,color:'var(--ink-2)',textAlign:'center',lineHeight:1.3,fontWeight:500}}>{cat}</div>
-                <div style={{fontSize:10,color:'var(--ink-3)'}}>{done}/{total}</div>
+                <div style={{fontSize:9,color:'var(--ink-2)',textAlign:'center',lineHeight:1.3,fontWeight:500,wordBreak:'keep-all'}}>{cat}</div>
+                <div style={{fontSize:9,color:'var(--ink-3)'}}>{done}/{total}</div>
               </div>
             );
           })}
         </div>
       </div></div>
 
-      {/* 5+6. 예산 현황 — 버튼 오른쪽 위 + 바 형태 표시 */}
-      <div className="card"><div className="card-body">
+      {/* 예산 현황 */}
+      <div className="card"
+        onClick={()=>onNavigate('budget')}
+        onMouseEnter={()=>setHoverBudget(true)}
+        onMouseLeave={()=>setHoverBudget(false)}
+        onTouchStart={()=>setHoverBudget(true)}
+        onTouchEnd={()=>{onNavigate('budget');setTimeout(()=>setHoverBudget(false),200);}}
+        style={{cursor:'pointer',transition:'background .15s',background:hoverBudget?'var(--surface-2)':'var(--surface)'}}
+      ><div className="card-body">
         <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:10}}>
           <div className="section-label" style={{marginBottom:0}}>예산 현황</div>
-          <button className="btn btn-ghost btn-sm" style={{fontSize:11,padding:'4px 10px'}} onClick={()=>onNavigate('budget')}>관리하기 →</button>
+          <span style={{color:'var(--rose)',fontWeight:700,fontSize:16}}>→</span>
         </div>
-        {/* 숫자 요약 3개 */}
         <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:8,marginBottom:10}}>
           <div style={{textAlign:'center'}}>
             <div style={{fontSize:11,color:'var(--ink-3)',marginBottom:3}}>총 예산</div>
@@ -594,20 +631,20 @@ function HomeScreen({checklist,budget,dateHook,calEvents,onNavigate}){
           </div>
           <div style={{textAlign:'center'}}>
             <div style={{fontSize:11,color:'var(--ink-3)',marginBottom:3}}>지출</div>
-            <div style={{fontSize:15,fontWeight:600,color:budget.totalSpent>budget.totalBudget?'var(--danger)':'var(--rose)'}}>{budget.totalSpent.toLocaleString()}만</div>
+            <div style={{fontSize:15,fontWeight:600,color:budget.totalSpent>budget.totalBudget?'var(--danger)':hoverBudget?'var(--rose)':'#6b7280'}}>{budget.totalSpent.toLocaleString()}만</div>
           </div>
           <div style={{textAlign:'center'}}>
             <div style={{fontSize:11,color:'var(--ink-3)',marginBottom:3}}>남은 예산</div>
-            <div style={{fontSize:15,fontWeight:600,color:'var(--success)'}}>
+            <div style={{fontSize:15,fontWeight:600,color:hoverBudget?'var(--success)':'#6b7280'}}>
               {(budget.totalBudget-budget.totalSpent).toLocaleString()}만
             </div>
           </div>
         </div>
-        {/* 진행 바 */}
         <div className="progress-track">
           <div className="progress-fill" style={{
             width:`${Math.min(budget.spentPercent,100)}%`,
-            background:budget.spentPercent>100?'var(--danger)':'var(--rose)'
+            background:budget.spentPercent>100?'var(--danger)':hoverBudget?'var(--rose)':'#6b7280',
+            transition:'background .3s'
           }}/>
         </div>
         <div style={{display:'flex',justifyContent:'space-between',fontSize:11,color:'var(--ink-3)',marginTop:4}}>
@@ -663,12 +700,22 @@ function HomeScreen({checklist,budget,dateHook,calEvents,onNavigate}){
         });
 
         return(
-          <div className="card">
-            <div className="card-header" style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
-              <span style={{fontSize:14,fontWeight:600,color:'var(--ink-2)'}}>{yr}년 {MONTH_KO2[mo]}</span>
-              <button className="btn btn-ghost btn-sm" onClick={()=>onNavigate('calendar')}>전체 보기 →</button>
+          <div className="card"
+            onClick={()=>onNavigate('calendar')}
+            onMouseEnter={()=>setHoverCalendar(true)}
+            onMouseLeave={()=>setHoverCalendar(false)}
+            onTouchStart={()=>setHoverCalendar(true)}
+            onTouchEnd={()=>{onNavigate('calendar');setTimeout(()=>setHoverCalendar(false),200);}}
+            style={{cursor:'pointer',transition:'background .15s',background:hoverCalendar?'var(--surface-2)':'var(--surface)'}}
+          >
+            <div className="card-body" style={{paddingBottom:0}}>
+              <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:8}}>
+                <div className="section-label" style={{marginBottom:0}}>캘린더</div>
+                <span style={{color:'var(--rose)',fontWeight:700,fontSize:16}}>→</span>
+              </div>
             </div>
-            <div style={{padding:'10px 12px'}}>
+            <div style={{padding:'0 12px 10px'}}>
+              <div style={{fontSize:12,fontWeight:600,color:'var(--ink-2)',marginBottom:8,textAlign:'center'}}>{yr}년 {MONTH_KO2[mo]}</div>
               <div style={{display:'grid',gridTemplateColumns:'repeat(7,1fr)',gap:1,marginBottom:4}}>
                 {DOW2.map((d,i)=><div key={d} style={{textAlign:'center',fontSize:10,fontWeight:600,color:i===0?'var(--danger)':i===6?'#4466cc':'var(--ink-3)',padding:'2px 0'}}>{d}</div>)}
               </div>
@@ -684,7 +731,7 @@ function HomeScreen({checklist,budget,dateHook,calEvents,onNavigate}){
                             <span style={{display:'inline-flex',alignItems:'center',justifyContent:'center',width:18,height:18,borderRadius:'50%',fontSize:11,background:tod?'var(--rose)':'transparent',color:tod?'#fff':idx%7===0?'var(--danger)':idx%7===6?'#4466cc':'var(--ink)',fontWeight:tod?700:400}}>{day}</span>
                           </div>
                           {bars.slice(0,2).map((bar,bi)=>(
-                            <div key={bi} style={{height:4,borderRadius:2,background:bar.color,opacity:.75,marginBottom:1}}/>
+                            <div key={bi} style={{height:4,borderRadius:2,background:hoverCalendar?bar.color:'#6b7280',opacity:.75,marginBottom:1,transition:'background .3s'}}/>
                           ))}
                           {bars.length>2&&<div style={{fontSize:8,color:'var(--ink-3)',textAlign:'center',lineHeight:1}}>+{bars.length-2}</div>}
                         </>
@@ -709,7 +756,8 @@ function ChecklistScreen({checklist,budget,dateHook}){
   const [editingMonths,setEditingMonths]=useState(null);
   const [monthsInput,setMonthsInput]=useState('');
   const [filter,setFilter]=useState('all');
-  const [sort,setSort]=useState('time'); // #6 기본값 시간순
+  const [sort,setSort]=useState('time');
+  const [sortOpen,setSortOpen]=useState(false);
   // #3 항목 추가
   const [addingItem,setAddingItem]=useState(false);
   const [newLabel,setNewLabel]=useState('');
@@ -748,40 +796,46 @@ function ChecklistScreen({checklist,budget,dateHook}){
     return(
       <div key={item.id}>
         {showDivider&&idx>0&&<div className="divider"/>}
-        <div style={{padding:'12px 16px'}}>
+        <div style={{padding:'10px 16px',transition:'background .15s'}} onMouseEnter={e=>e.currentTarget.style.background='var(--surface-2)'} onMouseLeave={e=>e.currentTarget.style.background=''} onTouchStart={e=>e.currentTarget.style.background='var(--surface-2)'} onTouchEnd={e=>e.currentTarget.style.background=''}>
           <div style={{display:'flex',alignItems:'center',gap:10}}>
-            {status!=='skip'?(
-              <div className={`check-circle ${status==='done'?'checked':''}`} onClick={()=>checklist.toggleCompleted(item.id)}>
-                {status==='done'&&'✓'}
-              </div>
-            ):(
-              <div className="check-circle skip">—</div>
-            )}
-            <div style={{flex:1,minWidth:0}}>
-              <div style={{fontSize:14,fontWeight:500,color:status==='skip'?'var(--ink-3)':status==='done'?'var(--ink-3)':'var(--ink)',textDecoration:status==='done'?'line-through':'none'}}>
-                {item.label}
-                {hasCustom&&<span style={{fontSize:10,color:'var(--rose)',marginLeft:6,textDecoration:'none',display:'inline-block'}}>수정됨</span>}
-              </div>
-              {showCategory&&<div style={{fontSize:11,color:'var(--ink-3)',marginTop:1}}>{item.category}</div>}
-              {status!=='skip'&&(
-                <div style={{display:'flex',alignItems:'center',gap:6,marginTop:2,flexWrap:'wrap'}}>
-                  {isEditingM?(
-                    <div style={{display:'flex',gap:4,alignItems:'center'}}>
-                      <input type="number" step="0.5" min="0" max="24" style={{width:60,padding:'2px 6px',fontSize:12,border:'1.5px solid var(--rose)',borderRadius:6,outline:'none',fontFamily:'var(--font-body)'}} value={monthsInput} onChange={e=>setMonthsInput(e.target.value)} onKeyDown={e=>{if(e.key==='Enter'){checklist.setCustomMonths(item.id,monthsInput);setEditingMonths(null);}}} autoFocus/>
-                      <span style={{fontSize:11,color:'var(--ink-3)'}}>개월 전</span>
-                      <button className="btn btn-primary btn-sm" style={{padding:'2px 8px',fontSize:11}} onClick={()=>{checklist.setCustomMonths(item.id,monthsInput);setEditingMonths(null);}}>확인</button>
-                      {hasCustom&&<button className="btn btn-ghost btn-sm" style={{padding:'2px 6px',fontSize:11}} onClick={()=>{checklist.resetCustomMonths(item.id);setEditingMonths(null);}}>초기화</button>}
-                      <button className="btn btn-ghost btn-sm" style={{padding:'2px 6px',fontSize:11}} onClick={()=>setEditingMonths(null)}>✕</button>
-                    </div>
-                  ):(
-                    <button style={{fontSize:11,color:hasCustom?'var(--rose)':'var(--ink-3)',background:'transparent',border:'none',cursor:'pointer',padding:0,fontFamily:'var(--font-body)'}} onClick={()=>{setEditingMonths(item.id);setMonthsInput(String(curMonths));}}>
-                      {MOVE_IN_RELATIVE_IDS.has(item.id)?'입주':'결혼'} {curMonths}개월 전 ✎
-                    </button>
-                  )}
+            {/* 체크박스 */}
+            <div style={{flexShrink:0}} onClick={e=>e.stopPropagation()}>
+              {status!=='skip'?(
+                <div className={`check-circle ${status==='done'?'checked':''}`} onClick={()=>checklist.toggleCompleted(item.id)}>
+                  {status==='done'&&'✓'}
                 </div>
+              ):(
+                <div className="check-circle skip">—</div>
               )}
             </div>
-            <div style={{display:'flex',alignItems:'center',gap:6}}>
+            {/* 중간 클릭 영역: 항목명 + 카테고리 + 탭하여수정 */}
+            <div style={{flex:1,minWidth:0,cursor:status!=='skip'?'pointer':'default',padding:'2px 0'}}
+              onClick={()=>{if(status==='skip')return; setEditingMonths(item.id);setMonthsInput(String(curMonths));}}
+            >
+              <div style={{display:'flex',alignItems:'center',gap:6,flexWrap:'wrap'}}>
+                <span style={{fontSize:14,fontWeight:500,color:status==='skip'?'var(--ink-3)':status==='done'?'var(--ink-3)':'var(--ink)',textDecoration:status==='done'?'line-through':'none'}}>
+                  {item.label}
+                </span>
+                {hasCustom&&<span style={{fontSize:10,color:'var(--rose)',textDecoration:'none'}}>수정됨</span>}
+              </div>
+              <div style={{fontSize:11,color:'var(--ink-3)',marginTop:1}}>{item.category}</div>
+              {status!=='skip'&&(
+                isEditingM?(
+                  <div style={{display:'flex',gap:4,alignItems:'center',marginTop:4}} onClick={e=>e.stopPropagation()}>
+                    <input type="number" step="0.5" min="0" max="24" style={{width:60,padding:'2px 6px',fontSize:12,border:'1.5px solid var(--rose)',borderRadius:6,outline:'none',fontFamily:'var(--font-body)'}} value={monthsInput} onChange={e=>setMonthsInput(e.target.value)} onKeyDown={e=>{if(e.key==='Enter'){checklist.setCustomMonths(item.id,monthsInput);setEditingMonths(null);}}} autoFocus/>
+                    <span style={{fontSize:11,color:'var(--ink-3)'}}>개월 전</span>
+                    <button className="btn btn-primary btn-sm" style={{padding:'2px 8px',fontSize:11}} onClick={()=>{checklist.setCustomMonths(item.id,monthsInput);setEditingMonths(null);}}>확인</button>
+                    {hasCustom&&<button className="btn btn-ghost btn-sm" style={{padding:'2px 6px',fontSize:11}} onClick={()=>{checklist.resetCustomMonths(item.id);setEditingMonths(null);}}>초기화</button>}
+                    <button className="btn btn-ghost btn-sm" style={{padding:'2px 6px',fontSize:11}} onClick={()=>setEditingMonths(null)}>✕</button>
+                  </div>
+                ):null
+              )}
+            </div>
+            {/* 탭하여수정 + 팁 버튼 + 토글 */}
+            <div style={{display:'flex',alignItems:'center',gap:6,flexShrink:0}} onClick={e=>e.stopPropagation()}>
+              {status!=='skip'&&!isEditingM&&(
+                <span style={{fontSize:11,color:'var(--ink-3)',whiteSpace:'nowrap',cursor:'pointer'}} onClick={()=>{setEditingMonths(item.id);setMonthsInput(String(curMonths));}}>탭하여 수정 ✎</span>
+              )}
               {status!=='skip'&&!item.isCustom&&(
                 <button className="btn btn-ghost btn-sm" style={{padding:'4px 8px',fontSize:11}} onClick={()=>setExpandedItem(expanded?null:item.id)}>
                   {expanded?'접기':'팁'}
@@ -797,10 +851,8 @@ function ChecklistScreen({checklist,budget,dateHook}){
             </div>
           </div>
           {expanded&&(
-            <div style={{paddingLeft:34}}>
-              <div className="tip-box">
-                {item.tip}
-              </div>
+            <div style={{paddingLeft:34,marginTop:4}}>
+              <div className="tip-box">{item.tip}</div>
             </div>
           )}
         </div>
@@ -834,7 +886,7 @@ function ChecklistScreen({checklist,budget,dateHook}){
               />
             </svg>
             <div style={{position:'absolute',inset:0,display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center'}}>
-              <span style={{fontSize:16,fontWeight:700,color:'var(--rose)'}}>{checklist.progressPercent}%</span>
+              <span style={{fontSize:16,fontWeight:700,color:'#6b7280'}}>{checklist.progressPercent}%</span>
             </div>
           </div>
           {/* 선택 / 완료 / 생략 */}
@@ -862,20 +914,6 @@ function ChecklistScreen({checklist,budget,dateHook}){
         )}
       </div></div>
 
-      <div style={{display:'flex',flexDirection:'column',gap:8}}>
-        <div style={{display:'flex',gap:6,overflowX:'auto',paddingBottom:2}}>
-          {[{id:'all',label:'전체'},{id:'todo',label:'할 것'},{id:'done',label:'완료'},{id:'skip',label:'생략'}].map(f=>(
-            <button key={f.id} className={`btn btn-sm ${filter===f.id?'btn-primary':'btn-ghost'}`} onClick={()=>setFilter(f.id)}>{f.label}</button>
-          ))}
-        </div>
-        <div style={{display:'flex',gap:6,alignItems:'center'}}>
-          <span style={{fontSize:11,color:'var(--ink-3)',whiteSpace:'nowrap'}}>정렬</span>
-          {/* #6 시간순 먼저 */}
-          {[{id:'time',label:'시간순'},{id:'category',label:'카테고리'}].map(s=>(
-            <button key={s.id} className={`btn btn-sm ${sort===s.id?'btn-outline':'btn-ghost'}`} onClick={()=>setSort(s.id)} style={{flex:1}}>{s.label}</button>
-          ))}
-        </div>
-      </div>
 
       {/* 1. 예산 포함 여부 확인 (2단계: 포함 여부 → 금액 입력) */}
       {budgetConfirmItem&&(
@@ -969,6 +1007,29 @@ function ChecklistScreen({checklist,budget,dateHook}){
         <button className="btn btn-outline btn-full" style={{borderStyle:'dashed'}} onClick={()=>setAddingItem(true)}>+ 항목 직접 추가</button>
       )}
 
+      <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',gap:6}}>
+        <div style={{display:'flex',gap:6,flexWrap:'wrap'}}>
+          {[{id:'all',label:'전체'},{id:'todo',label:'할 것'},{id:'done',label:'완료'},{id:'skip',label:'생략'}].map(f=>(
+            <button key={f.id} className={`btn-filter${filter===f.id?' active':''}`} onClick={()=>setFilter(f.id)}>{f.label}</button>
+          ))}
+        </div>
+        {/* 드롭다운 정렬 */}
+        <div style={{position:'relative',flexShrink:0}}>
+          <button onClick={()=>setSortOpen(o=>!o)} style={{background:'transparent',border:'none',cursor:'pointer',fontSize:13,color:'var(--ink-2)',fontFamily:'var(--font-body)',fontWeight:500,padding:'4px 0',display:'flex',alignItems:'center',gap:2,whiteSpace:'nowrap'}}>
+            {sort==='time'?'시간순':'카테고리순'} <span style={{fontSize:30,lineHeight:1,display:'inline-block',transition:'transform .2s',transform:sortOpen?'rotate(90deg)':'rotate(-90deg)'}}>‹</span>
+          </button>
+          {sortOpen&&(
+            <div style={{position:'absolute',right:0,top:'100%',background:'var(--surface)',border:'1px solid var(--border)',borderRadius:8,boxShadow:'0 4px 12px rgba(0,0,0,.12)',zIndex:50,minWidth:90,overflow:'hidden'}}>
+              {[{id:'time',label:'시간순'},{id:'category',label:'카테고리순'}].map(s=>(
+                <button key={s.id} onClick={()=>{setSort(s.id);setSortOpen(false);}} style={{display:'block',width:'100%',padding:'10px 14px',fontSize:13,textAlign:'left',background:sort===s.id?'var(--rose-light)':'transparent',color:sort===s.id?'var(--rose)':'var(--ink-2)',border:'none',cursor:'pointer',fontFamily:'var(--font-body)',fontWeight:sort===s.id?600:400}}>
+                  {s.label}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+
       {sort==='category'&&filteredCats&&filteredCats.map(({cat,items})=>(
         <div key={cat} className="card">
           <div className="card-header"><span style={{fontSize:14,fontWeight:600,color:'var(--ink-2)'}}>{cat}</span></div>
@@ -1011,7 +1072,10 @@ function BudgetScreen({budget,checklist}){
   const [budgetInput,setBudgetInput]=useState('');
   const [includeOpen,setIncludeOpen]=useState(false);
   const [externalOpen,setExternalOpen]=useState(false); // 3. 기본값 닫힘
-  const [sort,setSort]=useState('time'); // 4. 정렬
+  const [sort,setSort]=useState('time'); // 정렬
+  const [sortOpen,setSortOpen]=useState(false);
+  const [editingTotal,setEditingTotal]=useState(false);
+  const [totalInput,setTotalInput]=useState('');
   const [budgetAddingItem,setBudgetAddingItem]=useState(false);
   const [budgetNewLabel,setBudgetNewLabel]=useState('');
   const [budgetNewAmount,setBudgetNewAmount]=useState(''); // 5. 금액 입력
@@ -1039,26 +1103,34 @@ function BudgetScreen({budget,checklist}){
     <div className="screen-pad">
       <div className="card"><div className="card-body">
         <div className="section-label">총 예산</div>
-        <div style={{display:'flex',alignItems:'center',gap:8}}>
-          <input type="number" className="input-field" style={{flex:1}} value={budget.totalBudget} onChange={e=>budget.setTotalBudget(e.target.value)} placeholder="예산 (만원)"/>
-          <span style={{fontSize:14,color:'var(--ink-2)',whiteSpace:'nowrap'}}>만원</span>
-        </div>
-        <div style={{fontSize:12,color:'var(--ink-3)',marginTop:6}}>= {(budget.totalBudget*10000).toLocaleString()}원</div>
+        {budget.totalBudget&&!editingTotal?(
+          <div style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+            <div>
+              <div style={{fontSize:24,fontWeight:700,color:'var(--ink)'}}>{Number(budget.totalBudget).toLocaleString()}<span style={{fontSize:14,fontWeight:500,color:'var(--ink-3)',marginLeft:4}}>만원</span></div>
+              <div style={{fontSize:12,color:'var(--ink-3)',marginTop:2}}>= {(budget.totalBudget*10000).toLocaleString()}원</div>
+            </div>
+            <button className="btn-nav" onClick={()=>{setEditingTotal(true);setTotalInput(String(budget.totalBudget));}}>예산 수정</button>
+          </div>
+        ):(
+          <>
+            <div style={{display:'flex',alignItems:'center',gap:8}}>
+              <input type="number" className="input-field" style={{flex:1}} value={totalInput} onChange={e=>setTotalInput(e.target.value)} placeholder="예산 (만원)" autoFocus onKeyDown={e=>e.key==='Enter'&&(budget.setTotalBudget(totalInput),setEditingTotal(false))}/>
+              <span style={{fontSize:14,color:'var(--ink-2)',whiteSpace:'nowrap'}}>만원</span>
+            </div>
+            <div style={{display:'flex',gap:8,marginTop:8}}>
+              <button className="btn btn-primary btn-sm" style={{flex:1}} onClick={()=>{budget.setTotalBudget(totalInput);setEditingTotal(false);}}>확인</button>
+              <button className="btn btn-ghost btn-sm" style={{flex:1}} onClick={()=>setEditingTotal(false)}>취소</button>
+            </div>
+            {totalInput&&<div style={{fontSize:12,color:'var(--ink-3)',marginTop:4}}>= {(totalInput*10000).toLocaleString()}원</div>}
+          </>
+        )}
       </div></div>
-
-      {/* 4. 정렬 버튼 */}
-      <div style={{display:'flex',gap:6,alignItems:'center'}}>
-        <span style={{fontSize:11,color:'var(--ink-3)',whiteSpace:'nowrap'}}>정렬</span>
-        {[{id:'time',label:'시간순'},{id:'category',label:'카테고리'}].map(s=>(
-          <button key={s.id} className={`btn btn-sm ${sort===s.id?'btn-outline':'btn-ghost'}`} onClick={()=>setSort(s.id)} style={{flex:1}}>{s.label}</button>
-        ))}
-      </div>
 
       <div className="card"><div className="card-body">
         {/* 예산에 포함할 항목 — 접기/펼치기 */}
         <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',cursor:'pointer'}} onClick={()=>setIncludeOpen(o=>!o)}>
           <div className="section-label" style={{marginBottom:0}}>예산에 포함할 항목</div>
-          <span style={{fontSize:16,color:'var(--ink-3)',lineHeight:1,transform:includeOpen?'rotate(180deg)':'none',transition:'transform .2s'}}>▾</span>
+          <span className="toggle-arrow" style={{transform:includeOpen?'rotate(180deg)':'none'}}>▾</span>
         </div>
         {includeOpen&&(
           <div style={{marginTop:12}}>
@@ -1096,105 +1168,177 @@ function BudgetScreen({budget,checklist}){
                 </div>
               </div>
             ):(
-              <button className="btn btn-ghost btn-sm btn-full" style={{marginTop:10,borderStyle:'dashed',borderColor:'var(--border-2)'}} onClick={()=>setBudgetAddingItem(true)}>+ 항목 추가</button>
+              <button className="btn btn-ghost btn-sm btn-full" style={{marginTop:10,borderStyle:'dashed',borderColor:'var(--rose)',color:'var(--rose)'}} onClick={()=>setBudgetAddingItem(true)}>+ 항목 추가</button>
             )}
           </div>
         )}
       </div></div>
 
+      {/* 예산 현황 요약 카드 (배분/지출 바) */}
+      {budget.budgetBreakdown.length>0&&(
+        <div className="card"><div className="card-body">
+          <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:8}}>
+            <span className="section-label" style={{marginBottom:0}}>예산 현황</span>
+
+          </div>
+          <div style={{display:'flex',justifyContent:'space-between',fontSize:12,color:'var(--ink-3)',marginBottom:4}}>
+            <span>지출 {budget.totalSpent.toLocaleString()}만원</span>
+            <span>{Math.max(0,budget.totalBudget-budget.totalSpent).toLocaleString()}만원 남음</span>
+          </div>
+          <div className="progress-track" style={{marginBottom:10}}>
+            <div className="progress-fill" style={{width:`${Math.min(budget.spentPercent,100)}%`,background:budget.spentPercent>100?'var(--danger)':'var(--rose)'}}/>
+          </div>
+          {(()=>{
+            const totalAssigned=sortedBreakdown.reduce((s,i)=>s+i.assignedBudget,0);
+            const assignedDiff=totalAssigned-budget.totalBudget;
+            const assignedPct=budget.totalBudget>0?Math.round(totalAssigned/budget.totalBudget*100):0;
+            return(
+              <>
+                <div style={{display:'flex',justifyContent:'space-between',fontSize:12,color:'var(--ink-3)',marginBottom:4}}>
+                  <span>배분 합계 {totalAssigned.toLocaleString()}만원</span>
+                  <span style={{color:assignedDiff>0?'var(--danger)':assignedDiff<0?'var(--success)':'var(--ink-3)',fontWeight:500}}>
+                    {assignedDiff>0?`+${assignedDiff.toLocaleString()}만 초과`:assignedDiff<0?`${Math.abs(assignedDiff).toLocaleString()}만 미배분`:'딱 맞음'}
+                  </span>
+                </div>
+                <div className="progress-track">
+                  <div className="progress-fill" style={{width:`${Math.min(assignedPct,100)}%`,background:assignedDiff>0?'var(--danger)':'var(--ink-3)',opacity:.5}}/>
+                </div>
+              </>
+            );
+          })()}
+        </div></div>
+      )}
+
+      {/* 항목별 예산 설정 */}
       {budget.budgetBreakdown.length>0&&(
         <div className="card">
           <div className="card-header">
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
-              <span style={{fontSize:14,fontWeight:600,color:'var(--ink-2)'}}>항목별 예산 배분</span>
-              <span className={`badge ${budget.totalDiff>0?'badge-rose':budget.totalDiff<0?'badge-green':'badge-gray'}`}>
-                {budget.totalDiff>0?`+${budget.totalDiff.toLocaleString()}만 초과`:budget.totalDiff<0?`남은 예산 ${Math.abs(budget.totalDiff).toLocaleString()}만`:'딱 맞음'}
-              </span>
+              <span className="section-label" style={{marginBottom:0}}>항목별 예산 설정</span>
+              {/* 드롭다운 정렬 */}
+              <div style={{position:'relative'}}>
+                <button onClick={()=>setSortOpen(o=>!o)} style={{background:'transparent',border:'none',cursor:'pointer',fontSize:13,color:'var(--ink-2)',fontFamily:'var(--font-body)',fontWeight:500,padding:'4px 0',display:'flex',alignItems:'center',gap:2}}>
+                  {sort==='time'?'시간순':'카테고리순'} <span style={{fontSize:30,lineHeight:1,display:'inline-block',transition:'transform .2s',transform:sortOpen?'rotate(90deg)':'rotate(-90deg)'}}>‹</span>
+                </button>
+                {sortOpen&&(
+                  <div style={{position:'absolute',right:0,top:'100%',background:'var(--surface)',border:'1px solid var(--border)',borderRadius:8,boxShadow:'0 4px 12px rgba(0,0,0,.12)',zIndex:50,minWidth:100,overflow:'hidden'}}>
+                    {[{id:'time',label:'시간순'},{id:'category',label:'카테고리순'}].map(s=>(
+                      <button key={s.id} onClick={()=>{setSort(s.id);setSortOpen(false);}} style={{display:'block',width:'100%',padding:'10px 14px',fontSize:13,textAlign:'left',background:sort===s.id?'var(--rose-light)':'transparent',color:sort===s.id?'var(--rose)':'var(--ink-2)',border:'none',cursor:'pointer',fontFamily:'var(--font-body)',fontWeight:sort===s.id?600:400}}>
+                        {s.label}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
           </div>
-          <div style={{padding:'12px 16px'}}>
-            {/* 실 지출 vs 총 예산 */}
-            <div style={{display:'flex',justifyContent:'space-between',fontSize:12,color:'var(--ink-3)',marginBottom:4}}>
-              <span>지출 {budget.totalSpent.toLocaleString()}만원</span>
-              <span>총 예산 {budget.totalBudget.toLocaleString()}만원</span>
-            </div>
-            <div className="progress-track" style={{marginBottom:10}}>
-              <div className="progress-fill" style={{width:`${Math.min(budget.spentPercent,100)}%`,background:budget.spentPercent>100?'var(--danger)':'var(--rose)'}}/>
-            </div>
-            {/* 2. 배분 합계 vs 총 예산 */}
-            {(()=>{
-              const totalAssigned=sortedBreakdown.reduce((s,i)=>s+i.assignedBudget,0);
-              const assignedDiff=totalAssigned-budget.totalBudget;
-              const assignedPct=budget.totalBudget>0?Math.round(totalAssigned/budget.totalBudget*100):0;
-              return(
-                <>
-                  <div style={{display:'flex',justifyContent:'space-between',fontSize:12,color:'var(--ink-3)',marginBottom:4}}>
-                    <span>배분 합계 {totalAssigned.toLocaleString()}만원</span>
-                    <span style={{color:assignedDiff>0?'var(--danger)':assignedDiff<0?'var(--success)':'var(--ink-3)',fontWeight:500}}>
-                      {assignedDiff>0?`+${assignedDiff.toLocaleString()}만 초과`:assignedDiff<0?`${Math.abs(assignedDiff).toLocaleString()}만 미배분`:'딱 맞음'}
-                    </span>
+          {sort==='category'
+            ? CATEGORY_ORDER.filter(cat=>sortedBreakdown.some(i=>i.category===cat)).map(cat=>(
+                <React.Fragment key={cat}>
+                  <div style={{padding:'8px 16px 4px',background:'var(--surface-2)',borderTop:'1px solid var(--border)'}}>
+                    <span style={{fontSize:11,fontWeight:600,color:'var(--rose)',letterSpacing:.5}}>{cat}</span>
                   </div>
-                  <div className="progress-track">
-                    <div className="progress-fill" style={{width:`${Math.min(assignedPct,100)}%`,background:assignedDiff>0?'var(--danger)':'var(--ink-3)',opacity:.5}}/>
-                  </div>
-                </>
-              );
-            })()}
-          </div>
-          {sortedBreakdown.map((item,idx)=>{
-            const isEditingS=editingSpent===item.id;
-            const isEditingB=editingBudget===item.id;
+                  {sortedBreakdown.filter(i=>i.category===cat).map((item,idx)=>{
+                    const isEditing=editingBudget===item.id;
+                    const over=item.spent>0&&item.spent>item.assignedBudget;
+                    return(
+                      <div key={item.id}>
+                        {idx>0&&<div className="divider"/>}
+                        {isEditing?(<div style={{padding:'10px 16px',background:'var(--rose-light)'}}>
+                            <div style={{fontSize:13,fontWeight:600,color:'var(--rose)',marginBottom:6}}>{item.label}</div>
+                            <div style={{display:'flex',alignItems:'center',gap:6,flexWrap:'wrap'}}>
+                              <span style={{fontSize:11,color:'var(--ink-3)',whiteSpace:'nowrap'}}>예산</span>
+                              <input type="number" className="input-field" style={{width:80,padding:'4px 8px',fontSize:12}} value={budgetInput} onChange={e=>setBudgetInput(e.target.value)} placeholder="만원" onKeyDown={e=>e.key==='Enter'&&handleBudgetSave(item.id)} autoFocus/>
+                              <span style={{fontSize:11,color:'var(--ink-3)'}}>만</span>
+                              <span style={{fontSize:11,color:'var(--ink-3)',marginLeft:4,whiteSpace:'nowrap'}}>실지출</span>
+                              <input type="number" className="input-field" style={{width:80,padding:'4px 8px',fontSize:12}} value={spentInput} onChange={e=>setSpentInput(e.target.value)} placeholder="만원" onKeyDown={e=>e.key==='Enter'&&(handleSpentSave(item.id),handleBudgetSave(item.id))}/>
+                              <span style={{fontSize:11,color:'var(--ink-3)'}}>만</span>
+                              <button className="btn btn-primary btn-sm" style={{padding:'4px 10px'}} onClick={()=>{handleBudgetSave(item.id);handleSpentSave(item.id);}}>저장</button>
+                              {item.hasCustomBudget&&<button className="btn btn-ghost btn-sm" style={{padding:'4px 8px'}} onClick={()=>{budget.resetCustomBudget(item.id);setEditingBudget(null);}}>초기화</button>}
+                              <button className="btn btn-ghost btn-sm" style={{padding:'4px 8px'}} onClick={()=>{setEditingBudget(null);setEditingSpent(null);}}>✕</button>
+                            </div>
+                          </div>
+                        ):(
+                          <div style={{padding:'12px 16px',cursor:'pointer'}}
+                            onClick={()=>{setEditingBudget(item.id);setBudgetInput(String(item.assignedBudget));setEditingSpent(item.id);setSpentInput(String(item.spent||''));}}
+                            onMouseEnter={e=>e.currentTarget.style.background='var(--surface-2)'}
+                            onMouseLeave={e=>e.currentTarget.style.background=''}
+                            onTouchStart={e=>e.currentTarget.style.background='var(--surface-2)'}
+                            onTouchEnd={e=>e.currentTarget.style.background=''}
+                          >
+                            <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+                              <div style={{fontSize:14,fontWeight:500,color:'var(--ink)'}}>{item.label}</div>
+                              <div style={{display:'flex',alignItems:'center',gap:8}}>
+                                <span style={{fontSize:11,color:'var(--ink-3)',whiteSpace:'nowrap'}}>탭하여 수정 ✎</span>
+                                <div style={{textAlign:'right',minWidth:100}}>
+                                  <div style={{fontSize:14,fontWeight:500,color:item.hasCustomBudget?'var(--rose)':'var(--ink)'}}>예산 {item.assignedBudget.toLocaleString()}만원</div>
+                                  <div style={{fontSize:12,color:item.spent>0?(over?'var(--danger)':'var(--success)'):'var(--ink-3)',marginTop:2}}>
+                                    실지출 {item.spent>0?`${item.spent.toLocaleString()}만원`:'미입력'}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            {item.spent>0&&(
+                              <div className="progress-track" style={{marginTop:8,height:4}}>
+                                <div className="progress-fill" style={{width:`${Math.min(item.spent/item.assignedBudget*100,100)}%`,background:over?'var(--danger)':'var(--success)'}}/>
+                              </div>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </React.Fragment>
+              ))
+            : sortedBreakdown.map((item,idx)=>{
+            const isEditing=editingBudget===item.id;
             const over=item.spent>0&&item.spent>item.assignedBudget;
             return(
               <div key={item.id}>
                 {idx>0&&<div className="divider"/>}
-                <div style={{padding:'12px 16px'}}>
-                  <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:8}}>
-                    <div>
-                      <div style={{fontSize:14,fontWeight:500}}>{item.label}</div>
-                    </div>
-                    <div style={{textAlign:'right'}}>
-                      {isEditingB?(
-                        <div style={{display:'flex',gap:4,alignItems:'center'}}>
-                          <input type="number" style={{width:80,padding:'4px 6px',fontSize:12,border:'1.5px solid var(--rose)',borderRadius:6,outline:'none',fontFamily:'var(--font-body)'}} value={budgetInput} onChange={e=>setBudgetInput(e.target.value)} onKeyDown={e=>e.key==='Enter'&&handleBudgetSave(item.id)} autoFocus/>
-                          <span style={{fontSize:11,color:'var(--ink-3)'}}>만원</span>
-                          <button className="btn btn-primary btn-sm" style={{padding:'3px 8px',fontSize:11}} onClick={()=>handleBudgetSave(item.id)}>확인</button>
-                          {item.hasCustomBudget&&<button className="btn btn-ghost btn-sm" style={{padding:'3px 6px',fontSize:11}} onClick={()=>{budget.resetCustomBudget(item.id);setEditingBudget(null);}}>초기화</button>}
-                          <button className="btn btn-ghost btn-sm" style={{padding:'3px 6px',fontSize:11}} onClick={()=>setEditingBudget(null)}>✕</button>
-                        </div>
-                      ):(
-                        <div style={{display:'flex',alignItems:'baseline',gap:6}}>
-                          <div style={{fontSize:15,fontWeight:600,color:item.hasCustomBudget?'var(--rose)':'var(--ink)'}}>{item.assignedBudget.toLocaleString()}만원</div>
-                          <button style={{fontSize:10,color:'var(--ink-3)',background:'transparent',border:'none',cursor:'pointer',fontFamily:'var(--font-body)'}} onClick={()=>{setEditingBudget(item.id);setBudgetInput(String(item.assignedBudget));}}>수정 ✎</button>
-                        </div>
-                      )}
+                {isEditing?(
+                  <div style={{padding:'10px 16px',background:'var(--rose-light)'}}>
+                    <div style={{fontSize:13,fontWeight:600,color:'var(--rose)',marginBottom:6}}>{item.label}</div>
+                    <div style={{display:'flex',alignItems:'center',gap:6,flexWrap:'wrap'}}>
+                      <span style={{fontSize:11,color:'var(--ink-3)',whiteSpace:'nowrap'}}>예산</span>
+                      <input type="number" className="input-field" style={{width:80,padding:'4px 8px',fontSize:12}} value={budgetInput} onChange={e=>setBudgetInput(e.target.value)} placeholder="만원" onKeyDown={e=>e.key==='Enter'&&handleBudgetSave(item.id)} autoFocus/>
+                      <span style={{fontSize:11,color:'var(--ink-3)'}}>만</span>
+                      <span style={{fontSize:11,color:'var(--ink-3)',marginLeft:4,whiteSpace:'nowrap'}}>실지출</span>
+                      <input type="number" className="input-field" style={{width:80,padding:'4px 8px',fontSize:12}} value={spentInput} onChange={e=>setSpentInput(e.target.value)} placeholder="만원" onKeyDown={e=>e.key==='Enter'&&(handleSpentSave(item.id),handleBudgetSave(item.id))}/>
+                      <span style={{fontSize:11,color:'var(--ink-3)'}}>만</span>
+                      <button className="btn btn-primary btn-sm" style={{padding:'4px 10px'}} onClick={()=>{handleBudgetSave(item.id);handleSpentSave(item.id);}}>저장</button>
+                      {item.hasCustomBudget&&<button className="btn btn-ghost btn-sm" style={{padding:'4px 8px'}} onClick={()=>{budget.resetCustomBudget(item.id);setEditingBudget(null);}}>초기화</button>}
+                      <button className="btn btn-ghost btn-sm" style={{padding:'4px 8px'}} onClick={()=>{setEditingBudget(null);setEditingSpent(null);}}>✕</button>
                     </div>
                   </div>
-                  <div style={{display:'flex',alignItems:'center',gap:8,marginTop:4}}>
-                    <span style={{fontSize:12,color:'var(--ink-3)',whiteSpace:'nowrap'}}>실 지출:</span>
-                    {isEditingS?(
-                      <>
-                        <input type="number" className="input-field" style={{flex:1,padding:'6px 10px',fontSize:13}} value={spentInput} onChange={e=>setSpentInput(e.target.value)} placeholder="만원" autoFocus onKeyDown={e=>e.key==='Enter'&&handleSpentSave(item.id)}/>
-                        <button className="btn btn-primary btn-sm" onClick={()=>handleSpentSave(item.id)}>저장</button>
-                        <button className="btn btn-ghost btn-sm" onClick={()=>setEditingSpent(null)}>취소</button>
-                      </>
-                    ):(
-                      <>
-                        <span style={{flex:1,fontSize:13,fontWeight:500,color:item.spent>0?(over?'var(--danger)':'var(--success)'):'var(--ink-3)'}}>
-                          {item.spent>0?`${item.spent.toLocaleString()}만원 (${item.diff>=0?'+':''}${item.diff.toLocaleString()}만)`:'미입력'}
-                        </span>
-                        <button className="btn btn-ghost btn-sm" onClick={()=>{setEditingSpent(item.id);setSpentInput(item.spent||'');}}>
-                          {item.spent>0?'수정':'입력'}
-                        </button>
-                      </>
+                ):(
+                  // 보기 모드
+                  <div style={{padding:'12px 16px',cursor:'pointer'}}
+                    onClick={()=>{setEditingBudget(item.id);setBudgetInput(String(item.assignedBudget));setEditingSpent(item.id);setSpentInput(String(item.spent||''));}}
+                    onMouseEnter={e=>e.currentTarget.style.background='var(--surface-2)'}
+                    onMouseLeave={e=>e.currentTarget.style.background=''}
+                    onTouchStart={e=>e.currentTarget.style.background='var(--surface-2)'}
+                    onTouchEnd={e=>e.currentTarget.style.background=''}
+                  >
+                    <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+                      <div style={{fontSize:14,fontWeight:500,color:'var(--ink)'}}>{item.label}</div>
+                      <div style={{display:'flex',alignItems:'center',gap:8}}>
+                        <span style={{fontSize:11,color:'var(--ink-3)',whiteSpace:'nowrap'}}>탭하여 수정 ✎</span>
+                        <div style={{textAlign:'right',minWidth:100}}>
+                          <div style={{fontSize:14,fontWeight:500,color:item.hasCustomBudget?'var(--rose)':'var(--ink)'}}>예산 {item.assignedBudget.toLocaleString()}만원</div>
+                          <div style={{fontSize:12,color:item.spent>0?(over?'var(--danger)':'var(--success)'):'var(--ink-3)',marginTop:2}}>
+                            실지출 {item.spent>0?`${item.spent.toLocaleString()}만원`:'미입력'}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    {item.spent>0&&(
+                      <div className="progress-track" style={{marginTop:8,height:4}}>
+                        <div className="progress-fill" style={{width:`${Math.min(item.spent/item.assignedBudget*100,100)}%`,background:over?'var(--danger)':'var(--success)'}}/>
+                      </div>
                     )}
                   </div>
-                  {item.spent>0&&(
-                    <div className="progress-track" style={{marginTop:8,height:4}}>
-                      <div className="progress-fill" style={{width:`${Math.min(item.spent/item.assignedBudget*100,100)}%`,background:over?'var(--danger)':'var(--success)'}}/>
-                    </div>
-                  )}
-                </div>
+                )}
               </div>
             );
           })}
@@ -1206,18 +1350,19 @@ function BudgetScreen({budget,checklist}){
         const externalItems=checklist.selectedItems.filter(i=>
           i.budgetRatio===null &&
           i.id!=='budget_plan' &&
-          i.id!=='rehearsal'
+          i.id!=='rehearsal' &&
+          !HIDDEN_ITEM_IDS.has(i.id)
         );
         if(externalItems.length===0) return null;
         return(
           <div className="card"><div className="card-body">
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',cursor:'pointer'}} onClick={()=>setExternalOpen(o=>!o)}>
               <div className="section-label" style={{marginBottom:0}}>예산 외 항목</div>
-              <span style={{fontSize:16,color:'var(--ink-3)',lineHeight:1,transform:externalOpen?'rotate(180deg)':'none',transition:'transform .2s'}}>▾</span>
+              <span className="toggle-arrow" style={{transform:externalOpen?'rotate(180deg)':'none'}}>▾</span>
             </div>
             {externalOpen&&(
               <div style={{marginTop:12}}>
-                <p style={{fontSize:12,color:'var(--ink-3)',marginBottom:10,lineHeight:1.5}}>신혼집·혼수가전 등 금액 편차가 큰 항목입니다. 예산과 실지출을 직접 입력할 수 있어요.</p>
+                <p style={{fontSize:12,color:'var(--ink-3)',marginBottom:10,lineHeight:1.5}}>본 예산 외 추가비용이 예상되는 항목입니다. 예산과 실지출을 직접 입력할 수 있어요.</p>
                 {externalItems.map((item,idx)=>{
                   const isEditingS=editingSpent===item.id;
                   const isEditingB=editingBudget===item.id;
@@ -1258,7 +1403,7 @@ function BudgetScreen({budget,checklist}){
                               </div>
                             ):(
                               <div style={{display:'flex',alignItems:'center',gap:4,cursor:'pointer'}} onClick={()=>{setEditingSpent(item.id);setSpentInput(String(extSpent||''));}}>
-                                <span style={{fontSize:13,color:extSpent?'var(--success)':'var(--ink-3)'}}>{extSpent?`${extSpent.toLocaleString()}만원`:'미입력'}</span>
+                                <span style={{fontSize:13,color:extSpent?(extBudget>0?(extSpent>extBudget?'var(--rose)':'var(--success)'):'var(--success)'):'var(--ink-3)'}}>{extSpent?`${extSpent.toLocaleString()}만원`:'미입력'}</span>
                                 <span style={{fontSize:10,color:'var(--ink-3)'}}>✎</span>
                               </div>
                             )}
@@ -1424,11 +1569,7 @@ function CalendarScreen({checklist,dateHook,calEvents}){
                 <span key={cat} style={{fontSize:11,padding:'2px 8px',borderRadius:20,background:color+'22',color,fontWeight:500}}>{cat}</span>
               ))}
             </div>
-            {!dateHook.moveInDate&&checklist.selectedItems.some(i=>MOVE_IN_RELATIVE_IDS.has(i.id))&&(
-              <div style={{marginTop:8,fontSize:12,color:'var(--warning)',background:'var(--warning-bg)',borderRadius:6,padding:'6px 10px',lineHeight:1.5}}>
-                가전·가구 투어는 입주일 기준으로 계산됩니다. 홈 화면에서 입주일을 설정해주세요.
-              </div>
-            )}
+{/* 입주일 안내 숨김 — 신혼집 관련 항목 비노출 정책 */}
           </div></div>
 
           {/* 달력 */}
@@ -1491,9 +1632,13 @@ function CalendarScreen({checklist,dateHook,calEvents}){
                     {/* 바 행 - 동적 높이 (확장 시 모든 바 표시) */}
                     <div style={{position:'relative',height:barRowH}}>
                       {bars.slice(0,MAX_BARS).map(({item,colStart,colEnd,isCalEvent,evColor},bi)=>{
-                        const done=!isCalEvent&&isDone(item.id);
+                        const done=isCalEvent
+                          ? calEvents.completedEvents.has(item.id)
+                          : isDone(item.id);
                         const colW=100/7;
-                        const color=isCalEvent?evColor:(done?DONE_BAR_COLOR:barColor(item));
+                        const color=isCalEvent
+                          ? (done?DONE_BAR_COLOR:evColor)
+                          : (done?DONE_BAR_COLOR:barColor(item));
                         return(
                           <div
                             key={item.id}
@@ -1581,9 +1726,9 @@ function CalendarScreen({checklist,dateHook,calEvents}){
                 return(
                   <div key={item.id}>
                     {idx>0&&<div className="divider"/>}
-                    <div style={{padding:'10px 16px',display:'flex',alignItems:'center',gap:10,cursor:'pointer'}} onClick={()=>handleBarClick(item)}>
+                    <div style={{padding:'10px 16px',display:'flex',alignItems:'center',gap:10}}>
                       <div style={{width:10,height:10,borderRadius:2,background:done?'var(--success)':barColor(item),flexShrink:0}}/>
-                      <div style={{flex:1}}>
+                      <div style={{flex:1,cursor:'pointer'}} onClick={()=>handleBarClick(item)}>
                         <div style={{fontSize:13,fontWeight:500,color:done?'var(--ink-3)':'var(--ink)',textDecoration:done?'line-through':'none'}}>
                           {item.label}{hasOverride&&<span style={{fontSize:10,color:'var(--rose)',marginLeft:6}}>수정됨</span>}
                           {MOVE_IN_RELATIVE_IDS.has(item.id)&&<span style={{fontSize:10,color:'var(--success)',marginLeft:6}}>입주일 기준</span>}
@@ -1592,8 +1737,11 @@ function CalendarScreen({checklist,dateHook,calEvents}){
                           {fmtDate(start)} ~ {fmtDate(end)} · {item.durationDays}일
                         </div>
                       </div>
-                      <div className={`check-circle ${done?'checked':''}`} style={{width:20,height:20,fontSize:10}} onClick={e=>{e.stopPropagation();checklist.toggleCompleted(item.id);}}>
-                        {done&&'✓'}
+                      {/* 7. 체크 영역 — 체크박스(22px) 두 배 너비(44px), 정가운데 배치 */}
+                      <div style={{width:44,minWidth:44,display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer',alignSelf:'stretch',margin:'0 -4px 0 0'}} onClick={()=>checklist.toggleCompleted(item.id)}>
+                        <div className={`check-circle ${done?'checked':''}`} style={{width:22,height:22,fontSize:11,flexShrink:0}}>
+                          {done&&'✓'}
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -1669,17 +1817,24 @@ function CalendarScreen({checklist,dateHook,calEvents}){
                         </div>
                       </div>
                     ):(
-                      <div style={{padding:'10px 16px',display:'flex',alignItems:'center',gap:10}}>
-                        <div style={{width:8,height:8,borderRadius:2,background:'#7c3aed',flexShrink:0}}/>
-                        <div style={{flex:1}}>
-                          <div style={{fontSize:13,fontWeight:500,color:'var(--ink)'}}>{ev.label}</div>
+                      <div style={{padding:'10px 16px',display:'flex',alignItems:'center',gap:8}}>
+                        {/* ✕ 왼쪽 */}
+                        <button style={{background:'transparent',border:'none',cursor:'pointer',color:'var(--ink-3)',fontSize:16,padding:'2px 4px',lineHeight:1,flexShrink:0}} onClick={()=>calEvents.removeEvent(ev.id)}>✕</button>
+                        {/* 제목 + 수정 버튼 */}
+                        <div style={{flex:1,minWidth:0}}>
+                          <div style={{display:'flex',alignItems:'center',gap:6}}>
+                            <span style={{fontSize:13,fontWeight:500,color:calEvents.completedEvents.has(ev.id)?'var(--ink-3)':'var(--ink)',textDecoration:calEvents.completedEvents.has(ev.id)?'line-through':'none'}}>{ev.label}</span>
+                            <button style={{background:'transparent',border:'1px solid var(--border-2)',borderRadius:4,cursor:'pointer',color:'var(--ink-3)',fontSize:10,padding:'1px 5px',lineHeight:1.4,flexShrink:0,whiteSpace:'nowrap'}} onClick={()=>{setEditingEvent(ev.id);setEditingEventLabel(ev.label);setEditingEventStart(ev.startDate||ev.date);setEditingEventEnd(ev.endDate||ev.startDate||ev.date);}}>수정</button>
+                          </div>
                           <div style={{fontSize:11,color:'var(--ink-3)',marginTop:2}}>
                             {fmtDate(new Date(ev.startDate||ev.date),{month:'long',day:'numeric'})}
                             {ev.endDate&&ev.endDate!==(ev.startDate||ev.date)&&` ~ ${fmtDate(new Date(ev.endDate),{month:'long',day:'numeric'})}`}
                           </div>
                         </div>
-                        <button style={{background:'transparent',border:'none',cursor:'pointer',color:'var(--ink-3)',fontSize:12,padding:'2px 6px',lineHeight:1,border:'1px solid var(--border-2)',borderRadius:6}} onClick={()=>{setEditingEvent(ev.id);setEditingEventLabel(ev.label);setEditingEventStart(ev.startDate||ev.date);setEditingEventEnd(ev.endDate||ev.startDate||ev.date);}}>수정</button>
-                        <button style={{background:'transparent',border:'none',cursor:'pointer',color:'var(--ink-3)',fontSize:16,padding:'2px 4px',lineHeight:1}} onClick={()=>calEvents.removeEvent(ev.id)}>✕</button>
+                        {/* 체크박스 오른쪽 */}
+                        <div className={`check-circle ${calEvents.completedEvents.has(ev.id)?'checked':''}`} style={{width:22,height:22,fontSize:11,flexShrink:0,cursor:'pointer'}} onClick={()=>calEvents.toggleEventDone(ev.id)}>
+                          {calEvents.completedEvents.has(ev.id)&&'✓'}
+                        </div>
                       </div>
                     )}
                   </div>
@@ -1696,20 +1851,25 @@ function CalendarScreen({checklist,dateHook,calEvents}){
 // ── useCalendarEvents (캘린더 전용, 체크리스트/예산과 무관) ──
 function useCalendarEvents(){
   const [events,setEvents]=useState(()=>load('w_cal_events',[]));
+  const [completedEvents,setCompletedEvents]=useState(()=>new Set(load('w_cal_events_done',[])));
   useEffect(()=>{save('w_cal_events',events);},[events]);
+  useEffect(()=>{save('w_cal_events_done',[...completedEvents]);},[completedEvents]);
 
   const addEvent=useCallback((label,startDate,endDate)=>{
     const id='cale_'+Date.now();
-    // 하위 호환: endDate 없으면 startDate와 동일
     setEvents(prev=>[...prev,{id,label,startDate,endDate:endDate||startDate,date:startDate,color:'#7c3aed'}]);
   },[]);
   const removeEvent=useCallback(id=>{
     setEvents(prev=>prev.filter(e=>e.id!==id));
+    setCompletedEvents(prev=>{const n=new Set(prev);n.delete(id);return n;});
   },[]);
   const updateEvent=useCallback((id,changes)=>{
     setEvents(prev=>prev.map(e=>e.id===id?{...e,...changes}:e));
   },[]);
-  return {events,addEvent,removeEvent,updateEvent};
+  const toggleEventDone=useCallback(id=>{
+    setCompletedEvents(prev=>{const n=new Set(prev);n.has(id)?n.delete(id):n.add(id);return n;});
+  },[]);
+  return {events,addEvent,removeEvent,updateEvent,completedEvents,toggleEventDone};
 }
 
 // ═══════════════════════════════════════════
@@ -1730,6 +1890,38 @@ function App(){
   const budget=useBudget(checklist.selectedIds, checklist.allItems);
   const dateHook=useWeddingDate();
   const calEvents=useCalendarEvents();
+
+  // 온보딩: localStorage에 완료 여부 저장
+  // 날짜와 예산이 이미 설정된 경우에도 온보딩 스킵
+  const [onboardingDone,setOnboardingDone]=useState(()=>{
+    try{
+      const done=!!localStorage.getItem('w_onboarding_done');
+      const hasDate=!!localStorage.getItem('w_date');
+      const hasBudget=!!localStorage.getItem('w_budget_total');
+      return done||hasDate||hasBudget;
+    }catch{return false;}
+  });
+  const [obYear,setObYear]=useState('');
+  const [obMonth,setObMonth]=useState('');
+  const [obDay,setObDay]=useState('');
+  const [obBudget,setObBudget]=useState('');
+  const thisYearOb=new Date().getFullYear();
+  const obYears=Array.from({length:5},(_,i)=>thisYearOb+i);
+  const obMonths=Array.from({length:12},(_,i)=>i+1);
+  const obDays=obYear&&obMonth?Array.from({length:new Date(obYear,obMonth,0).getDate()},(_,i)=>i+1):[];
+
+  const completeOnboarding=(skip=false)=>{
+    if(!skip){
+      if(obYear&&obMonth&&obDay){
+        const str=`${obYear}-${String(obMonth).padStart(2,'0')}-${String(obDay).padStart(2,'0')}`;
+        dateHook.setWeddingDate(str);
+      }
+      if(obBudget&&Number(obBudget)>0) budget.setTotalBudget(obBudget);
+    }
+    try{localStorage.setItem('w_onboarding_done','1');}catch{}
+    setOnboardingDone(true);
+  };
+
   const dDayText=useMemo(()=>{
     const d=dateHook.dDay;
     if(d===null||d===undefined) return null;
@@ -1768,7 +1960,7 @@ function App(){
   };
 
   // 로고 이미지
-  const RingLogo=()=>(<img src="data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCAEsAZADASIAAhEBAxEB/8QAHAABAAEFAQEAAAAAAAAAAAAAAAUDBAYHCAIB/8QAVBAAAQMDAAYFBAoOCAUFAQAAAQACAwQFEQYSITFBUQcTYXGBIjKRsQgUFRYjN0JSobIzNmJlcnN0gqKks8HR4hdTVXWSk9LwNENUwuE1VmOU0/H/xAAbAQEAAgMBAQAAAAAAAAAAAAAABAYCAwUHAf/EAEIRAAEDAgQBCQYCCAUFAQAAAAEAAgMEEQUSITFBBhMyUWFxobHBFCKBkdHhQvAVFiM0NVJjcjNiosLxJFNzsuKS/9oADAMBAAIRAxEAPwDstERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERFF6RXqntFNrPw+d4+Dizv7TyCtYKmTSDRkyUs76erA2mJ5aRIOGw7j+9b207y0POjSbXUZ1UwPMbdXAXsp5Fqd90u7HljrjXNc04IM7sg8t6zbRilraOifcbzXVOS3IjlmcRG3mQTv9SlVGHmBuYuHYOtQ6XFBUvytYRbc9SyJFEUtfR6QUU0VJUzwPacZY4se3k7Ydywu9Ov8AaqswVFxrdU+ZIJ36rxzG36FhBQmVxYTZw4FbKnEWwsEgbmaeIWy0WDaEG53C5GaevrH08Ay5rpnEOcdw3+Pgr+o0sjg0hkpntBomnqy8DaHDe7tHDwyklBIJDGzUgXK+R4nG6ISvGUE2H56llSLzG9kkbZI3BzHDLXA5BC9KCuluiIiIiIiIiIiIiIvjnNa0ucQ1oGSScABEX1FjcGldNPf2UUYHtV2WCU8X8PDh4qL03Fzt9eKinr6xlNPuDZnAMdxG/wAfTyU2Ohe6QRv90kXC58uIxtiMjPeANjZZwi1tYfd27VohiuVa2Nu2STr3YaPTv7Fmdbd7daJKahqJ5HOcAC5zi4tHznEpPROieGNOY9QXymxBszDI4ZW9ZUsixjSu33NzDX2mvqyCMvhZM7BHNuD9Cw0XW7EhouVaSdgHXu/ittPh3PszNeFqqsV9mfkew/VbZRY9V1U9g0XY6eeSateMAyPLjrnv4AertVzozfIbvT4OI6pg+Ej59o7PUorqZ4YZBq0G11MbVxmQRO0cRe3p3qYREUdSkREREREREREREREREREREREREREREREREREREREREUZpDdfcylzFC+eoePg2NaSB2nHBSaj75XVNvpPbMFD7bY3bIBJqlo54wchbYReQC1+y9lpqCWxkg27bX8FrWsFxrKl9RUxVEkjzkksP+8KY0Jqqm33QRSwTCCowxxLDhruB/d4q/wDf196/1j+VPf196/1j+Vd+U1MkZjMOneFWIW0kUolE5uP8pU3736P3eddnDWOA4R42B/zv98dqx7S6pu9zm9rU1trm0bDs+AeDIeZ2buQWUtuXW2L3Upoeu+C6zq9fG7eM43jbw4LHPf196/1j+VQKUVDn58uYt01Oy6daaVse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" alt="Weddit" style={{height:"36px",width:"auto"}}/>);
+  const RingLogo=()=>(<img src="data:image/png;base64,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" alt="Weddit" style={{height:"36px",width:"auto"}}/>);
 
   return(
     <div className="app-shell">
@@ -1785,6 +1977,50 @@ function App(){
           </button>
         ))}
       </nav>
+
+      {/* 온보딩 오버레이 */}
+      {!onboardingDone&&(
+        <div className="onboarding-overlay">
+          <div className="onboarding-card">
+            {/* 상단 버튼 */}
+            <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:24}}>
+              <button onClick={()=>completeOnboarding(true)} style={{fontSize:13,color:'var(--ink-3)',background:'transparent',border:'none',cursor:'pointer',fontFamily:'var(--font-body)',padding:'4px 8px',borderRadius:6,background:'var(--surface-3)'}}>둘러보기</button>
+              <button onClick={()=>completeOnboarding(false)} style={{fontSize:13,color:'#fff',background:'var(--rose)',border:'none',cursor:'pointer',fontFamily:'var(--font-body)',padding:'4px 14px',borderRadius:6,fontWeight:600}}>확인</button>
+            </div>
+            <div style={{textAlign:'center',marginBottom:24}}>
+              <div style={{fontSize:20,fontWeight:700,color:'var(--rose)',fontFamily:'var(--font-display)',marginBottom:6}}>Weddit에 오신 걸 환영해요 💍</div>
+              <div style={{fontSize:13,color:'var(--ink-3)',lineHeight:1.6}}>결혼 준비의 시작,<br/>날짜와 예산을 먼저 설정해보세요.</div>
+            </div>
+            {/* 결혼식 날짜 */}
+            <div style={{marginBottom:20}}>
+              <div style={{fontSize:12,fontWeight:600,color:'var(--ink-2)',marginBottom:8,letterSpacing:.5}}>결혼식 날짜</div>
+              <div style={{display:'flex',gap:8}}>
+                <select className="input-field" style={{flex:2}} value={obYear} onChange={e=>{setObYear(e.target.value);setObDay('');}}>
+                  <option value=''>년도</option>
+                  {obYears.map(y=><option key={y} value={y}>{y}년</option>)}
+                </select>
+                <select className="input-field" style={{flex:1}} value={obMonth} onChange={e=>{setObMonth(e.target.value);setObDay('');}} disabled={!obYear}>
+                  <option value=''>월</option>
+                  {obMonths.map(m=><option key={m} value={m}>{m}월</option>)}
+                </select>
+                <select className="input-field" style={{flex:1}} value={obDay} onChange={e=>setObDay(e.target.value)} disabled={!obMonth}>
+                  <option value=''>일</option>
+                  {obDays.map(d=><option key={d} value={d}>{d}일</option>)}
+                </select>
+              </div>
+            </div>
+            {/* 예산 */}
+            <div style={{marginBottom:8}}>
+              <div style={{fontSize:12,fontWeight:600,color:'var(--ink-2)',marginBottom:8,letterSpacing:.5}}>총 예산</div>
+              <div style={{display:'flex',alignItems:'center',gap:8}}>
+                <input type="number" className="input-field" style={{flex:1}} placeholder="예산을 입력해주세요" value={obBudget} onChange={e=>setObBudget(e.target.value)}/>
+                <span style={{fontSize:14,color:'var(--ink-2)',whiteSpace:'nowrap'}}>만원</span>
+              </div>
+            </div>
+            <div style={{fontSize:11,color:'var(--ink-3)',textAlign:'center',marginTop:12}}>나중에 홈 화면에서도 변경할 수 있어요.</div>
+          </div>
+        </div>
+      )}
       {showScrollTop&&(
         <button
           onClick={scrollToTop}
