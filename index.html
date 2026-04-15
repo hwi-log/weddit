@@ -652,7 +652,7 @@ function HomeScreen({checklist,budget,dateHook,calEvents,onNavigate,onGoToBudget
         <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:8,marginBottom:10}}>
           <div style={{textAlign:'center'}}>
             <div style={{fontSize:11,color:'var(--ink-3)',marginBottom:3}}>총 예산</div>
-            <div style={{fontSize:15,fontWeight:600,color:'var(--ink)'}}>{budget.totalBudget.toLocaleString()}만</div>
+            <div style={{fontSize:15,fontWeight:600,color:'var(--ink)'}}>{(Number(budget.totalBudget)||0).toLocaleString()}만</div>
           </div>
           <div style={{textAlign:'center'}}>
             <div style={{fontSize:11,color:'var(--ink-3)',marginBottom:3}}>지출</div>
